@@ -27,6 +27,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* children = the page dynamically at run time */}
+        {/* i.e., depends where user is, in the app */}
         {children}
       </body>
     </html>
