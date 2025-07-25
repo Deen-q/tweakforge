@@ -5,7 +5,11 @@
 export default function Home() {
     return (
         <div>
-            <p>NavBar</p>
+            <h3>WinPrefs</h3>
+            <p>pick ur scriptz</p>
+            <p>about</p>
+            <p>settings</p>
+            <p>donate ( ͡° ͜ʖ ͡°)</p>
         </div>
     );
 }

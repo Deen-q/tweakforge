@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function PrefSelection() {
     const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
 
-    const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handelCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const targetName = e.target.name;
         setCheckedScripts(prev => {
             if (e.target.checked) {
@@ -22,26 +22,53 @@ export default function PrefSelection() {
      */
 
     return (
-        <div>
-            <fieldset>
-                <legend>Pick sum scriptz</legend>
-                <div>
+        <div className="flex">
+            <div className="border">
+                <div className="border">
                     <input
-                        type="checkbox"
-                        id="removeCopilot"
-                        name="removeCopilot"
-                        onChange={handleClick}
+                        type="text"
+                        placeholder="search for features..."
                     />
-                    <label htmlFor="removeCopilot">removeCopilot</label>
                 </div>
-            </fieldset>
 
-            <div className="border-black">
+                <fieldset>
+                    <legend>Pick sum scriptz</legend>
+                    <div>
+                        <input
+                            type="checkbox"
+                            id="removeCopilot"
+                            name="removeCopilot"
+                            onChange={handelCheckboxChange}
+                        />
+                        <label htmlFor="removeCopilot">removeCopilot</label>
+                    </div>
+                    <div>
+                        <input
+                            type="checkbox"
+                            id="addCopilot"
+                            name="addCopilot"
+                            onChange={handelCheckboxChange}
+                        />
+                        <label htmlFor="addCopilot">addCopilot</label>
+                    </div>
+                </fieldset>
+
+            </div>
+            <div className="border flex-col">
                 <input
                     type="text"
                     readOnly
-                    value={checkedScripts}
+                    value={checkedScripts.join(' ')}
+
                 />
+                {/* New plan: each script that is added will get it's own copy button! */}
+                <button
+                    className="border border-red-600 cursor-pointer"
+                    type="button"
+                    onClick={() => navigator.clipboard.writeText(checkedScripts)}
+                >
+                    copy
+                </button>
             </div>
         </div>
     );

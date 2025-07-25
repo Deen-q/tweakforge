@@ -1,7 +1,7 @@
 
 # Client-side Rendering vs Server-side Rendering
 tl;dr: 
-- default to SSR, but you will always need both
+- aim to default to SSR, but you will always need both
 - bots cannot read JS, so rendering to client means they cant see content (literally a blank page in some cases)
 
 ## Server-Side Rendering (SSR)
@@ -37,3 +37,6 @@ tl;dr:
 ## 'use client'; on L1
 - tells NextJS compiler to include this file/component in the js Bundle (making it larger)
 - on a comp that uses this: if a comp is dependent on other comps, those comps will also become client comps (and thus, added to the js bundle)
+
+## When starting out...
+- in the spirit of writing quickly and avoiding analysis paralysis (and being new to nextjs), make everything client comps
