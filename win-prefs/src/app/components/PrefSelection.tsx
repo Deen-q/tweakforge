@@ -15,10 +15,6 @@ export default function PrefSelection() {
         if (targetValue === "") {
             setFilteredCheckboxOptions(checkboxOptions)
         } else {
-            // setFilteredCheckboxOptions(checkboxOptions.filter(option => option == targetValue))
-
-            // allow for substring matching. although below works, the newest solution makes the most sense and made sure I PROPERLY understood how .filter works
-            /// setFilteredCheckboxOptions(checkboxOptions.filter(option => option.match(targetValue) == targetValue))
             setFilteredCheckboxOptions(checkboxOptions.filter(option => option.includes(targetValue)))
         }
     }
@@ -31,18 +27,18 @@ export default function PrefSelection() {
             } else {
                 return prev.filter(option => option !== targetName)
             }
-
         });
     };
 
     return (
         <div className="flex">
-            <div className="border border-blue-600 min-w-60 min-h-60">
+            <div className="border border-blue-600 min-w-48 min-h-60">
                 <div className="border">
                     <input
                         type="text"
                         placeholder="search for features..."
                         onChange={handleSearchFilter}
+                    // size={10}
                     />
                 </div>
 
@@ -61,57 +57,47 @@ export default function PrefSelection() {
                             <label htmlFor={checkboxOption}>{checkboxOption}</label>
                         </div>
                     )}
-                    {/* <div>
-                        <input
-                            type="checkbox"
-                            id="removeCopilot"
-                            name="removeCopilot"
-                            onChange={handleCheckboxChange}
-                        />
-                        <label htmlFor="removeCopilot">removeCopilot</label>
-                    </div>
-                    <div>
-                        <input
-                            type="checkbox"
-                            id="addCopilot"
-                            name="addCopilot"
-                            onChange={handleCheckboxChange}
-                        />
-                        <label htmlFor="addCopilot">addCopilot</label>
-                    </div> */}
                 </fieldset>
 
             </div>
             <div className="border border-green-600 min-w-60 min-h-60">
-                {/* <input
-                    type="text"
-                    readOnly
-                    value={checkedScripts.join(' ')}
-
-                /> */}
                 {checkedScripts.map((checkedScript) =>
-                    <input
+                    <div
+                        className="flex"
                         key={checkedScript}
-                        type="text"
-                        readOnly
-                        value={checkedScript}
-                    />
-                )}
-
-                {checkedScripts.length > 0 &&
-                    checkedScripts.map((aButton) =>
-                        <div key={aButton}>
-                            <button
-                                className="border border-red-600 cursor-pointer"
-                                type="button"
-                                onClick={() => navigator.clipboard.writeText(checkedScripts.toString())}
-                            >
-                                copy
-                            </button>
+                    >
+                        <div>
+                            <input
+                                type="text"
+                                readOnly
+                                value={checkedScript}
+                            />
                         </div>
-                    )
-                }
+                        <button
+                            className="border border-red-600 cursor-pointer"
+                            type="button"
+                            onClick={() => navigator.clipboard.writeText(checkedScript.toString())}
+                        >
+                            copy
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
 }
+
+// {
+//     checkedScripts.length > 0 &&
+//     checkedScripts.map((aCopyButton) =>
+//         <div key={aCopyButton}>
+//             <button
+//                 className="border border-red-600 cursor-pointer"
+//                 type="button"
+//                 onClick={() => navigator.clipboard.writeText(checkedScripts.toString())}
+//             >
+//                 copy
+//             </button>
+//         </div>
+//     )
+// }

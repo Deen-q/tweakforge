@@ -1,7 +1,7 @@
 
 const checkboxOptions: string[] = [
-    "addCopilot",
-    "removeCopilot",
+    "addCopilor",
+    "removeCopilor",
 ];
 
 export default checkboxOptions
