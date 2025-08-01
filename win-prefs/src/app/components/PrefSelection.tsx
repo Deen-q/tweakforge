@@ -23,6 +23,11 @@ export default function PrefSelection() {
         const targetName = e.target.name;
         setCheckedScripts(prev => {
             if (e.target.checked) {
+                // // if checkedScripts contains a filterCheckboxOption, then dont add to checkedScripts
+                // // or just disable checkbox if already present in checkedScripts?
+                // if (checkedScripts.includes()) {
+
+                // }
                 return [...prev, targetName]
             } else {
                 return prev.filter(option => option !== targetName)
@@ -46,24 +51,42 @@ export default function PrefSelection() {
                     <legend>Pick sum scriptz</legend>
                     {/* CREATING THE CHECKBOXES BASED ON ARRAY*/}
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
-                        // do not use index as key
-                        <div key={checkboxOption}>
-                            <input
-                                type="checkbox"
-                                id={checkboxOption}
-                                name={checkboxOption}
-                                onChange={handleCheckboxChange}
-                            />
-                            <label htmlFor={checkboxOption}>{checkboxOption}</label>
-                        </div>
+                        // if checkedScripts contents .includes checboxOption, create a disabled checkbox?
+                        // find a better way than repeating code, later.
+                        checkedScripts.includes(checkboxOption) ?
+                            <div key={checkboxOption}>
+                                <input
+                                    type="checkbox"
+                                    id={checkboxOption}
+                                    name={checkboxOption}
+                                    onChange={handleCheckboxChange}
+                                    // was disabled, first
+                                    checked
+                                />
+                                <label htmlFor={checkboxOption}>{checkboxOption}</label>
+                            </div>
+                            :
+                            // do not use index as key
+                            <div key={checkboxOption}>
+                                <input
+                                    type="checkbox"
+                                    id={checkboxOption}
+                                    name={checkboxOption}
+                                    onChange={handleCheckboxChange}
+                                />
+                                <label htmlFor={checkboxOption}>{checkboxOption}</label>
+                            </div>
                     )}
                 </fieldset>
 
             </div>
             <div className="border border-green-600 min-w-60 min-h-60">
+                Checked Scripts + respective copy btns
                 {checkedScripts.map((checkedScript) =>
+                    // div for a checkedScript + it's respective copy button
                     <div
                         className="flex"
+                        // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts
                         key={checkedScript}
                     >
                         <div>
