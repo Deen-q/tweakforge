@@ -4,7 +4,9 @@
 
 export default function NavBar() {
     return (
-        <div className="min-w-28 flex flex-col h-full justify-between">
+        <div className="min-w-28 flex flex-col h-full justify-between"
+            title="current dummy links"
+        >
             {/* <div className="min-w-28 flex flex-col h-screen justify-between"></div> */}
             <div className="flex flex-col justify-start">
                 <h3>WinPrefs</h3>

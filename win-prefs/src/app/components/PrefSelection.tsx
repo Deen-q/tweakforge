@@ -5,7 +5,7 @@ import checkboxOptions from "../data/checkboxOptions";
 
 export default function PrefSelection() {
     // checkboxOptions = source of truth
-    const [filteredCheckboxOptions, setFilteredCheckboxOptions] = useState<string[]>(checkboxOptions);
+    const [filteredCheckboxOptions, setFilteredCheckboxOptions] = useState<typeof checkboxOptions>(checkboxOptions);
     const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
 
     // only used once in the code, inline maybe?
@@ -15,7 +15,7 @@ export default function PrefSelection() {
         if (targetValue === "") {
             setFilteredCheckboxOptions(checkboxOptions)
         } else {
-            setFilteredCheckboxOptions(checkboxOptions.filter(option => option.includes(targetValue)))
+            setFilteredCheckboxOptions(checkboxOptions.filter(option => option.id.includes(targetValue)))
         }
     }
 
@@ -23,11 +23,6 @@ export default function PrefSelection() {
         const targetName = e.target.name;
         setCheckedScripts(prev => {
             if (e.target.checked) {
-                // // if checkedScripts contains a filterCheckboxOption, then dont add to checkedScripts
-                // // or just disable checkbox if already present in checkedScripts?
-                // if (checkedScripts.includes()) {
-
-                // }
                 return [...prev, targetName]
             } else {
                 return prev.filter(option => option !== targetName)
@@ -37,7 +32,7 @@ export default function PrefSelection() {
 
     return (
         <div className="flex">
-            <div className="border border-blue-600 min-w-48 min-h-60">
+            <div className="border min-w-48 min-h-60">
                 <div className="border">
                     <input
                         type="text"
@@ -52,54 +47,41 @@ export default function PrefSelection() {
                     {/* CREATING THE CHECKBOXES BASED ON ARRAY*/}
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
                         // if checkedScripts contents .includes checboxOption, create a disabled checkbox?
-                        // find a better way than repeating code, later.
-                        checkedScripts.includes(checkboxOption) ?
-                            <div key={checkboxOption}>
-                                <input
-                                    type="checkbox"
-                                    id={checkboxOption}
-                                    name={checkboxOption}
-                                    onChange={handleCheckboxChange}
-                                    // was disabled, first
-                                    checked
-                                />
-                                <label htmlFor={checkboxOption}>{checkboxOption}</label>
-                            </div>
-                            :
-                            // do not use index as key
-                            <div key={checkboxOption}>
-                                <input
-                                    type="checkbox"
-                                    id={checkboxOption}
-                                    name={checkboxOption}
-                                    onChange={handleCheckboxChange}
-                                />
-                                <label htmlFor={checkboxOption}>{checkboxOption}</label>
-                            </div>
+                        // do not use index as key
+                        <div key={checkboxOption.id}>
+                            <input
+                                type="checkbox"
+                                id={checkboxOption.id}
+                                name={checkboxOption.script} // meeded for e.target.name !!!
+                                onChange={handleCheckboxChange}
+                                // react was upset that I swapped between this input with and without checked
+                                // apparently that was known as uncontrolled inputs - either always or never provide a value to checked. tbh, I didnt realise checked could be passed something, faim (at the time) it was just a flag you attached!
+                                checked={checkedScripts.includes(checkboxOption.script)}
+                            />
+                            <label htmlFor={checkboxOption.id}>{checkboxOption.name}</label>
+                        </div>
                     )}
                 </fieldset>
 
             </div>
-            <div className="border border-green-600 min-w-60 min-h-60">
+            <div className="border min-w-60 min-h-60">
                 Checked Scripts + respective copy btns
-                {checkedScripts.map((checkedScript) =>
-                    // div for a checkedScript + it's respective copy button
+                {/* {console.log({ checkedScripts })} */}
+                {checkedScripts.map((checkedScriptName) =>
                     <div
-                        className="flex"
                         // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts
-                        key={checkedScript}
-                    >
+                        className="flex" key={checkedScriptName}>
                         <div>
                             <input
                                 type="text"
                                 readOnly
-                                value={checkedScript}
+                                value={checkedScriptName}
                             />
                         </div>
                         <button
                             className="border border-red-600 cursor-pointer"
                             type="button"
-                            onClick={() => navigator.clipboard.writeText(checkedScript.toString())}
+                            onClick={() => navigator.clipboard.writeText(checkedScriptName.toString())}
                         >
                             copy
                         </button>
@@ -109,18 +91,3 @@ export default function PrefSelection() {
         </div>
     );
 }
-
-// {
-//     checkedScripts.length > 0 &&
-//     checkedScripts.map((aCopyButton) =>
-//         <div key={aCopyButton}>
-//             <button
-//                 className="border border-red-600 cursor-pointer"
-//                 type="button"
-//                 onClick={() => navigator.clipboard.writeText(checkedScripts.toString())}
-//             >
-//                 copy
-//             </button>
-//         </div>
-//     )
-// }
