@@ -52,11 +52,11 @@ export default function PrefSelection() {
                             <input
                                 type="checkbox"
                                 id={checkboxOption.id}
-                                name={checkboxOption.script} // meeded for e.target.name !!!
+                                name={checkboxOption.id} // meeded for e.target.name !!!
                                 onChange={handleCheckboxChange}
                                 // react was upset that I swapped between this input with and without checked
                                 // apparently that was known as uncontrolled inputs - either always or never provide a value to checked. tbh, I didnt realise checked could be passed something, faim (at the time) it was just a flag you attached!
-                                checked={checkedScripts.includes(checkboxOption.script)}
+                                checked={checkedScripts.includes(checkboxOption.id)}
                             />
                             <label htmlFor={checkboxOption.id}>{checkboxOption.name}</label>
                         </div>
@@ -67,26 +67,37 @@ export default function PrefSelection() {
             <div className="border min-w-60 min-h-60">
                 Checked Scripts + respective copy btns
                 {/* {console.log({ checkedScripts })} */}
-                {checkedScripts.map((checkedScriptName) =>
-                    <div
-                        // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts
-                        className="flex" key={checkedScriptName}>
-                        <div>
-                            <input
-                                type="text"
-                                readOnly
-                                value={checkedScriptName}
-                            />
+                {checkedScripts.map((checkedScriptId) => {
+                    // find the entire object via id, to avoid always loading in the object (slow and redundant)
+                    const checkboxOptionObj = checkboxOptions.find(option => option.id === checkedScriptId);
+                    return (
+                        <div
+                            // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts
+                            className="flex" key={checkedScriptId}>
+                            <div>
+                                <input
+                                    type="text"
+                                    readOnly
+                                    // value={checkedScriptId}
+                                    value={checkboxOptionObj?.script}
+                                />
+                            </div>
+                            <button
+                                className="border border-red-600 cursor-pointer"
+                                type="button"
+                                // cant use ! here in case there's race conditions etc
+                                // onClick={() => navigator.clipboard.writeText(checkboxOptionObj!.script)}
+                                onClick={() => {
+                                    if (checkboxOptionObj?.script) {
+                                        navigator.clipboard.writeText(checkboxOptionObj?.script)
+                                    }
+                                }}
+                            >
+                                copy
+                            </button>
                         </div>
-                        <button
-                            className="border border-red-600 cursor-pointer"
-                            type="button"
-                            onClick={() => navigator.clipboard.writeText(checkedScriptName.toString())}
-                        >
-                            copy
-                        </button>
-                    </div>
-                )}
+                    );
+                })}
             </div>
         </div>
     );
