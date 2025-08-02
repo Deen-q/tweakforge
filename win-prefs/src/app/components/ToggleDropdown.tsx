@@ -14,7 +14,7 @@ export default function ToggleDropdown({ title, children }: ToggleDropdownProps)
         <div className="w-full">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 w-full text-left p-3 hover:bg-slate-400 transition-colors duration-200"
+                className="flex items-center pt-1 pb-1 gap-2 w-full hover:bg-slate-400 transition-colors duration-200"
             >
                 {/* <span className={`transform transition-transform ${isOpen ? 'rotate-90' : ''}`}>
                     ▶

@@ -8,37 +8,21 @@ export default function PrefSelection() {
     const [filteredCheckboxOptions, setFilteredCheckboxOptions] = useState<typeof checkboxOptions>(checkboxOptions);
     const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
 
-    // only used once in the code, inline maybe?
-    const handleSearchFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const targetValue = e.target.value
-        console.log(targetValue)
-        if (targetValue === "") {
-            setFilteredCheckboxOptions(checkboxOptions)
-        } else {
-            setFilteredCheckboxOptions(checkboxOptions.filter(option => option.id.includes(targetValue)))
-        }
-    }
-
-    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const targetName = e.target.name;
-        setCheckedScripts(prev => {
-            if (e.target.checked) {
-                return [...prev, targetName]
-            } else {
-                return prev.filter(option => option !== targetName)
-            }
-        });
-    };
-
     return (
-        <div className="flex">
+        <div className="flex justify-center items-center">
             <div className="border min-w-48 min-h-60">
                 <div className="border">
                     <input
                         type="text"
                         placeholder="search for features..."
-                        onChange={handleSearchFilter}
-                    // size={10}
+                        // onChange={handleSearchFilter}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            if (e.target.value === "") {
+                                setFilteredCheckboxOptions(checkboxOptions)
+                            } else {
+                                setFilteredCheckboxOptions(checkboxOptions.filter(option => option.id.includes(e.target.value)))
+                            }
+                        }}
                     />
                 </div>
 
@@ -46,16 +30,22 @@ export default function PrefSelection() {
                     <legend>Pick sum scriptz</legend>
                     {/* CREATING THE CHECKBOXES BASED ON ARRAY*/}
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
-                        // if checkedScripts contents .includes checboxOption, create a disabled checkbox?
                         // do not use index as key
                         <div key={checkboxOption.id}>
                             <input
                                 type="checkbox"
                                 id={checkboxOption.id}
-                                name={checkboxOption.id} // meeded for e.target.name !!!
-                                onChange={handleCheckboxChange}
-                                // react was upset that I swapped between this input with and without checked
-                                // apparently that was known as uncontrolled inputs - either always or never provide a value to checked. tbh, I didnt realise checked could be passed something, faim (at the time) it was just a flag you attached!
+                                name={checkboxOption.id} // needed for e.target.name !!!
+                                // onChange={handleCheckboxChange}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    setCheckedScripts(prev => {
+                                        if (e.target.checked) {
+                                            return [...prev, e.target.name]
+                                        } else {
+                                            return prev.filter(option => option !== e.target.name)
+                                        }
+                                    })
+                                }}
                                 checked={checkedScripts.includes(checkboxOption.id)}
                             />
                             <label htmlFor={checkboxOption.id}>{checkboxOption.name}</label>
@@ -72,21 +62,18 @@ export default function PrefSelection() {
                     const checkboxOptionObj = checkboxOptions.find(option => option.id === checkedScriptId);
                     return (
                         <div
-                            // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts
+                            // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts - probs replace this with an actual test
                             className="flex" key={checkedScriptId}>
                             <div>
                                 <input
                                     type="text"
                                     readOnly
-                                    // value={checkedScriptId}
                                     value={checkboxOptionObj?.script}
                                 />
                             </div>
                             <button
                                 className="border border-red-600 cursor-pointer"
                                 type="button"
-                                // cant use ! here in case there's race conditions etc
-                                // onClick={() => navigator.clipboard.writeText(checkboxOptionObj!.script)}
                                 onClick={() => {
                                     if (checkboxOptionObj?.script) {
                                         navigator.clipboard.writeText(checkboxOptionObj?.script)
