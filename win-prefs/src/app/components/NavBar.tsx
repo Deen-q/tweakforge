@@ -9,7 +9,7 @@ export default function NavBar() {
         >
             {/* <div className="min-w-28 flex flex-col h-screen justify-between"></div> */}
             <div className="flex flex-col justify-start">
-                <h3>WinPrefs</h3>
+                <h3>*App name pending*</h3>
             </div>
             <div className="flex flex-col justify-center">
                 <p>pick ur scriptz</p>

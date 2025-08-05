@@ -1,19 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+// import { useState } from 'react';
 
 interface ToggleDropdownProps {
     title: string;
     children: React.ReactNode;
+    // currentlyToggled: boolean;
+    id: string;
+    isOpen: boolean;
+    changeActiveDropdownId: (id: string) => void;
 }
 
-export default function ToggleDropdown({ title, children }: ToggleDropdownProps) {
-    const [isOpen, setIsOpen] = useState(false);
+export default function ToggleDropdown({
+    title,
+    children,
+    id,
+    changeActiveDropdownId,
+    isOpen
+}: ToggleDropdownProps) {
+    // const [isOpen, setIsOpen] = useState(false);
+    // how do I make all other toggles close when 1 is selected?
+    // focus on one that was open, and somehow set the rest to false
 
     return (
         <div className="w-full">
             <button
-                onClick={() => setIsOpen(!isOpen)}
+                // onClick={() => {
+                //     setIsOpen(!isOpen)
+                // }}
+                onClick={() => changeActiveDropdownId(id)}
                 className="flex items-center pt-1 pb-1 gap-2 w-full hover:bg-slate-400 transition-colors duration-200"
             >
                 {/* <span className={`transform transition-transform ${isOpen ? 'rotate-90' : ''}`}>
