@@ -13,6 +13,8 @@ export default function Home() {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
   }
 
+  const toggleDivDimensions = "max-h-48 overflow-y-auto pr-2"
+
   return (
     <div className="flex min-h-screen text-white">
       <aside className="bg-slate-800 p-4">
@@ -32,8 +34,9 @@ export default function Home() {
               // change id when something is clicked
               changeActiveDropdownId={changeActiveDropdownId}
             >
-              <p>scroll through or search for a script that appeals to you! perhaps there is a feature from a previous version of Windows? maybe there is a script to bring it back.</p>
-              <p>if you are unsure what each script does, hover over the title of the checkbox to see more</p>
+              <div className={toggleDivDimensions}>
+                <p>scroll through or search for a script that appeals to you! perhaps you miss a feature from a previous version of Windows? maybe there is a script to bring it back!</p>
+              </div>
             </ToggleDropdown>
 
             <ToggleDropdown
@@ -42,17 +45,33 @@ export default function Home() {
               isOpen={activeDropdownId === "dropdown-two"}
               changeActiveDropdownId={changeActiveDropdownId}
             >
-              <ol>
-                <p>Step 1: Open PowerShell as Administrator</p>
-                <li>1a) Press Windows key + R, and type `powershell` in the popup</li>
-                <li>1c) Press Ctrl + Shift + Enter (this opens as administrator)</li>
-                <li>1d) Click `Yes` when Windows asks for permission</li>
-                <p>Step 2: Run the Script</p>
-                <li>2a) go back to where the scripts are</li>
-                <li>2b) After checking the checkbox for the script you want, click the copy button</li>
-                <li>2c) Right-click in the PowerShell window and select `Paste`. press enter</li>
-                <li>2e) Wait for it to complete (you``ll see Windows Explorer restart)</li>
-              </ol>
+              <div className={toggleDivDimensions}>
+                <h4 className="underline font-semibold text-blue-300 mb-1">Step 1: Open PowerShell as Administrator</h4>
+                <ol className="list-decimal list-inside space-y-1 ml-4">
+                  <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs inline-flex items-center gap-1">
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351" />
+                    </svg>
+                    (Windows) + R
+                  </kbd>
+                  </li>
+                  <li>Type <code className="px-1 py-0.5 bg-slate-600 rounded text-xs">powershell</code> - don`t hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> yet.</li>
+                  <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Ctrl + Shift + Enter</kbd> (this opens as administrator)</li>
+                  <li>Click <strong>Yes</strong> when Windows asks for permission</li>
+                </ol>
+                <h4 className="underline font-semibold text-blue-300 mt-4 mb-1">Step 2: Run the Script</h4>
+                <ol className="list-decimal list-inside space-y-1 ml-4">
+                  <li>Minimise the window and go back to where the scripts are.</li>
+                  <li>Check the script you want, and a <strong>copy</strong> button will appear. Press <strong>copy</strong></li>
+                  <li>In the PowerShell window, <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">ctrl + v</kbd> or Right-click paste.</li>
+                  <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> to execute</li>
+                </ol>
+                <div className="bg-yellow-900/20 border border-yellow-500/30 rounded p-3 mt-4 mr-2 ml-2">
+                  <p className="text-yellow-200 text-sm">
+                    <span className="font-semibold">💡 Tip:</span> Some scripts may take a few seconds to complete. Don`t close PowerShell until you see the process finish.
+                  </p>
+                </div>
+              </div>
             </ToggleDropdown>
 
             <ToggleDropdown
@@ -61,7 +80,20 @@ export default function Home() {
               isOpen={activeDropdownId === "dropdown-three"}
               changeActiveDropdownId={changeActiveDropdownId}
             >
-              <p>dunno m8</p>
+              <div className={toggleDivDimensions}>
+                <p>dunno m8</p>
+              </div>
+            </ToggleDropdown>
+
+            <ToggleDropdown
+              title="help, how do I reverse the script I ran?"
+              id="dropdown-four"
+              isOpen={activeDropdownId === "dropdown-four"}
+              changeActiveDropdownId={changeActiveDropdownId}
+            >
+              <div className={toggleDivDimensions}>
+                <p>reverse scripts will be added soon</p>
+              </div>
             </ToggleDropdown>
           </div>
         </div>

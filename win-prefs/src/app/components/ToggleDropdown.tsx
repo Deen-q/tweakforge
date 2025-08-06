@@ -18,22 +18,13 @@ export default function ToggleDropdown({
     changeActiveDropdownId,
     isOpen
 }: ToggleDropdownProps) {
-    // const [isOpen, setIsOpen] = useState(false);
-    // how do I make all other toggles close when 1 is selected?
-    // focus on one that was open, and somehow set the rest to false
 
     return (
-        <div className="w-full">
+        <>
             <button
-                // onClick={() => {
-                //     setIsOpen(!isOpen)
-                // }}
                 onClick={() => changeActiveDropdownId(id)}
                 className="flex items-center pt-1 pb-1 gap-2 w-full hover:bg-slate-400 transition-colors duration-200"
             >
-                {/* <span className={`transform transition-transform ${isOpen ? 'rotate-90' : ''}`}>
-                    ▶
-                </span> */}
                 <svg
                     className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`}
                     fill="none"
@@ -50,10 +41,10 @@ export default function ToggleDropdown({
             <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
             >
-                <div className="p-3 pl-9 text-gray-400">
+                <div className="p-3 pl-6 text-gray-400">
                     {children}
                 </div>
             </div>
-        </div>
+        </>
     );
 }
