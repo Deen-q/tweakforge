@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* messing around with variables, thanks tailwind docs */
+/* @theme {
+  --text-tiny: 0.9rem;
+} */
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

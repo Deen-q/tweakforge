@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Share_Tech_Mono, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const shareTechMono = Share_Tech_Mono({
+  variable: "--font-share-tech-mono",
+  weight: "400",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ibmPlex = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -25,10 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        // default was className={`${shareTechMono.variable} etc, not sure why .className would work...
+        className={`${ibmPlex.className} ${shareTechMono.className}`}
       >
-        {/* children = the page dynamically at run time */}
-        {/* i.e., depends where user is, in the app */}
         {children}
       </body>
     </html>

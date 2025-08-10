@@ -21,6 +21,7 @@ export default function PrefSelection() {
         <div className="flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-2">
             <div className={`${prefSelectionDimensions}`}>
                 <div>
+
                     <input
                         type="text"
                         className="border m-1 p-1 w-68 bg-slate-700"
@@ -29,7 +30,8 @@ export default function PrefSelection() {
                             if (e.target.value === "") {
                                 setFilteredCheckboxOptions(checkboxOptions)
                             } else {
-                                setFilteredCheckboxOptions(checkboxOptions.filter(option => option.id.includes(e.target.value)))
+                                setFilteredCheckboxOptions(checkboxOptions.filter(option =>
+                                    option.name.toLowerCase().includes(e.target.value)))
                             }
                         }}
                     />
@@ -74,10 +76,11 @@ export default function PrefSelection() {
                                 type="text"
                                 readOnly
                                 value={checkboxOptionObj?.script}
-                                className="flex-1 border border-slate-800 bg-slate-200/40 text-slate-800 rounded p-1"
+                                className="min-w-0 flex-1 border border-slate-800 bg-slate-200/40 text-slate-800 rounded p-1"
+                                title={checkboxOptionObj?.name}
                             />
                             <button
-                                className="border bg-slate-700 cursor-pointer rounded p-1"
+                                className="border bg-slate-700 hover:bg-slate-700/10 cursor-pointer rounded p-1"
                                 type="button"
                                 onClick={() => {
                                     if (checkboxOptionObj?.script) {
@@ -86,6 +89,17 @@ export default function PrefSelection() {
                                 }}
                             >
                                 copy
+                            </button>
+                            <button
+                                className="border bg-slate-700 hover:bg-slate-700/10 cursor-pointer rounded p-1"
+                                type="button"
+                                onClick={() => {
+                                    if (checkboxOptionObj?.script) {
+                                        navigator.clipboard.writeText(checkboxOptionObj?.reverseScript)
+                                    }
+                                }}
+                            >
+                                reverse
                             </button>
                         </div>
                     );
