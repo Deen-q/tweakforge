@@ -31,6 +31,6 @@ const checkboxOptions = [
 
 export default checkboxOptions
 
-// wonder if it would be useful to make an API for this too?
+// wonder if it would be useful to make an API for this too? or put in db?
 // for the sake of user experience, the reverse script may be a duplicate script defined elsewhere?
 // or, perhaps reverse scripts should sit directly below it (order of checkboxOptions mattering)? what would be easier for the user?

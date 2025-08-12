@@ -35,7 +35,7 @@ export default function Home() {
               changeActiveDropdownId={changeActiveDropdownId}
             >
               <div className={toggleDivDimensions}>
-                <p>scroll through or search for a script that appeals to you! perhaps you miss a feature from a previous version of Windows? maybe there is a script to bring it back!</p>
+                <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back</p>
               </div>
             </ToggleDropdown>
 
@@ -55,7 +55,7 @@ export default function Home() {
                     (Windows) + R
                   </kbd>
                   </li>
-                  <li>Type <code className="px-1 py-0.5 bg-slate-600 rounded text-xs">powershell</code> - don`t hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> yet.</li>
+                  <li>Type <code className="px-1 py-0.5 bg-slate-600 rounded text-xs">powershell</code> - don`t hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> yet</li>
                   <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Ctrl + Shift + Enter</kbd> (this opens as administrator)</li>
                   <li>Click <strong>Yes</strong> when Windows asks for permission</li>
                 </ol>
@@ -64,7 +64,7 @@ export default function Home() {
                   <li>Minimise the window and go back to where the scripts are.</li>
                   <li>Check the script you want, and a <strong>copy</strong> button will appear. Press <strong>copy</strong></li>
                   <li>In the PowerShell window, <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">ctrl + v</kbd> or Right-click paste.</li>
-                  <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> to execute</li>
+                  <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> to execute.</li> congrats, you just ran a script :D
                 </ol>
                 <div className="bg-yellow-900/20 border border-yellow-500/30 rounded p-3 mt-4 mr-2 ml-2">
                   <p className="text-yellow-200 text-sm">
@@ -92,7 +92,7 @@ export default function Home() {
               changeActiveDropdownId={changeActiveDropdownId}
             >
               <div className={toggleDivDimensions}>
-                <p>reverse scripts will be added soon</p>
+                <p>each checked script has a reverse script. use the <strong>copy (reverse)</strong> button, directly next to the <strong>copy</strong> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd>!</p>
               </div>
             </ToggleDropdown>
           </div>
