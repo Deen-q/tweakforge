@@ -32,7 +32,8 @@ export default function PrefSelection() {
                     />
                 </div>
                 <fieldset>
-                    <legend>Pick sum scriptz</legend>
+                    {/* text-cneter doesnt seem to work on <legend/> */}
+                    <legend><h4 className="text-center"><strong>Select your scripts:</strong></h4></legend>
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
                         <div key={checkboxOption.id}>
                             <input
@@ -57,60 +58,72 @@ export default function PrefSelection() {
 
             </div>
             <div className={`${prefSelectionDimensions} border-l pl-1`}>
-                <h4 className="text-center">Checked Scripts</h4>
-
-                {checkedScripts.map((checkedScriptId) => { // <- an array of Ids
-                    const checkboxOptionObj = checkboxOptions.find(option => option.id === checkedScriptId); // <- find entire obj via id
-                    // alert(checkedScriptId)
-                    return (
-                        <div
-                            // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts - probs replace this with an actual test
-                            className="flex p-1" key={checkedScriptId}>
-                            <input
-                                type="text"
-                                readOnly
-                                value={checkboxOptionObj?.script}
-                                className="min-w-0 flex-1 border border-slate-800 bg-slate-200/40 text-slate-800 rounded p-1"
-                                title={checkboxOptionObj?.name}
-                            />
-                            <button
-                                className={`border max-w-[3-rem] cursor-pointer rounded p-1
+                <h4 className="text-center"><strong>Checked Scripts:</strong></h4>
+                {checkedScripts.length !== 0 ?
+                    checkedScripts.map((checkedScriptId) => { // <- an array of Ids
+                        const checkboxOptionObj = checkboxOptions.find(option => option.id === checkedScriptId); // <- find entire obj via id
+                        // alert(checkedScriptId)
+                        return (
+                            <div
+                                // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts - probs replace this with an actual test
+                                className="flex p-1" key={checkedScriptId}>
+                                <input
+                                    type="text"
+                                    readOnly
+                                    value={checkboxOptionObj?.script}
+                                    className="min-w-0 flex-1 border border-slate-800 bg-slate-200/40 text-slate-800 rounded p-1"
+                                    title={checkboxOptionObj?.name}
+                                />
+                                <button
+                                    className={`border max-w-[3-rem] cursor-pointer rounded p-1
                                 ${checkedScriptId === copyClickedId ?
-                                        "bg-green-700 hover:bg-green-600"
-                                        : "bg-slate-700 hover:bg-slate-700/10"}
+                                            "diagonal-stripes"
+                                            : "bg-slate-700 hover:bg-slate-700/10"}
                                 `}
-                                type="button"
-                                onClick={() => {
-                                    if (checkboxOptionObj?.script) {
-                                        navigator.clipboard.writeText(checkboxOptionObj?.script)
+                                    type="button"
+                                    onClick={() => {
+                                        if (checkboxOptionObj?.script) {
+                                            navigator.clipboard.writeText(checkboxOptionObj?.script)
+                                        }
+                                        setCopyClickedId(checkedScriptId)
+                                        setTimeout(() => setCopyClickedId(""), 1000);
                                     }
-                                    setCopyClickedId(checkedScriptId)
-                                    setTimeout(() => setCopyClickedId(""), 1000);
-                                }
-                                }
-                            >
-                                copy
-                            </button>
-                            <button
-                                className={`border max-w-[3-rem] cursor-pointer rounded p-1
+                                    }
+                                >
+                                    <p
+                                        className="text-[12px] text-wrap whitespace-pre-line"
+                                        title={checkboxOptionObj?.description}
+                                    >
+                                        {"copy"}
+                                    </p>
+                                </button>
+                                <button
+                                    className={`border max-w-[3-rem] cursor-pointer rounded p-1
                                 ${checkedScriptId === RevCopyClickedId ?
-                                        "bg-red-700 hover:bg-red-600"
-                                        : "bg-slate-700 hover:bg-slate-700/10"}
+                                            "rev-diagonal-stripes"
+                                            : "bg-slate-700 hover:bg-slate-700/10"}
                                 `}
-                                type="button"
-                                onClick={() => {
-                                    if (checkboxOptionObj?.reverseScript) {
-                                        navigator.clipboard.writeText(checkboxOptionObj?.reverseScript)
-                                    }
-                                    setRevCopyClickedId(checkedScriptId)
-                                    setTimeout(() => setRevCopyClickedId(""), 1000);
-                                }}
-                            >
-                                <p className="text-[12px] text-wrap whitespace-pre-line">{"copy\n(reverse)"}</p>
-                            </button>
-                        </div>
-                    );
-                })}
+                                    type="button"
+                                    onClick={() => {
+                                        if (checkboxOptionObj?.reverseScript) {
+                                            navigator.clipboard.writeText(checkboxOptionObj?.reverseScript)
+                                        }
+                                        setRevCopyClickedId(checkedScriptId)
+                                        setTimeout(() => setRevCopyClickedId(""), 1000);
+                                    }}
+                                >
+                                    <p className="text-[12px] text-wrap whitespace-pre-line">
+                                        {"copy\n(reverse)"}
+                                    </p>
+                                </button>
+                            </div>
+                        );
+                    })
+                    :
+                    <div className="flex items-center justify-center h-full pb-6">
+                        <h4><strong>No scripts selected</strong></h4>
+                    </div>
+                }
             </div>
         </div>
     );

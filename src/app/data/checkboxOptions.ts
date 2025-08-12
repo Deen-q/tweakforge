@@ -5,28 +5,31 @@ $process = Get-Process -Name "explorer"
 Stop-Process -InputObject $process
 `
 
+const disableCopilot = `
+Write-Host "Remove Copilot"
+dism /online /remove-package /package-name:Microsoft.Windows.Copilot
+`
+
+const enableCopilot = `
+Write-Host "Install Copilot"
+dism /online /add-package /package-name:Microsoft.Windows.Copilot
+`
+
 const checkboxOptions = [
-    {
-        id: "addCopilot",
-        name: "Add Copilot",
-        script: "*Add Copilot Script*",
-        reverseScript: "*reverse Script*",
-        description: "This will add copilot!"
-    },
-    {
-        id: "removeCopilot",
-        name: "Remove Copilot",
-        script: "*Remove Copilot Script*",
-        reverseScript: "*reverse Script*",
-        description: "This will remove copilot!"
-    },
     {
         id: "restoreRightClickMenu",
         name: "Restore Classic Right-click Menu",
         script: classicRightClickScript,
         reverseScript: "*reverse Script*",
-        description: "..."
-    }
+        description: "Returns the original right click menu when in file explorer"
+    },
+    {
+        id: "disableCopilot",
+        name: "Disable Copilot",
+        script: disableCopilot,
+        reverseScript: enableCopilot,
+        description: "Disables Copilot. The reverse script will re-enable it."
+    },
 ]
 
 export default checkboxOptions
