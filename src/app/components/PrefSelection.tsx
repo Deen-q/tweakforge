@@ -7,27 +7,12 @@ export default function PrefSelection() {
     // checkboxOptions = source of truth
     const [filteredCheckboxOptions, setFilteredCheckboxOptions] = useState<typeof checkboxOptions>(checkboxOptions);
     const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
-    // const [copyIsClicked, setCopyIsClicked] = useState<boolean>(false); // <- part of the old solution
     const [copyClickedId, setCopyClickedId] = useState<string>("");
+    const [RevCopyClickedId, setRevCopyClickedId] = useState<string>("");
+
+    // need a simple way to v briefly explain what a script does
 
     const prefSelectionDimensions = "flex-1 w-72 h-72"
-
-    /*
-    * need a simple way to v briefly explain what a script does
-    * either a mini modal appears briefly, or a question mark button per script to trigger a modal
-    * where to add the option for a reverse script hmmm
-    */
-
-    // as with toggle dropdown:
-    /*
-        * END GOAL: isOpen is true if activeId === id of button
-        * --> onClick sets the id of clicked button to activeId
-        * 
-    */
-    // const handleCopyClick = () => { // <- old idea to improve the copyIsClicked issue (all copy buttons lighting up at the same time)
-
-    // }
-
     return (
         <div className="flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-2">
             <div className={`${prefSelectionDimensions}`}>
@@ -48,7 +33,6 @@ export default function PrefSelection() {
                 </div>
                 <fieldset>
                     <legend>Pick sum scriptz</legend>
-                    {/* CREATING THE CHECKBOXES BASED ON ARRAY*/}
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
                         <div key={checkboxOption.id}>
                             <input
@@ -61,7 +45,6 @@ export default function PrefSelection() {
                                             return [...prev, e.target.name]
                                         } else /*has been unchecked*/ {
                                             return prev.filter(option => option !== e.target.name)
-                                            // remember, .filter(): if true = keep, if false = remove
                                         }
                                     })
                                 }}
@@ -93,23 +76,14 @@ export default function PrefSelection() {
                             <button
                                 className={`border max-w-[3-rem] cursor-pointer rounded p-1
                                 ${checkedScriptId === copyClickedId ?
-                                        "border max-w-[3-rem] bg-green-700 hover:bg-green-600"
-                                        : "border max-w-[3-rem] bg-slate-700 hover:bg-slate-700/10"}
+                                        "bg-green-700 hover:bg-green-600"
+                                        : "bg-slate-700 hover:bg-slate-700/10"}
                                 `}
                                 type="button"
                                 onClick={() => {
                                     if (checkboxOptionObj?.script) {
                                         navigator.clipboard.writeText(checkboxOptionObj?.script)
                                     }
-                                    // old solution, below:
-                                    // setCopyIsClicked(true);
-                                    // setTimeout(() => setCopyIsClicked(false), 1000);
-
-                                    // new plan:
-                                    /**
-                                     * checkedScripts, a string[] -> can we use id to be able to mark which copy button has been clicked?
-                                     * then, directly set which copy button should light up based on copyClickedId state
-                                     */
                                     setCopyClickedId(checkedScriptId)
                                     setTimeout(() => setCopyClickedId(""), 1000);
                                 }
@@ -118,12 +92,18 @@ export default function PrefSelection() {
                                 copy
                             </button>
                             <button
-                                className="border max-w-[3-rem] bg-slate-700 hover:bg-slate-700/10 cursor-pointer rounded p-1"
+                                className={`border max-w-[3-rem] cursor-pointer rounded p-1
+                                ${checkedScriptId === RevCopyClickedId ?
+                                        "bg-red-700 hover:bg-red-600"
+                                        : "bg-slate-700 hover:bg-slate-700/10"}
+                                `}
                                 type="button"
                                 onClick={() => {
-                                    if (checkboxOptionObj?.script) {
+                                    if (checkboxOptionObj?.reverseScript) {
                                         navigator.clipboard.writeText(checkboxOptionObj?.reverseScript)
                                     }
+                                    setRevCopyClickedId(checkedScriptId)
+                                    setTimeout(() => setRevCopyClickedId(""), 1000);
                                 }}
                             >
                                 <p className="text-[12px] text-wrap whitespace-pre-line">{"copy\n(reverse)"}</p>
