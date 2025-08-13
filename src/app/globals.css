@@ -1,25 +1,5 @@
+/* tailwind v4 btw */
 @import "tailwindcss";
-
-/* messing around with variables, thanks tailwind docs */
-/* @theme {
-  --text-tiny: 0.9rem;
-} */
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
 
 /* Hopefully this complies with accessibility */
 .diagonal-stripes {
@@ -36,4 +16,36 @@ body {
       #435b79 5px,
       #1d293d 5px,
       #1d293d 10px);
+}
+
+@keyframes slide {
+  0% {
+    opacity: 0;
+    transform: translateX(3px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes undo-slide {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-3px);
+  }
+}
+
+.animate-slide {
+  animation: slide 0.6s ease-out forwards;
+}
+
+.animate-undo-slide {
+  animation: slide 0.9s ease-out reverse forwards;
 }

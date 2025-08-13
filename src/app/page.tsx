@@ -6,7 +6,6 @@ import PrefSelection from "./components/PrefSelection";
 import ToggleDropdown from "./components/ToggleDropdown";
 
 export default function Home() {
-  // const [currentlyToggled, setCurrentlyToggled] = useState(false);
   const [activeDropdownId, setActiveDropdownId] = useState("")
 
   const changeActiveDropdownId = (dropdownId: string) => {
@@ -87,23 +86,22 @@ export default function Home() {
               </ToggleDropdown>
 
               <ToggleDropdown
-                title="help, how do I reverse the script I ran?"
+                title="help, how do I reverse/undo the script I ran?"
                 id="dropdown-four"
                 isOpen={activeDropdownId === "dropdown-four"}
                 changeActiveDropdownId={changeActiveDropdownId}
               >
                 <div className={toggleDivDimensions}>
-                  <p>each checked script has a reverse script. use the <strong>copy (reverse)</strong> button, directly next to the <strong>copy</strong> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd>!</p>
+                  <p>each checked script has a reverse/undo script. use the <strong>copy (undo)</strong> button, directly next to the <strong>copy</strong> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd>!</p>
                 </div>
               </ToggleDropdown>
             </div>
           </div>
         </main>
         <footer className="text-center pb-1">
-          all scripts are property of Microsoft
+          all scripts are property of Microsoft. WinForge is not responsible for improper script usage - be sensible my friends
         </footer>
       </div>
-      {/* Need to add a footer that says "All scripts are property of Microsoft, I merely made an app to guide users on how to use said scripts." */}
     </div>
   );
 }

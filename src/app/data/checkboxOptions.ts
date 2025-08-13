@@ -20,15 +20,17 @@ const checkboxOptions = [
         id: "restoreRightClickMenu",
         name: "Restore Classic Right-click Menu",
         script: classicRightClickScript,
-        reverseScript: "*reverse Script*",
-        description: "Returns the original right click menu when in file explorer"
+        undoScript: "*reverse Script*",
+        description: "Returns the original right click menu when in file explorer",
+        undoDescription: "Returns the original right click menu when in file explorer"
     },
     {
         id: "disableCopilot",
         name: "Disable Copilot",
         script: disableCopilot,
-        reverseScript: enableCopilot,
-        description: "Disables Copilot. The reverse script will re-enable it."
+        undoScript: enableCopilot,
+        description: "Disables Copilot. The reverse script will re-enable it",
+        undoDescription: "This reverse script will re-enable it"
     },
 ]
 
