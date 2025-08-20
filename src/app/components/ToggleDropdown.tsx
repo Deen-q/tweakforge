@@ -1,11 +1,8 @@
 'use client';
 
-// import { useState } from 'react';
-
 interface ToggleDropdownProps {
     title: string;
     children: React.ReactNode;
-    // currentlyToggled: boolean;
     id: string;
     isOpen: boolean;
     changeActiveDropdownId: (id: string) => void;

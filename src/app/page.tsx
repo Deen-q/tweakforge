@@ -99,7 +99,7 @@ export default function Home() {
           </div>
         </main>
         <footer className="text-center pb-1">
-          all scripts are property of Microsoft. WinForge is not responsible for improper script usage - be sensible my friends
+          all scripts are property of Microsoft. by continuing, you agree WinForge is not responsible for improper script usage
         </footer>
       </div>
     </div>

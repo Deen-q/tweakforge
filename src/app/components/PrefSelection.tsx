@@ -9,17 +9,8 @@ export default function PrefSelection() {
     const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
     const [copyClickedId, setCopyClickedId] = useState<string>("");
     const [RevCopyClickedId, setRevCopyClickedId] = useState<string>("");
-    // const [fadeAnim, setFadeAnim] = useState<string>("");
 
     // need a simple way to v briefly explain what a script does
-
-    // const determineFadeAnim = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     if (e.target.checked) {
-    //         setFadeAnim("animate-slide")
-    //     } else {
-    //         setFadeAnim("animate-undo-slide")
-    //     }
-    // }
 
     const prefSelectionDimensions = "flex-1 w-72 h-72"
     return (
@@ -87,12 +78,9 @@ export default function PrefSelection() {
                                         className="min-w-0 flex-1 border border-slate-800 bg-slate-200/40 text-slate-800 rounded p-1"
                                         title={checkboxOptionObj?.name}
                                     />
-                                    <button
-                                        className={`border max-w-[3-rem] cursor-pointer rounded p-1
-                                ${checkedScriptId === copyClickedId ?
-                                                "diagonal-stripes"
-                                                : "bg-slate-700 hover:bg-slate-700/10"}
-                                `}
+                                    <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === copyClickedId ?
+                                        "diagonal-stripes"
+                                        : "bg-slate-700 hover:bg-slate-700/10"}`}
                                         type="button"
                                         onClick={() => {
                                             if (checkboxOptionObj?.script) {
@@ -100,22 +88,15 @@ export default function PrefSelection() {
                                             }
                                             setCopyClickedId(checkedScriptId)
                                             setTimeout(() => setCopyClickedId(""), 1000);
-                                        }
-                                        }
+                                        }}
                                     >
-                                        <p
-                                            className="text-[12px] text-wrap whitespace-pre-line"
-                                            title={checkboxOptionObj?.description}
-                                        >
+                                        <p className="text-[12px] text-wrap whitespace-pre-line" title={checkboxOptionObj?.description}>
                                             copy
                                         </p>
                                     </button>
-                                    <button
-                                        className={`border max-w-[3-rem] cursor-pointer rounded p-1
-                                ${checkedScriptId === RevCopyClickedId ?
-                                                "rev-diagonal-stripes"
-                                                : "bg-slate-700 hover:bg-slate-700/10"}
-                                `}
+                                    <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === RevCopyClickedId ?
+                                        "rev-diagonal-stripes"
+                                        : "bg-slate-700 hover:bg-slate-700/10"}`}
                                         type="button"
                                         onClick={() => {
                                             if (checkboxOptionObj?.undoScript) {
@@ -125,7 +106,7 @@ export default function PrefSelection() {
                                             setTimeout(() => setRevCopyClickedId(""), 1000);
                                         }}
                                     >
-                                        <p className="text-[12px] text-wrap whitespace-pre-line">
+                                        <p className="text-[12px] text-wrap whitespace-pre-line" title={checkboxOptionObj?.undoDescription}>
                                             {"copy\n(undo)"}
                                         </p>
                                     </button>

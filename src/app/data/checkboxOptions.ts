@@ -5,6 +5,19 @@ $process = Get-Process -Name "explorer"
 Stop-Process -InputObject $process
 `
 
+const undoClassicRightClickScript = `
+# Remove the registry entry that was created
+Remove-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Recurse -Force -ErrorAction SilentlyContinue
+
+Write-Host "Restarting explorer.exe ..."
+$process = Get-Process -Name "explorer" -ErrorAction SilentlyContinue
+if ($process) {
+    Stop-Process -InputObject $process
+}
+
+Write-Host "Registry changes have been reverted."
+`
+
 const disableCopilot = `
 Write-Host "Remove Copilot"
 dism /online /remove-package /package-name:Microsoft.Windows.Copilot
@@ -20,9 +33,9 @@ const checkboxOptions = [
         id: "restoreRightClickMenu",
         name: "Restore Classic Right-click Menu",
         script: classicRightClickScript,
-        undoScript: "*reverse Script*",
-        description: "Returns the original right click menu when in file explorer",
-        undoDescription: "Returns the original right click menu when in file explorer"
+        undoScript: undoClassicRightClickScript,
+        description: "Returns the original right-click menu when in file explorer",
+        undoDescription: "Back to default: Windows 11 right-click menu"
     },
     {
         id: "disableCopilot",
