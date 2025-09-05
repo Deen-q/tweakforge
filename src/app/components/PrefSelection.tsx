@@ -14,7 +14,7 @@ export default function PrefSelection() {
 
     const prefSelectionDimensions = "flex-1 w-72 h-72"
     return (
-        <div className="flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-2">
+        <div className="flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-4 gap-4">
             <div className={`${prefSelectionDimensions}`}>
                 <div>
                     <input
@@ -33,9 +33,9 @@ export default function PrefSelection() {
                 </div>
                 <fieldset>
                     {/* text-cneter doesnt seem to work on <legend/> */}
-                    <legend><h4 className="text-center"><strong>Select your scripts:</strong></h4></legend>
+                    <legend><h4 className="text-center pt-2 pl-2"><strong>Select your scripts:</strong></h4></legend>
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
-                        <div key={checkboxOption.id}>
+                        <div className="pt-2 pl-3" key={checkboxOption.id}>
                             <input
                                 type="checkbox"
                                 id={checkboxOption.id}
@@ -54,11 +54,14 @@ export default function PrefSelection() {
                             <label htmlFor={checkboxOption.id} className="p-1">{checkboxOption.name}</label>
                         </div>
                     )}
+                    <div className="flex items-center justify-center h-full p-4">
+                        <h4><strong>More scripts to come!</strong></h4>
+                    </div>
                 </fieldset>
 
             </div>
             <div className={`${prefSelectionDimensions} border-l pl-1`}>
-                <h4 className="text-center"><strong>Checked Scripts:</strong></h4>
+                <h4 className="text-center pt-2"><strong>Checked Scripts:</strong></h4>
                 {
                     checkedScripts.length == 0 ?
                         <div className="flex items-center justify-center h-full pb-6">

@@ -99,7 +99,7 @@ export default function Home() {
           </div>
         </main>
         <footer className="text-center pb-1">
-          all scripts are property of Microsoft. by continuing, you agree Tweak Forge is not responsible for improper script usage
+          all scripts are property of Microsoft. by continuing, you agree TweakForge is not responsible for improper script usage
         </footer>
       </div>
     </div>
