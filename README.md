@@ -1,3 +1,21 @@
+# Welcome
+Checkout TweakForge at https://tweakforge.tools/
+
+## About
+- An easy way to set up a PC, especially after a clean install of Windows. There's no account to make, just hop onto the site and you're good to go
+- A highly accessible (e.g., the app can be used with only a keyboard if needed) and beginner friendly app, aimed to help people of any skill/ability level become more comfortable with basic scripting
+- No ads or invasion of privacy - just core functionality
+- The app is in active development - new features and scripts on route!
+
+## Currently in progress:
+- Set up basic pipeline
+- Add more scripts
+- Improve UX (stop selection box from jumping on toggle click, and potentially add a extra section to expand the entire script)
+- Add about page
+- Add in depth break-down for 1 of the scripts (restore classic right-click menu)
+
+Suggestions are always welcome :)
+
 ## How to test locally
 Assuming Docker Desktop is installed:
 
@@ -7,16 +25,6 @@ Assuming Docker Desktop is installed:
 4) Go to http://localhost:3000 in your browser
 5) Stop the container when finished: docker stop tweakforge
 6) Optional: docker rm tweakforge
-
-
-# Currently in progress:
-- Set up basic pipeline
-- Add more scripts
-- Improve UX (stop selection box from jumping on toggle click, and potentially add a extra section to expand the entire script)
-- Add about page
-- Add in depth break-down for 1 of the scripts (restore classic right-click menu)
-
-Suggestions are always welcome :)
 
 ## How I test scripts (before merging main):
 I use disposable Hyper-V Windows VMs, and by this I mean:

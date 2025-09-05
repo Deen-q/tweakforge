@@ -36,7 +36,7 @@ export default function ToggleDropdown({
             </button>
             {/* overflow-hidden container = clip anything taller than its height */}
             <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}
             >
                 <div className="p-3 pl-6 text-gray-400">
                     {children}

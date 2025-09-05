@@ -3,3 +3,5 @@
 - have a reverse script option - probably make that a copy button next to the copy button
 - scroll on script features
 - implement suitable client vs server components
+
+- about page: talk about respect for accessibility, e.g., you can use the app with just a keyboard!
