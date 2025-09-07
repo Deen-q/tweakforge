@@ -23,6 +23,8 @@ export default function Home() {
       </aside>
       <div className="flex flex-col flex-1 bg-slate-700">
         <a href="https://github.com/Deen-q/tweakforge" className="absolute top-4 right-4" >
+
+          {/* make github image larger on hover <<<< */}
           <Image
             className="cursor-pointer"
             src={githubIcon}

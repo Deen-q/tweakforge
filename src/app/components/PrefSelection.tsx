@@ -61,7 +61,7 @@ export default function PrefSelection() {
 
             </div>
             <div className={`${prefSelectionDimensions} border-l`}>
-                <h4 className="text-center pt-2 pb-1"><strong>Checked Scripts:</strong></h4>
+                <h4 className="text-center pt-2 pb-2"><strong>Checked Scripts:</strong></h4>
                 {
                     checkedScripts.length == 0 ?
                         <div className="flex items-center justify-center h-full max-h-64">
@@ -78,7 +78,7 @@ export default function PrefSelection() {
                                         type="text"
                                         readOnly
                                         value={checkboxOptionObj?.script}
-                                        className="min-w-0 flex-1 border border-slate-800 bg-slate-200/40 text-slate-800 rounded p-2"
+                                        className="min-w-0 flex-1 border text-xs border-slate-800 bg-slate-200/40 text-slate-800 rounded p-2"
                                         title={checkboxOptionObj?.name}
                                     />
                                     <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === copyClickedId ?
