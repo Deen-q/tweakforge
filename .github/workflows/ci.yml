@@ -1,6 +1,6 @@
 name: CI/CD Pipeline
 
-# Trigger the workflow on pull requests and pushes to main
+# Trigger the workflow on pull requests and manual dispatch
 on:
   pull_request:
     branches: [ main ]

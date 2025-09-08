@@ -4,7 +4,7 @@
 
 export default function NavBar() {
     return (
-        <div className="min-w-28 flex flex-col h-full justify-between"
+        <div className="flex flex-col h-full justify-between"
             title="currently dummy links"
         >
             {/* <div className="min-w-28 flex flex-col h-screen justify-between"></div> */}
@@ -17,7 +17,7 @@ export default function NavBar() {
             <div className="flex flex-col justify-end">
                 <p>about</p>
                 <p>settings</p>
-                <p>donate ( ͡° ͜ʖ ͡°)</p>
+                <p>donate <br />( ͡° ͜ʖ ͡°)</p>
             </div>
         </div>
     );

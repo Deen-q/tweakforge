@@ -14,10 +14,11 @@ export default function Home() {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
   }
 
-  const toggleDivDimensions = "max-h-48 overflow-y-auto pr-2"
+  // const toggleDivDimensions = "max-h-48 overflow-y-auto pr-2"
+  const toggleDivDimensions = ""
 
   return (
-    <div className="flex min-h-screen text-white">
+    <div className="flex min-h-screen text-white text-xs md:text-base">
       <aside className="bg-slate-800 p-4">
         <NavBar />
       </aside>
@@ -26,11 +27,11 @@ export default function Home() {
 
           {/* make github image larger on hover <<<< */}
           <Image
-            className="cursor-pointer"
+            className="cursor-pointer w-14 md:w-24"
             src={githubIcon}
             alt=""
             title="GitHub icon by Icons8"
-            height={100}
+          // height={100}
           // <a target="_blank" href="https://icons8.com/icon/80462/github">GitHub</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
           />
         </a>
@@ -40,7 +41,8 @@ export default function Home() {
             <div className="flex flex-col items-center max-w-[30rem]">
               <p>not sure where to start? check out the dropdown menus, below :)</p>
 
-              <div className="max-h-32">
+              {/* <div className="max-h-32"> */}
+              <div className="sm:h-20">
                 <ToggleDropdown
                   title="how do I use this app?"
                   id="dropdown-one"
@@ -61,7 +63,7 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div className={toggleDivDimensions}>
-                    <h4 className="underline font-semibold text-blue-300 mb-1">Step 1: Open PowerShell as Administrator</h4>
+                    <p className="underline font-semibold text-blue-300 mb-1">Step 1: Open PowerShell as Administrator</p>
                     <ol className="list-decimal list-inside space-y-1 ml-4">
                       <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs inline-flex items-center gap-1">
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">

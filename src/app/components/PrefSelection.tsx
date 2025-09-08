@@ -12,14 +12,14 @@ export default function PrefSelection() {
 
     // need a simple way to v briefly explain what a script does
 
-    const prefSelectionDimensions = "flex-1 w-72 h-72"
+    const prefSelectionDimensions = "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
     return (
         <div className="flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-4">
             <div className={`${prefSelectionDimensions}`}>
                 <div className="">
                     <input
                         type="text"
-                        className="border min-w-65 w-auto bg-slate-700 p-1.5"
+                        className="border w-auto bg-slate-700 p-1.5"
                         placeholder="search for features..."
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             if (e.target.value === "") {
