@@ -53,6 +53,8 @@ Write-Host "✓ Done! Windows 11 new context menu should now be active." -Foregr
 // dism /online /add-package /package-name:Microsoft.Windows.Copilot
 // `
 
+/* DEFINITELY NEED A FIX WINDOWS SEARCH/REMOVE BING SEARCH SCRIPT!!!!!!! */
+
 const checkboxOptions = [
     {
         id: "restoreRightClickMenu",

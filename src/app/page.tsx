@@ -6,23 +6,39 @@ import PrefSelection from "./components/PrefSelection";
 import ToggleDropdown from "./components/ToggleDropdown";
 import githubIcon from "../app/assets/icons8-github.svg"
 import Image from "next/image";
+import ViewScriptModal from "./components/ViewScriptModal";
 
 export default function Home() {
-  const [activeDropdownId, setActiveDropdownId] = useState("")
+  const [activeDropdownId, setActiveDropdownId] = useState("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [modalScript, setModalScript] = useState<string | undefined>();
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
   }
 
   // const toggleDivDimensions = "max-h-48 overflow-y-auto pr-2"
-  const toggleDivDimensions = ""
+  const toggleDivDimensions = "" // revisit this
+  const prefSelectionDimensions = "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
+  // const ViewScriptModalDimensions = "w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
 
   return (
-    <div className="flex min-h-screen text-white text-xs md:text-base">
+    // overflow-hidden to prevent global scrolling glitch -> ALL CONTENT IS STILL REACHABLE
+    <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
       <aside className="bg-slate-800 p-4">
         <NavBar />
       </aside>
+
       <div className="flex flex-col flex-1 bg-slate-700">
+
+        {/* {showModal && <ViewScriptModal ViewScriptModalDimensions={ViewScriptModalDimensions} />} */}
+        {showModal &&
+          <ViewScriptModal
+            setShowModal={setShowModal}
+            modalScript={modalScript}
+          />
+        }
+
         <a href="https://github.com/Deen-q/tweakforge" className="absolute top-4 right-4" >
 
           {/* make github image larger on hover <<<< */}
@@ -37,7 +53,13 @@ export default function Home() {
         </a>
         <main className="flex flex-1 flex-col justify-center items-center bg-slate-700 p-6">
           <div className="flex flex-col items-center space-y-2">
-            <PrefSelection />
+
+            <PrefSelection
+              setShowModal={setShowModal}
+              prefSelectionDimensions={prefSelectionDimensions}
+              setModalScript={setModalScript}
+            />
+
             <div className="flex flex-col items-center max-w-[30rem]">
               <p>not sure where to start? check out the dropdown menus, below :)</p>
 

@@ -2,9 +2,14 @@
 // for another time...
 'use client';
 
+
+// FOR NOW, HIDE THIS ON SMALL SCREENS?
+/// THEN, IMPLEMENT A NEW TYPE OF NAVBAR FOR VERY SMALL SCREENS (phones)
+//// even if theres no reason to view TF on mobile, it still makes the app looks janky and unprofessional
+
 export default function NavBar() {
     return (
-        <div className="flex flex-col h-full justify-between"
+        <div className="flex flex-col h-full justify-between w-24"
             title="currently dummy links"
         >
             {/* <div className="min-w-28 flex flex-col h-screen justify-between"></div> */}
