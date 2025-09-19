@@ -12,7 +12,6 @@ export default function NavBar() {
         <div className="flex flex-col h-full justify-between w-24"
             title="currently dummy links"
         >
-            {/* <div className="min-w-28 flex flex-col h-screen justify-between"></div> */}
             <div className="flex flex-col justify-start">
                 <h1>TweakForge</h1>
             </div>

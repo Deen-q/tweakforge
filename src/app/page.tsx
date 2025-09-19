@@ -7,35 +7,34 @@ import ToggleDropdown from "./components/ToggleDropdown";
 import githubIcon from "../app/assets/icons8-github.svg"
 import Image from "next/image";
 import ViewScriptModal from "./components/ViewScriptModal";
+import { checkboxOption } from "./data/checkboxOptions";
+// import { UndoIcon } from "./components/icons";
 
 export default function Home() {
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalScript, setModalScript] = useState<string | undefined>();
+  const [modalObject, setModalObject] = useState<checkboxOption | null>(null);
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
   }
 
-  // const toggleDivDimensions = "max-h-48 overflow-y-auto pr-2"
   const toggleDivDimensions = "" // revisit this
   const prefSelectionDimensions = "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
-  // const ViewScriptModalDimensions = "w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
 
   return (
-    // overflow-hidden to prevent global scrolling glitch -> ALL CONTENT IS STILL REACHABLE
+    // overflow-hidden to prevent global scrolling glitch; all conbtent is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
-      <aside className="bg-slate-800 p-4">
+      <aside className="bg-slate-800 p-4 hidden sm:block"> {/* >>> hidden content is not ideal - fix later!*/}
         <NavBar />
       </aside>
 
       <div className="flex flex-col flex-1 bg-slate-700">
 
-        {/* {showModal && <ViewScriptModal ViewScriptModalDimensions={ViewScriptModalDimensions} />} */}
-        {showModal &&
+        {showModal && modalObject && // cannot accidently show empty modals now
           <ViewScriptModal
             setShowModal={setShowModal}
-            modalScript={modalScript}
+            modalObject={modalObject}
           />
         }
 
@@ -47,7 +46,6 @@ export default function Home() {
             src={githubIcon}
             alt=""
             title="GitHub icon by Icons8"
-          // height={100}
           // <a target="_blank" href="https://icons8.com/icon/80462/github">GitHub</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
           />
         </a>
@@ -57,26 +55,35 @@ export default function Home() {
             <PrefSelection
               setShowModal={setShowModal}
               prefSelectionDimensions={prefSelectionDimensions}
-              setModalScript={setModalScript}
+              setModalObject={setModalObject}
             />
 
             <div className="flex flex-col items-center max-w-[30rem]">
               <p>not sure where to start? check out the dropdown menus, below :)</p>
 
-              {/* <div className="max-h-32"> */}
               <div className="sm:h-20">
                 <ToggleDropdown
                   title="how do I use this app?"
                   id="dropdown-one"
-                  // when would it be open?
                   isOpen={activeDropdownId === "dropdown-one"}
-                  // change id when something is clicked
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div className={toggleDivDimensions}>
                     <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back</p>
                   </div>
                 </ToggleDropdown>
+
+                {/* NEXT >>>>> CREATE NEW DROPDOWN TO MENTION WHAT THE ICONS MEAN */}
+                {/* <ToggleDropdown
+                  title={<>What do the <UndoIcon /> and thing, mean</>}
+                  id="dropdown-one"
+                  isOpen={activeDropdownId === "dropdown-one"}
+                  changeActiveDropdownId={changeActiveDropdownId}
+                >
+                  <div className={toggleDivDimensions}>
+                    <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back</p>
+                  </div>
+                </ToggleDropdown> */}
 
                 <ToggleDropdown
                   title="how do I run my scripts?"

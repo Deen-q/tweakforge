@@ -1,3 +1,12 @@
+export interface checkboxOption {
+    id: string;
+    name: string;
+    script: string;
+    undoScript: string;
+    description: string;
+    undoDescription: string;
+}
+
 const classicRightClickScript = `
 # Enable Windows 11 classic right-click menu
 # This script modifies the registry and restarts Explorer

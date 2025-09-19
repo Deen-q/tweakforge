@@ -1,18 +1,19 @@
 'use client';
 
 import { useState } from "react";
-import checkboxOptions from "../data/checkboxOptions";
+import checkboxOptions, { checkboxOption } from "../data/checkboxOptions";
+import { CopyIcon, InspectIcon, UndoIcon } from "./icons";
 
 interface PrefSelectionProps {
     setShowModal: (value: boolean) => void;
     prefSelectionDimensions: string;
-    setModalScript: (value: string | undefined) => void;
+    setModalObject: (value: checkboxOption | null) => void;
 }
 
 export default function PrefSelection({
     setShowModal,
     prefSelectionDimensions, // "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
-    setModalScript,
+    setModalObject,
 }: PrefSelectionProps) {
     const [filteredCheckboxOptions, setFilteredCheckboxOptions] = useState<typeof checkboxOptions>(checkboxOptions);  // checkboxOptions = source of truth
     const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
@@ -21,7 +22,6 @@ export default function PrefSelection({
 
     // need a simple way to v briefly explain what a script does
 
-    // const prefSelectionDimensions = "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
     return (
         <div className="flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-4">
             <div className={`${prefSelectionDimensions}`}>
@@ -41,7 +41,6 @@ export default function PrefSelection({
                     />
                 </div>
                 <fieldset>
-                    {/* text-cneter doesnt seem to work on <legend/> */}
                     <legend><h4 className="text-center pt-2 pl-2"><strong>Select your scripts:</strong></h4></legend>
                     {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
                         <div className="pt-2 pl-3" key={checkboxOption.id}>
@@ -90,56 +89,49 @@ export default function PrefSelection({
                                         className="min-w-0 flex-1 border text-xs border-slate-800 bg-slate-200/40 text-slate-800 rounded p-2"
                                         title={checkboxOptionObj?.name}
                                     />
-                                    <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === RevCopyClickedId ?
-                                        "rev-diagonal-stripes"
-                                        : "bg-slate-700 hover:bg-slate-700/10"}`}
+                                    <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
                                         type="button"
+                                        title="Inspect Script"
                                         onClick={() => {
-                                            // return
-                                            // click -> set id to state -> display data based on said state (aka make modal appear)
-                                            /// gotta pass state up to Page (Home) probs
-                                            //// --> click button, set state, pass said state to Home, conditionally render on home based on state
-                                            // (script that is eventually displayed will come from checkboxOptionObj.script)
                                             setShowModal(true)
-                                            // setTimeout(() => setShowModal(false), 2000);
-                                            setModalScript(checkboxOptionObj?.script)
+                                            setModalObject(checkboxOptionObj || null) // ? : is overkill
                                         }}
                                     >
-                                        <p className="text-[12px] text-wrap whitespace-pre-line" title={checkboxOptionObj?.undoDescription}>
-                                            {"view\nscript"}
-                                        </p>
+                                        <InspectIcon className="w-5" />
                                     </button>
                                     <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === copyClickedId ?
                                         "diagonal-stripes"
                                         : "bg-slate-700 hover:bg-slate-700/10"}`}
                                         type="button"
+                                        title="Copy to clipboard"
                                         onClick={() => {
                                             if (checkboxOptionObj?.script) {
                                                 navigator.clipboard.writeText(checkboxOptionObj?.script)
                                             }
                                             setCopyClickedId(checkedScriptId)
-                                            setTimeout(() => setCopyClickedId(""), 1000);
+                                            setTimeout(() => setCopyClickedId(""), 1500);
                                         }}
                                     >
-                                        <p className="text-[12px] text-wrap whitespace-pre-line" title={checkboxOptionObj?.description}>
-                                            copy
-                                        </p>
+                                        <CopyIcon className="w-5" />
+                                        {/* need a more graceful way to tell user script has been copied to clipboard... below, cant be it */}
+                                        {/* {checkedScriptId !== copyClickedId ? <CopyIcon className="w-5" /> : <span className="w-5 text-sm">Copied</span>} */}
+
                                     </button>
                                     <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === RevCopyClickedId ?
                                         "rev-diagonal-stripes"
                                         : "bg-slate-700 hover:bg-slate-700/10"}`}
                                         type="button"
+                                        title="Copy 'undo' script"
                                         onClick={() => {
                                             if (checkboxOptionObj?.undoScript) {
                                                 navigator.clipboard.writeText(checkboxOptionObj?.undoScript)
                                             }
                                             setRevCopyClickedId(checkedScriptId)
-                                            setTimeout(() => setRevCopyClickedId(""), 1000);
+                                            setTimeout(() => setRevCopyClickedId(""), 1500);
                                         }}
                                     >
-                                        <p className="text-[12px] text-wrap whitespace-pre-line" title={checkboxOptionObj?.undoDescription}>
-                                            {"copy\n(undo)"}
-                                        </p>
+                                        <UndoIcon className="w-5" />
+                                        {/* {checkedScriptId !== RevCopyClickedId ? <UndoIcon className="w-5" /> : <span className="w-5 text-sm">undo script, copied!</span>} */}
                                     </button>
                                 </div>
                             );

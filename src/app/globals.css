@@ -4,18 +4,18 @@
 /* Hopefully this complies with accessibility */
 .diagonal-stripes {
   background: repeating-linear-gradient(315deg,
-      #435b79,
-      #435b79 5px,
-      #1d293d 5px,
-      #1d293d 10px);
+      #435b7a,
+      #435b7a 5px,
+      #314158 5px,
+      #314158 10px);
 }
 
 .rev-diagonal-stripes {
   background: repeating-linear-gradient(45deg,
-      #435b79,
-      #435b79 5px,
-      #1d293d 5px,
-      #1d293d 10px);
+      #435b7a,
+      #435b7a 5px,
+      #314158 5px,
+      #314158 10px);
 }
 
 @keyframes slide {

@@ -38,7 +38,6 @@ export default function ToggleDropdown({
             <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}
             >
-                {/* works, but causes a weird half second glitch - fixed in Home */}
                 <div className="pl-6 h-12 md:h-24 lg:h-16 xl:h-auto xl:max-h-38 overflow-y-auto text-gray-400">
                     {children}
                 </div>
