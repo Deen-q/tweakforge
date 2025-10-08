@@ -1,11 +1,11 @@
 'use client';
 
-import { checkboxOption } from "../data/checkboxOptions";
+import { CheckboxOption } from "../data/checkboxOptions";
 
 interface ViewScriptModalProps {
     setShowModal: (value: boolean) => void;
     // modalObject: object | undefined;
-    modalObject: checkboxOption | null;
+    modalObject: CheckboxOption | null;
 }
 
 // turned into a generic component, later

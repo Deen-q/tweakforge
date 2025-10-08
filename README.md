@@ -6,17 +6,18 @@ Checkout TweakForge at https://tweakforge.tools/
 - A highly accessible (e.g., the app can be used with only a keyboard if needed) and beginner friendly app, aimed to help people of any skill/ability level become more comfortable with basic scripting
 - No ads or invasion of privacy - just core functionality
 - The app is in active development - new features and scripts on route!
+- Some scripts may be temporarily disabled if it comes to light that they no longer work
 
 ## Currently in progress:
-- Set up basic pipeline
+- Upgrade GitHub Actions pipeline (more tests and new Docker image on push to main)
 - Add more scripts
-- Improve UX (stop selection box from jumping on toggle click, and potentially add a extra section to expand the entire script)
 - Add about page
 - Add in depth break-down for 1 of the scripts (restore classic right-click menu)
 
 Suggestions are always welcome :)
 
 ## How to test locally
+(Image currently out of date!! pipeline to be updated soon to create a new Image every after every push)
 Assuming Docker Desktop is installed:
 
 1) Clone the repo
@@ -27,6 +28,7 @@ Assuming Docker Desktop is installed:
 6) Optional: docker rm tweakforge
 
 ## How I test scripts (before merging main):
+(A repo detailing the full process may be made later. In the end I automated the process with a ps1 script)
 I use disposable Hyper-V Windows VMs, and by this I mean:
 - Base Setup: Created clean Windows VM, and made the disk read-only "template" (a parent/base disk)
 - Differencing Disks: Each test uses a temporary differencing disk that only stores changes from the base

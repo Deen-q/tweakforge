@@ -7,13 +7,13 @@ import ToggleDropdown from "./components/ToggleDropdown";
 import githubIcon from "../app/assets/icons8-github.svg"
 import Image from "next/image";
 import ViewScriptModal from "./components/ViewScriptModal";
-import { checkboxOption } from "./data/checkboxOptions";
+import { CheckboxOption } from "./data/checkboxOptions";
 // import { UndoIcon } from "./components/icons";
 
 export default function Home() {
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalObject, setModalObject] = useState<checkboxOption | null>(null);
+  const [modalObject, setModalObject] = useState<CheckboxOption | null>(null);
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)

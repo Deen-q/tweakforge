@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from "react";
-import checkboxOptions, { checkboxOption } from "../data/checkboxOptions";
+import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
 import { CopyIcon, InspectIcon, UndoIcon } from "./icons";
 
 interface PrefSelectionProps {
     setShowModal: (value: boolean) => void;
     prefSelectionDimensions: string;
-    setModalObject: (value: checkboxOption | null) => void;
+    setModalObject: (value: CheckboxOption | null) => void;
 }
 
 export default function PrefSelection({
@@ -81,7 +81,7 @@ export default function PrefSelection({
                             return (
                                 <div
                                     // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts - probs replace this with an actual test
-                                    className={`flex animate-slide gap-2 pl-4`} key={checkedScriptId}>
+                                    className={`flex animate-slide gap-2 pl-4 pb-4`} key={checkedScriptId}>
                                     <input
                                         type="text"
                                         readOnly
