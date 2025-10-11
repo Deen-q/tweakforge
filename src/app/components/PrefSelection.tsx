@@ -28,7 +28,7 @@ export default function PrefSelection({
                 <div className="">
                     <input
                         type="text"
-                        className="border w-[calc(100%-1rem)] bg-slate-700 p-1.5"
+                        className="border w-[calc(100%-1rem)] bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
                         placeholder="search for features..."
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             if (e.target.value === "") {
@@ -46,6 +46,7 @@ export default function PrefSelection({
                         <div className="pt-2 pl-3" key={checkboxOption.id}>
                             <input
                                 type="checkbox"
+                                className="w-4 h-4 focus:ring-2 focus:ring-blue-300 duration-150"
                                 id={checkboxOption.id}
                                 name={checkboxOption.id} // e.target.name -> needed for checkedScriptId later
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +64,7 @@ export default function PrefSelection({
                         </div>
                     )}
                     <div className="flex items-center justify-center h-full p-6.5">
-                        <h4><strong>More scripts to come!</strong></h4>
+                        {/* <h4><strong>More scripts to come!</strong></h4> */}
                     </div>
                 </fieldset>
 

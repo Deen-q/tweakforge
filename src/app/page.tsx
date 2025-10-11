@@ -8,6 +8,7 @@ import githubIcon from "../app/assets/icons8-github.svg"
 import Image from "next/image";
 import ViewScriptModal from "./components/ViewScriptModal";
 import { CheckboxOption } from "./data/checkboxOptions";
+import { CopyIcon, UndoIcon } from "./components/icons";
 // import { UndoIcon } from "./components/icons";
 
 export default function Home() {
@@ -58,7 +59,7 @@ export default function Home() {
               setModalObject={setModalObject}
             />
 
-            <div className="flex flex-col items-center max-w-[30rem]">
+            <div className="flex flex-col items-center w-[22rem] md:w-[30rem] lg:w-[38rem] xl:w-[40rem]">
               <p>not sure where to start? check out the dropdown menus, below :)</p>
 
               <div className="sm:h-20">
@@ -94,23 +95,23 @@ export default function Home() {
                   <div className={toggleDivDimensions}>
                     <p className="underline font-semibold text-blue-300 mb-1">Step 1: Open PowerShell as Administrator</p>
                     <ol className="list-decimal list-inside space-y-1 ml-4">
-                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs inline-flex items-center gap-1">
+                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs inline-flex items-center gap-1">
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351" />
                         </svg>
                         (Windows) + R
                       </kbd>
                       </li>
-                      <li>Type <code className="px-1 py-0.5 bg-slate-600 rounded text-xs">powershell</code> - don`t hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> yet</li>
-                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Ctrl + Shift + Enter</kbd> (this opens as administrator)</li>
+                      <li>Type <code className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">powershell</code> - don`t hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> yet</li>
+                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Ctrl + Shift + Enter</kbd> (this opens as administrator)</li>
                       <li>Click <strong>Yes</strong> when Windows asks for permission</li>
                     </ol>
                     <h4 className="underline font-semibold text-blue-300 mt-4 mb-1">Step 2: Run the Script</h4>
                     <ol className="list-decimal list-inside space-y-1 ml-4">
                       <li>Minimise the window and go back to where the scripts are.</li>
                       <li>Check the script you want, and a <strong>copy</strong> button will appear. Press <strong>copy</strong></li>
-                      <li>In the PowerShell window, <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">ctrl + v</kbd> or Right-click paste.</li>
-                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd> to execute.</li> congrats, you just ran a script :D
+                      <li>In the PowerShell window, <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">ctrl + v</kbd> or Right-click paste.</li>
+                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> to execute.</li> congrats, you just ran a script :D
                     </ol>
                     <div className="bg-yellow-900/20 border border-yellow-500/30 rounded p-3 mt-4 mr-2 ml-2">
                       <p className="text-yellow-200 text-sm">
@@ -138,7 +139,7 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div className={toggleDivDimensions}>
-                    <p>each checked script has a reverse/undo script. use the <strong>copy (undo)</strong> button, directly next to the <strong>copy</strong> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 rounded text-xs">Enter</kbd>!</p>
+                    <p>each checked script has a reverse/undo script. use the <UndoIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
                   </div>
                 </ToggleDropdown>
               </div>

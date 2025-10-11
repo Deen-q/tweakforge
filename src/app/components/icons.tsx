@@ -2,13 +2,14 @@ import React from 'react';
 
 interface IconProps {
     className?: string;
+    stroke?: string;
 }
 
-export const CopyIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
+export const CopyIcon: React.FC<IconProps> = ({ className = "w-4 h-4 inline-block", stroke = "currentColor" }) => (
     <svg
         className={className}
         fill="none"
-        stroke="currentColor"
+        stroke={stroke}
         viewBox="0 0 24 24"
     >
         <path
@@ -20,11 +21,11 @@ export const CopyIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
     </svg>
 );
 
-export const UndoIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
+export const UndoIcon: React.FC<IconProps> = ({ className = "w-4 h-4 inline-block", stroke = "currentColor" }) => (
     <svg
         className={className}
         fill="none"
-        stroke="currentColor"
+        stroke={stroke}
         viewBox="0 0 24 24"
     >
         <path
@@ -36,11 +37,11 @@ export const UndoIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
     </svg>
 );
 
-export const InspectIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
+export const InspectIcon: React.FC<IconProps> = ({ className = "w-4 h-4 inline-block", stroke = "currentColor" }) => (
     <svg
         className={className}
         fill="none"
-        stroke="currentColor"
+        stroke={stroke}
         viewBox="0 0 24 24"
     >
         {/* Magnifying glass circle */}
@@ -62,11 +63,11 @@ export const InspectIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
     </svg>
 );
 
-export const SearchIcon: React.FC<IconProps> = ({ className = "w-4 h-4" }) => (
+export const SearchIcon: React.FC<IconProps> = ({ className = "w-4 h-4 inline-block", stroke = "currentColor" }) => (
     <svg
         className={className}
         fill="none"
-        stroke="currentColor"
+        stroke={stroke}
         viewBox="0 0 24 24"
     >
         <path
