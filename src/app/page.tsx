@@ -9,7 +9,6 @@ import Image from "next/image";
 import ViewScriptModal from "./components/ViewScriptModal";
 import { CheckboxOption } from "./data/checkboxOptions";
 import { CopyIcon, UndoIcon } from "./components/icons";
-// import { UndoIcon } from "./components/icons";
 
 export default function Home() {
   const [activeDropdownId, setActiveDropdownId] = useState("");
@@ -24,7 +23,7 @@ export default function Home() {
   const prefSelectionDimensions = "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
 
   return (
-    // overflow-hidden to prevent global scrolling glitch; all conbtent is still reachable (accessibility)
+    // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
       <aside className="bg-slate-800 p-4 hidden sm:block"> {/* >>> hidden content is not ideal - fix later!*/}
         <NavBar />

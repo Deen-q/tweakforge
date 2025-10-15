@@ -38,7 +38,7 @@ export default function ToggleDropdown({
             <div
                 className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}
             >
-                <div className="p-2 h-12 md:h-24 lg:h-16 xl:h-auto xl:max-h-38 overflow-y-auto bg-slate-800 text-gray-400">
+                <div className="p-2 h-12 md:h-24 lg:h-16 xl:h-auto xl:max-h-38 overflow-y-auto bg-slate-800 rounded-tl-lg text-gray-400">
                     {children}
                 </div>
             </div>
