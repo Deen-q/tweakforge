@@ -23,6 +23,7 @@ export default function PrefSelection({
     return (
         <div className="
         flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-4
+        w-94 md:w-150 lg:w-210
         xl:w-250 xl:h-80
         ">
             {/*left segment -> gap-4 didnt seem adequate for space around the divider*/}
@@ -87,7 +88,7 @@ export default function PrefSelection({
                                             type="text"
                                             readOnly
                                             value={checkboxOptionObj?.script}
-                                            className="min-w-0 flex-1 border text-xs border-slate-800 bg-slate-200/40 text-slate-800 rounded p-2"
+                                            className="flex-1 w-2 border text-xs border-slate-800 bg-slate-200/40 text-slate-800 rounded p-2"
                                             title={checkboxOptionObj?.name}
                                         />
                                         <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
