@@ -1,9 +1,7 @@
 'use client';
 
-// import { useState } from "react";
 import NavBar from "../components/NavBar";
 import SidebarLayout from "../components/SidebarLayout";
-// import ToggleDropdown from "../components/ToggleDropdown";
 
 export default function About() {
     return (
@@ -16,7 +14,15 @@ export default function About() {
                     <SidebarLayout />
                 </main>
                 <footer className="text-center pb-1">
-                    all scripts are property of Microsoft. by continuing, you agree TweakForge is not responsible for improper script usage
+                    <p>
+                        TweakForge is an educational tool. Scripts modify Windows registry settings.
+                        Use at your own risk. Always understand what a script does before running it.
+                    </p>
+                    <p>
+                        Open source under <a href="https://github.com/Deen-q/tweakforge/blob/main/LICENSE">AGPL-3.0 </a>
+                        {/* | <a href="/about"> About </a> */}
+                        | Windows is a trademark of Microsoft Corporation
+                    </p>
                 </footer>
             </div>
         </div>

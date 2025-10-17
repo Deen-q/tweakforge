@@ -19,12 +19,10 @@ export default function Home() {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
   }
 
-  const toggleDivDimensions = "" // revisit this
-  const prefSelectionDimensions = "flex-1 w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 xl:w-84 xl:h-84"
-
   return (
     // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
+
       <aside className="bg-slate-800 p-4 hidden sm:block"> {/* >>> hidden content is not ideal - fix later!*/}
         <NavBar />
       </aside>
@@ -49,17 +47,21 @@ export default function Home() {
           // <a target="_blank" href="https://icons8.com/icon/80462/github">GitHub</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
           />
         </a>
+        <header className="text-center pt-1">
+          ⚠️ Only use TweakForge from the official domain: <strong>tweakforge.tools</strong>
+        </header>
         <main className="flex flex-1 flex-col justify-center items-center bg-slate-700 p-6">
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center">
 
             <PrefSelection
               setShowModal={setShowModal}
-              prefSelectionDimensions={prefSelectionDimensions}
               setModalObject={setModalObject}
             />
 
-            <div className="flex flex-col items-center w-[22rem] md:w-[30rem] lg:w-[38rem] xl:w-[40rem]">
-              <p>not sure where to start? check out the dropdown menus, below :)</p>
+            <div className="flex flex-col items-center xl:w-200">
+              <div className="pt-2">
+                <p>not sure where to start? check out the dropdown menus, below :)</p>
+              </div>
 
               <div className="sm:h-20">
                 <ToggleDropdown
@@ -68,22 +70,10 @@ export default function Home() {
                   isOpen={activeDropdownId === "dropdown-one"}
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
-                  <div className={toggleDivDimensions}>
+                  <div>
                     <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back</p>
                   </div>
                 </ToggleDropdown>
-
-                {/* NEXT >>>>> CREATE NEW DROPDOWN TO MENTION WHAT THE ICONS MEAN */}
-                {/* <ToggleDropdown
-                  title={<>What do the <UndoIcon /> and thing, mean</>}
-                  id="dropdown-one"
-                  isOpen={activeDropdownId === "dropdown-one"}
-                  changeActiveDropdownId={changeActiveDropdownId}
-                >
-                  <div className={toggleDivDimensions}>
-                    <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back</p>
-                  </div>
-                </ToggleDropdown> */}
 
                 <ToggleDropdown
                   title="how do I run my scripts?"
@@ -91,7 +81,7 @@ export default function Home() {
                   isOpen={activeDropdownId === "dropdown-two"}
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
-                  <div className={toggleDivDimensions}>
+                  <div>
                     <p className="underline font-semibold text-blue-300 mb-1">Step 1: Open PowerShell as Administrator</p>
                     <ol className="list-decimal list-inside space-y-1 ml-4">
                       <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs inline-flex items-center gap-1">
@@ -126,7 +116,7 @@ export default function Home() {
                   isOpen={activeDropdownId === "dropdown-three"}
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
-                  <div className={toggleDivDimensions}>
+                  <div>
                     <p>tl;dr: all scripts are just a list of instructions. these scripts change registry files on your computer - basically extra settings that might be difficult to reach otherwise.</p>
                   </div>
                 </ToggleDropdown>
@@ -137,7 +127,7 @@ export default function Home() {
                   isOpen={activeDropdownId === "dropdown-four"}
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
-                  <div className={toggleDivDimensions}>
+                  <div>
                     <p>each checked script has a reverse/undo script. use the <UndoIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
                   </div>
                 </ToggleDropdown>
@@ -146,7 +136,15 @@ export default function Home() {
           </div>
         </main>
         <footer className="text-center pb-1">
-          all scripts are property of Microsoft. by continuing, you agree TweakForge is not responsible for improper script usage
+          <p>
+            TweakForge is an educational tool. Scripts modify Windows registry settings.
+            Use at your own risk. Always understand what a script does before running it.
+          </p>
+          <p>
+            Open source under <a href="https://github.com/Deen-q/tweakforge/blob/main/LICENSE">AGPL-3.0 </a>
+            {/* | <a href="/about"> About </a> */}
+            | Windows is a trademark of Microsoft Corporation
+          </p>
         </footer>
       </div>
     </div>
