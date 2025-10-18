@@ -22,16 +22,17 @@ export default function PrefSelection({
 
     return (
         <div className="
-        flex justify-center items-center bg-blue-300/20 border border-blue-300 rounded p-4
-        w-94 md:w-150 lg:w-210
-        xl:w-250 xl:h-80
+        flex justify-center items-center
+        w-94 md:w-150 lg:w-210 xl:w-250 xl:h-80
+        bg-blue-300/20 border border-blue-300 rounded
+        p-4
         ">
             {/*left segment -> gap-4 didnt seem adequate for space around the divider*/}
             <div className="h-full flex flex-col flex-1 pr-4">
                 <input
                     type="text"
                     className="border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
-                    placeholder="search scripts (e.g., 'onedrive'...)"
+                    placeholder="search scripts (e.g., 'disable onedrive'...)"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         if (e.target.value === "") {
                             setFilteredCheckboxOptions(checkboxOptions)
@@ -47,7 +48,7 @@ export default function PrefSelection({
                         <div className="py-1" key={checkboxOption.id}>
                             <input
                                 type="checkbox"
-                                className="w-4 h-4 focus:ring-2 focus:ring-blue-300 duration-150"
+                                className="focus:ring-2 focus:ring-blue-300 duration-150"
                                 id={checkboxOption.id}
                                 name={checkboxOption.id} // e.target.name -> needed for checkedScriptId later
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,19 +62,19 @@ export default function PrefSelection({
                                 }}
                                 checked={checkedScripts.includes(checkboxOption.id)}
                             />
-                            <label htmlFor={checkboxOption.id} className="p-1">{checkboxOption.name}</label>
+                            <label htmlFor={checkboxOption.id} className="pl-2">{checkboxOption.name}</label>
                         </div>
                     )}
                 </fieldset>
 
             </div>
 
-            <div className={`h-full w-full flex flex-col justify-start items-center flex-1 border-l pl-3.5`}> {/*default justify-start kept on purpose*/}
+            <div className={`h-full flex flex-1 flex-col justify-start items-center border-l pl-4`}> {/*default justify-start kept on purpose*/}
                 <h4 className="pb-2"><strong>Checked Scripts:</strong></h4>
 
                 <div className="h-full w-full gap-2 flex flex-col">
                     {
-                        checkedScripts.length == 0 ?
+                        checkedScripts.length === 0 ?
                             <div className="h-full flex items-center text-center whitespace-pre-wrap">
                                 <h4 className=""><strong>{`No scripts selected.\n💡 Tip: Check boxes on the left to add scripts here.`}</strong></h4>
                             </div>
@@ -88,7 +89,13 @@ export default function PrefSelection({
                                             type="text"
                                             readOnly
                                             value={checkboxOptionObj?.script}
-                                            className="flex-1 w-2 border text-xs border-slate-800 bg-slate-200/40 text-slate-800 rounded p-2"
+                                            // flex-1 w-X works here <<<<<< READ AGAIN WHY IT'S ACCEPTABLE IN THIS CASE (think its about same ele vs nested eles?)
+                                            className="
+                                                flex-1 w-2
+                                                text-xs bg-slate-200/40 text-slate-800 rounded border border-slate-800
+                                                p-2
+                                                overflow-hidden text-ellipsis
+                                            "
                                             title={checkboxOptionObj?.name}
                                         />
                                         <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
