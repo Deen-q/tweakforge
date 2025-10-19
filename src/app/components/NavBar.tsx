@@ -5,23 +5,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// nav hidden on small screens for now. mobile centric nav needed, even if this app wouldnt be use on phones...
-
 export default function NavBar() {
     const pathname = usePathname();
-    const selectedBtnDesign = "bg-blue-300 text-black"
+    const navButtonDesign = "flex sm:justify-start items-center px-1 h-12 sm:pl-2 rounded";
+    const selectedBtnDesign = "bg-blue-300 text-black";
 
     return (
-        <div className="flex flex-col h-full justify-between w-24"
-        >
-            <div className="">
+        <div className="
+        flex fixed justify-evenly items-center bottom-0 left-0 right-0 
+        h-14 bg-slate-900/95 backdrop-blur-xs
+        sm:static sm:flex-col sm:h-full sm:justify-between sm:bg-transparent sm:w-24
+        transition-all duration-200
+        ">
+            <div className="hidden sm:block">
                 <h1>TweakForge</h1>
             </div>
-            <div className={`flex justify-start items-center h-8 pl-2 rounded ${pathname === "/" && selectedBtnDesign}`}>
+            <div className={`${navButtonDesign} ${pathname === "/" && selectedBtnDesign}`}>
                 <Link href="/"><h1 className="hover:text-gray-600">scripts</h1></Link>
             </div>
 
-            <div className={`flex justify-start items-center h-8 pl-2 rounded ${pathname === "/about" && selectedBtnDesign}`}>
+            <div className={`${navButtonDesign} ${pathname === "/about" && selectedBtnDesign}`}>
                 <Link href="/about"><h1 className="hover:text-gray-600">about</h1></Link>
                 {/* <p>settings</p> */}
                 {/* <p>donate <br />( ͡° ͜ʖ ͡°)</p> */}

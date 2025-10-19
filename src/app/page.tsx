@@ -17,13 +17,13 @@ export default function Home() {
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
-  }
+  };
 
   return (
     // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
 
-      <aside className="bg-slate-800 p-4 hidden sm:block"> {/* >>> hidden content is not ideal - fix later!*/}
+      <aside className="sm:bg-slate-800 sm:p-4"> {/* >>> hidden content is not ideal - fix later!*/}
         <NavBar />
       </aside>
 
@@ -135,7 +135,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-        <footer className="text-center pb-1">
+        <footer className="hidden sm:block text-center px-4 pb-1">
           <p>
             TweakForge is an educational tool. Scripts modify Windows registry settings.
             Use at your own risk. Always understand what a script does before running it.

@@ -6,7 +6,7 @@ export default function SidebarLayout() {
     const [activeSectionId, setActiveSectionId] = useState<string>("about-tweakforge");
 
     // think: why couldnt I just use aboutPageData.id == e.currentTarget.id data logic?
-    const currentSection = aboutPageData.find(aboutObj => aboutObj.id === activeSectionId) // for loop worth it?
+    const currentSection = aboutPageData.find(aboutObj => aboutObj.id === activeSectionId); // for loop worth it?
 
     return (
         <div className="flex flex-1 h-full gap-4">
@@ -22,7 +22,7 @@ export default function SidebarLayout() {
                 )}
             </nav>
             <main className="flex flex-1 bg-slate-800 rounded-tl-lg whitespace-pre-wrap">
-                <span className="overflow-y-auto lg:w-[60%] xl:w-[70%] pt-4 pl-6 pr-2">{currentSection?.content}</span>
+                <span className="overflow-y-auto lg:w-[60%] xl:w-[70%] pt-8 pl-6 pr-2 pb-16 sm:pb-0">{currentSection?.content}</span>
             </main>
         </div>
     )
