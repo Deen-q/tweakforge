@@ -9,6 +9,7 @@ import Image from "next/image";
 import ViewScriptModal from "./components/ViewScriptModal";
 import { CheckboxOption } from "./data/checkboxOptions";
 import { CopyIcon, UndoIcon } from "./components/icons";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const [activeDropdownId, setActiveDropdownId] = useState("");
@@ -23,7 +24,7 @@ export default function Home() {
     // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
 
-      <aside className="sm:bg-slate-800 sm:p-4"> {/* >>> hidden content is not ideal - fix later!*/}
+      <aside className="sm:bg-slate-800 sm:p-4"> {/*sm: fixed the wacky white spaces around prefselect*/}
         <NavBar />
       </aside>
 
@@ -36,11 +37,12 @@ export default function Home() {
           />
         }
 
-        <a href="https://github.com/Deen-q/tweakforge" className="absolute top-4 right-4" >
+        <a href="https://github.com/Deen-q/tweakforge" target="_blank" rel="noopener noreferrer" className="absolute top-8 right-4 lg:top-4 lg:right-4" >
 
           {/* make github image larger on hover <<<< */}
+          {/* and fix positioning on smaller screens */}
           <Image
-            className="cursor-pointer w-14 md:w-24"
+            className="cursor-pointer hover:scale-98 w-14 md:w-24"
             src={githubIcon}
             alt=""
             title="GitHub icon by Icons8"
@@ -50,7 +52,12 @@ export default function Home() {
         <header className="text-center pt-1">
           ⚠️ Only use TweakForge from the official domain: <strong>tweakforge.tools</strong>
         </header>
-        <main className="flex flex-1 flex-col justify-center items-center bg-slate-700 p-6">
+        <main className="
+        flex flex-1 flex-col justify-center items-center 
+        bg-slate-700 p-6
+        overflow-hidden sm:overflow-auto
+        h-screen sm:h-auto
+        ">
           <div className="flex flex-col items-center">
 
             <PrefSelection
@@ -59,7 +66,7 @@ export default function Home() {
             />
 
             <div className="flex flex-col items-center xl:w-200">
-              <div className="pt-2">
+              <div className="pt-2 pb-1">
                 <p>not sure where to start? check out the dropdown menus, below :)</p>
               </div>
 
@@ -135,17 +142,7 @@ export default function Home() {
             </div>
           </div>
         </main>
-        <footer className="hidden sm:block text-center px-4 pb-1">
-          <p>
-            TweakForge is an educational tool. Scripts modify Windows registry settings.
-            Use at your own risk. Always understand what a script does before running it.
-          </p>
-          <p>
-            Open source under <a href="https://github.com/Deen-q/tweakforge/blob/main/LICENSE">AGPL-3.0 </a>
-            {/* | <a href="/about"> About </a> */}
-            | Windows is a trademark of Microsoft Corporation
-          </p>
-        </footer>
+        <Footer />
       </div>
     </div>
   );

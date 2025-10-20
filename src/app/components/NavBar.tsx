@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 export default function NavBar() {
     const pathname = usePathname();
-    const navButtonDesign = "flex sm:justify-start items-center px-1 h-12 sm:pl-2 rounded";
+    const navButtonDesign = "flex sm:justify-start items-center px-1 h-12 hover:scale-99 sm:pl-2 rounded";
     const selectedBtnDesign = "bg-blue-300 text-black";
 
     return (

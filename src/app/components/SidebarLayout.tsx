@@ -3,7 +3,7 @@ import { useState } from "react";
 import aboutPageData from "../data/aboutPageData";
 
 export default function SidebarLayout() {
-    const [activeSectionId, setActiveSectionId] = useState<string>("about-tweakforge");
+    const [activeSectionId, setActiveSectionId] = useState<string>("about_about-tweakforge");
 
     // think: why couldnt I just use aboutPageData.id == e.currentTarget.id data logic?
     const currentSection = aboutPageData.find(aboutObj => aboutObj.id === activeSectionId); // for loop worth it?
@@ -22,7 +22,7 @@ export default function SidebarLayout() {
                 )}
             </nav>
             <main className="flex flex-1 bg-slate-800 rounded-tl-lg whitespace-pre-wrap">
-                <span className="overflow-y-auto lg:w-[60%] xl:w-[70%] pt-8 pl-6 pr-2 pb-16 sm:pb-0">{currentSection?.content}</span>
+                <span className="overflow-y-auto overflow-x-hidden lg:w-[60%] xl:w-[70%] pt-8 pl-6 pr-2 pb-16 sm:pb-0">{currentSection?.content}</span>
             </main>
         </div>
     )

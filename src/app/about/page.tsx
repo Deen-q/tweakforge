@@ -9,11 +9,9 @@ export default function About() {
             <aside className="sm:bg-slate-800 sm:p-4">
                 <NavBar />
             </aside>
-            <div className="flex flex-col">
-                <main className="flex h-full justify-center">
-                    <SidebarLayout />
-                </main>
-            </div>
+            <main className="flex flex-1 flex-col h-full justify-center">
+                <SidebarLayout />
+            </main>
         </div>
     );
 }
