@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import aboutPageData from "../data/aboutPageData";
+import aboutPageData from "../data/about/aboutPageData";
 
 export default function SidebarLayout() {
     const [activeSectionId, setActiveSectionId] = useState<string>("about_about-tweakforge");
