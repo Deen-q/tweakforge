@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
 import { CopyIcon, InspectIcon, UndoIcon } from "./icons";
 
@@ -13,12 +13,48 @@ export default function PrefSelection({
     setShowModal,
     setModalObject,
 }: PrefSelectionProps) {
-    const [filteredCheckboxOptions, setFilteredCheckboxOptions] = useState<typeof checkboxOptions>(checkboxOptions);  // checkboxOptions = source of truth
-    const [checkedScripts, setCheckedScripts] = useState<string[]>([]);
-    const [copyClickedId, setCopyClickedId] = useState<string>("");
-    const [RevCopyClickedId, setRevCopyClickedId] = useState<string>("");
+    const [filteredCheckboxes, setFilteredCheckboxes] = useState<typeof checkboxOptions>(checkboxOptions);  // checkboxOptions = source of truth
+    const [selectedScriptIds, setSelectedScriptIds] = useState<string[]>([]);
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const [activeCopiedButton, setActiveCopiedButton] = useState<string>("");
 
-    // need a simple way to v briefly explain what a script does
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = e.target.value.toLowerCase();
+        if (searchTerm === "") {
+            setFilteredCheckboxes(checkboxOptions)
+        } else {
+            setFilteredCheckboxes(
+                checkboxOptions.filter(option =>
+                    option.name.toLowerCase().includes(searchTerm)
+                ));
+        };
+    }, []);
+
+    const handleCheckboxChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) setSelectedScriptIds(prev => [...prev, e.target.name]);
+        if (!e.target.checked) setSelectedScriptIds(prev => prev.filter(scriptId => scriptId !== e.target.name));
+    }, []);
+
+    const selectedScriptsMap = useMemo(() => { // {} used because the [] look out of place otherwise
+        return new Map(checkboxOptions.map((option) => [option.id, option])) // ["script1", {*script1 object*}]
+    }, []);
+
+    const handleCopyClick = (scriptId: string, buttonType: 'copy' | 'undo') => {
+        const scriptObj = selectedScriptsMap.get(scriptId);
+        const scriptText = buttonType === 'copy' ? scriptObj?.script : scriptObj?.undoScript;
+
+        if (scriptText) navigator.clipboard.writeText(scriptText);
+
+        if (timeoutRef.current) clearTimeout(timeoutRef.current); // .current is null -> falsy, before first click. so only clears when actually clicked
+        setActiveCopiedButton(`${scriptId}-${buttonType}`);
+        timeoutRef.current = setTimeout(() => setActiveCopiedButton(""), 1500);
+    }
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current)
+        };
+    }, []);
 
     return (
         <div className="
@@ -32,114 +68,89 @@ export default function PrefSelection({
                 <input
                     type="text"
                     className="border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
-                    placeholder="search scripts (e.g., 'disable onedrive'...)"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (e.target.value === "") {
-                            setFilteredCheckboxOptions(checkboxOptions)
-                        } else {
-                            setFilteredCheckboxOptions(checkboxOptions.filter(option =>
-                                option.name.toLowerCase().includes(e.target.value)))
-                        }
-                    }}
+                    placeholder="search scripts (e.g., 'onedrive'...)"
+                    onChange={handleSearchChange} // setFilteredCheckboxes
                 />
                 <fieldset className="w-full">
                     <legend><h4 className="text-center py-2"><strong>Select your scripts:</strong></h4></legend>
-                    {filteredCheckboxOptions && filteredCheckboxOptions.map((checkboxOption) =>
-                        <div className="py-1" key={checkboxOption.id}>
+                    {filteredCheckboxes && filteredCheckboxes.map((filteredOption) =>
+                        <div className="py-1" key={filteredOption.id}>
                             <input
                                 type="checkbox"
                                 className="focus:ring-2 focus:ring-blue-300 duration-150"
-                                id={checkboxOption.id}
-                                name={checkboxOption.id} // e.target.name -> needed for checkedScriptId later
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    // setting checkedScripts
-                                    if (e.target.checked) {
-                                        setCheckedScripts(prev => [...prev, e.target.name])
-                                    } else {
-                                        // where e.target.name is what was just unchecked (say, "script2")
-                                        setCheckedScripts(prev => prev.filter(scriptId => scriptId !== e.target.name))
-                                    }
-                                }}
-                                checked={checkedScripts.includes(checkboxOption.id)}
+                                id={filteredOption.id}
+                                name={filteredOption.id}
+                                onChange={handleCheckboxChange} // setSelectedScriptIds
+                                checked={selectedScriptIds.includes(filteredOption.id)} // could use Set + .has
                             />
-                            <label htmlFor={checkboxOption.id} className="pl-2">{checkboxOption.name}</label>
+                            <label htmlFor={filteredOption.id} className="pl-2">{filteredOption.name}</label>
                         </div>
                     )}
                 </fieldset>
-
             </div>
 
-            <div className={`h-full flex flex-1 flex-col justify-start items-center border-l pl-4`}> {/*default justify-start kept on purpose*/}
+            <div className={`h-full flex flex-1 flex-col justify-start items-center border-l pl-4`}>
                 <h4 className="pb-2"><strong>Checked Scripts:</strong></h4>
 
                 <div className="h-full w-full gap-2 flex flex-col">
                     {
-                        checkedScripts.length === 0 ?
+                        selectedScriptIds.length === 0 ?
                             <div className="h-full flex items-center text-center whitespace-pre-wrap">
                                 <h4 className=""><strong>{`No scripts selected.\n💡 Tip: Check boxes on the left to add scripts here.`}</strong></h4>
                             </div>
                             :
-                            checkedScripts.map((checkedScriptId) => { // <- an array of Ids
-                                const checkboxOptionObj = checkboxOptions.find(option => option.id === checkedScriptId); // <- find entire obj via id
+                            selectedScriptIds.map((id) => {
+                                const selectedScriptObject = selectedScriptsMap.get(id)
+                                if (!selectedScriptObject) return null;
                                 return (
                                     <div
-                                        // purposely using checkedScript as a key, so I can monitor potential duplicate scripts inside checkedScripts - probs replace this with an actual test
-                                        className="flex gap-2 animate-slide" key={checkedScriptId}>
+                                        className="flex gap-2 animate-slide" key={selectedScriptObject.id}>
                                         <input
                                             type="text"
                                             readOnly
-                                            value={checkboxOptionObj?.script}
-                                            // flex-1 w-X works here <<<<<< READ AGAIN WHY IT'S ACCEPTABLE IN THIS CASE (think its about same ele vs nested eles?)
+                                            value={selectedScriptObject.script}
+                                            // flex-1 min-w-2 ruins the design on mobiles
                                             className="
                                                 flex-1 w-2
                                                 text-xs bg-slate-200/40 text-slate-800 rounded border border-slate-800
                                                 p-2
                                                 overflow-hidden text-ellipsis
                                             "
-                                            title={checkboxOptionObj?.name}
+                                            title={selectedScriptObject.name}
                                         />
                                         <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
                                             type="button"
                                             title="Inspect Script"
                                             onClick={() => {
                                                 setShowModal(true)
-                                                setModalObject(checkboxOptionObj || null) // ? : is overkill
+                                                setModalObject(selectedScriptObject)
                                             }}
                                         >
                                             <InspectIcon className="w-5" />
                                         </button>
-                                        <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === copyClickedId ?
+                                        <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${activeCopiedButton === `${selectedScriptObject.id}-copy` ?
                                             "diagonal-stripes"
                                             : "bg-slate-700 hover:bg-slate-700/10"}`}
                                             type="button"
                                             title="Copy to clipboard"
-                                            onClick={() => {
-                                                if (checkboxOptionObj?.script) {
-                                                    navigator.clipboard.writeText(checkboxOptionObj?.script)
-                                                }
-                                                setCopyClickedId(checkedScriptId)
-                                                setTimeout(() => setCopyClickedId(""), 1500);
-                                            }}
+                                            onClick={() => handleCopyClick(selectedScriptObject.id, 'copy')}
+                                            disabled={!selectedScriptObject.script}
                                         >
                                             <CopyIcon className="w-5" />
                                             {/* need a more graceful way to tell user script has been copied to clipboard */}
 
                                         </button>
-                                        <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${checkedScriptId === RevCopyClickedId ?
+                                        <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
                                             "rev-diagonal-stripes"
                                             : "bg-slate-700 hover:bg-slate-700/10"}`}
                                             type="button"
                                             title="Copy 'undo' script"
-                                            onClick={() => {
-                                                if (checkboxOptionObj?.undoScript) {
-                                                    navigator.clipboard.writeText(checkboxOptionObj?.undoScript)
-                                                }
-                                                setRevCopyClickedId(checkedScriptId)
-                                                setTimeout(() => setRevCopyClickedId(""), 1500);
-                                            }}
+                                            onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}
+                                            disabled={!selectedScriptObject.undoScript}
                                         >
                                             <UndoIcon className="w-5" />
                                         </button>
+                                        {/* NEED A SECOND INSPECT BUTTON FOR UNDO SCRIPTS */}
                                     </div>
                                 );
                             })
