@@ -1,10 +1,10 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   pull_request:
     branches: [ main ]
-  # push:
-  #   branches: [ main ]
+  push:
+    branches: [ main ]
   # manual dispatch to test if pipes are running
   workflow_dispatch:
 
@@ -34,4 +34,6 @@ jobs:
     - name: Build application
       run: npm run build
 
-# TO DO: create new docker file when pushing to main
+# test if Dockerfile *can* build successfully/prevent someone from breaking it
+    - name: Create Docker Image
+      run: docker build -t tweakforge .

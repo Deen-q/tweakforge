@@ -12,7 +12,6 @@ export default function SidebarLayout() {
         <div className="flex flex-1 h-full gap-4">
             <nav className="flex flex-col items-start justify-center pl-4">
                 {aboutPageData.map(sections =>
-                    // no e needed?
                     <button
                         className={`${activeSectionId == sections.id && "rounded bg-blue-300 text-black"} pl-1 pr-2 py-2 my-0.5`}
                         key={sections.id}
