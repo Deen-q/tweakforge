@@ -7,9 +7,12 @@ export interface CheckboxOption {
     undoDescription: string;
 }
 
-/* Powershell scripts as TypeScript strings - will eventually be moved into separate .ps1 files */
+/* Powershell scripts as TypeScript strings - will eventually be moved into separate .ps1 files. Will also solve the dividers issue */
 
-// =============================================================================
+// to ensure TweakForge is accessible to people of all skill levels (including non-technical folk), scripts may seem to hold your hand a lot
+
+// These dividers are obnoxiously thick on purpose -> easier to see where each script starts and end on the scroll bar
+
 // CLASSIC RIGHT-CLICK MENU
 // =============================================================================
 
@@ -20,19 +23,16 @@ Write-Host "\`\`n=== Classic Right-Click Menu Enabler ===" -ForegroundColor Cyan
 Write-Host "This will restore the Windows 10 style context menu" -ForegroundColor Yellow
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     return
 }
 
-# ============================================================================
-# STEP 1: Create registry entry to disable new context menu
-# ============================================================================
-Write-Host "\`\`n[1/2] Creating registry entry..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/2] Creating registry entry..." -ForegroundColor Yellow
 try {
     New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Name "InprocServer32" -Force | Out-Null
     Set-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Name "(Default)" -Value ""
@@ -44,10 +44,7 @@ try {
     return
 }
 
-# ============================================================================
-# STEP 2: Restart Explorer to apply changes
-# ============================================================================
-Write-Host "\`\`n[2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
 try {
     Stop-Process -Name "explorer" -Force
     Start-Sleep -Seconds 1
@@ -58,7 +55,7 @@ try {
     Write-Host "  Please restart Explorer manually or restart your PC" -ForegroundColor Gray
 }
 
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ Classic right-click menu is now active" -ForegroundColor Green
 Write-Host "\`\`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -71,19 +68,16 @@ Write-Host "\`\`n=== Windows 11 Context Menu Restorer ===" -ForegroundColor Cyan
 Write-Host "This will restore the Windows 11 default context menu" -ForegroundColor Yellow
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     return
 }
 
-# ============================================================================
-# STEP 1: Remove the registry entry
-# ============================================================================
-Write-Host "\`\`n[1/2] Removing registry entry..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/2] Removing registry entry..." -ForegroundColor Yellow
 try {
     if (Test-Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}") {
         Remove-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Recurse -Force
@@ -98,10 +92,7 @@ try {
     return
 }
 
-# ============================================================================
-# STEP 2: Restart Explorer to apply changes
-# ============================================================================
-Write-Host "\`\`n[2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
 try {
     Stop-Process -Name "explorer" -Force
     Start-Sleep -Seconds 1
@@ -112,13 +103,13 @@ try {
     Write-Host "  Please restart Explorer manually or restart your PC" -ForegroundColor Gray
 }
 
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ Windows 11 context menu has been restored" -ForegroundColor Green
 Write-Host "\`\`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 `;
 
-// =============================================================================
+
 // ONEDRIVE
 // =============================================================================
 
@@ -130,19 +121,16 @@ Write-Host "This will remove OneDrive but allow reinstallation later" -Foregroun
 Write-Host "\`\`nYour OneDrive folder will NOT be deleted if files are present; but please tend to your folders before you run this script, just in case" -ForegroundColor Red
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     return
 }
 
-# ============================================================================
-# STEP 1: Stop OneDrive process
-# ============================================================================
-Write-Host "\`\`n[1/5] Stopping OneDrive process..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/5] Stopping OneDrive process..." -ForegroundColor Yellow
 $process = Get-Process -Name OneDrive -ErrorAction SilentlyContinue
 if ($process) {
     Stop-Process -Name OneDrive -Force -ErrorAction SilentlyContinue
@@ -152,10 +140,7 @@ if ($process) {
     Write-Host "✓ OneDrive process not running" -ForegroundColor Green
 }
 
-# ============================================================================
-# STEP 2: Uninstall OneDrive
-# ============================================================================
-Write-Host "\`\`n[2/5] Uninstalling OneDrive..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/5] Uninstalling OneDrive..." -ForegroundColor Yellow
 $oneDriveSetup = "$env:SystemRoot\SysWOW64\OneDriveSetup.exe"
 if (-not (Test-Path $oneDriveSetup)) {
     $oneDriveSetup = "$env:SystemRoot\System32\OneDriveSetup.exe"
@@ -168,10 +153,7 @@ if (Test-Path $oneDriveSetup) {
     Write-Host "⚠ OneDrive installer not found (may already be removed)" -ForegroundColor Yellow
 }
 
-# ============================================================================
-# STEP 3: Remove OneDrive from File Explorer sidebar
-# ============================================================================
-Write-Host "\`\`n[3/5] Removing OneDrive from File Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [3/5] Removing OneDrive from File Explorer..." -ForegroundColor Yellow
 $clsidPaths = @(
     "HKCU:\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}",
     "HKCU:\Software\Classes\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
@@ -183,10 +165,7 @@ foreach ($path in $clsidPaths) {
 }
 Write-Host "✓ OneDrive removed from File Explorer sidebar" -ForegroundColor Green
 
-# ============================================================================
-# STEP 4: Remove OneDrive from startup (PREVENTS TERMINAL FLASHING)
-# ============================================================================
-Write-Host "\`\`n[4/5] Removing OneDrive from startup..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [4/5] Removing OneDrive from startup (PREVENTS TERMINAL FLASHING)..." -ForegroundColor Yellow
 $runKeys = @(
     "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
     "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
@@ -209,12 +188,8 @@ if (Test-Path $startupApproved) {
 
 Write-Host "✓ OneDrive removed from startup (no more terminal flashing!)" -ForegroundColor Green
 
-# ============================================================================
-# STEP 5: Clean up OneDrive folders
-# ============================================================================
-Write-Host "\`\`n[5/5] Cleaning up OneDrive folders..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [5/5] Cleaning up OneDrive folders..." -ForegroundColor Yellow
 
-# FIRST: Handle user's OneDrive folder
 $userOneDrive = "$env:USERPROFILE\OneDrive"
 if (Test-Path $userOneDrive) {
     $fileCount = (Get-ChildItem -Path $userOneDrive -Recurse -File -ErrorAction SilentlyContinue | Measure-Object).Count
@@ -227,7 +202,6 @@ if (Test-Path $userOneDrive) {
     }
 }
 
-# THEN: Remove application folders (safe to delete)
 $oneDriveFolders = @(
     "$env:LOCALAPPDATA\Microsoft\OneDrive",
     "$env:PROGRAMDATA\Microsoft OneDrive"
@@ -242,7 +216,7 @@ foreach ($folder in $oneDriveFolders) {
 
 Write-Host "✓ Cleanup complete" -ForegroundColor Green
 
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ OneDrive has been removed" -ForegroundColor Green
 Write-Host "✓ OneDrive can be reinstalled later if needed" -ForegroundColor Green
 Write-Host "\`\`nⓘ  Restart recommended to complete removal" -ForegroundColor Yellow
@@ -260,19 +234,16 @@ Write-Host "This will clean up and prepare for OneDrive reinstallation. Will off
 Write-Host "The only reason this reverse script exists, is if a user ran the disable OneDrive script, but then changed their mind and wants to revert back to using OneDrive" -ForegroundColor Cyan
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     return
 }
 
-# ============================================================================
-# STEP 1: Clean up any broken startup entries
-# ============================================================================ 
-Write-Host "\`\`n[1/2] Cleaning up broken startup entries..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/2] Cleaning up broken startup entries..." -ForegroundColor Yellow
 $runKeys = @(
     "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
     "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
@@ -299,10 +270,7 @@ if ($cleaned) {
     Write-Host "✓ No broken entries found" -ForegroundColor Green
 }
 
-# ============================================================================
-# STEP 2: Offer to open download page
-# ============================================================================
-Write-Host "\`\`n[2/2] Ready to reinstall OneDrive" -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/2] Ready to reinstall OneDrive" -ForegroundColor Yellow
 Write-Host "Would you like to open the OneDrive download page? (y/n)" -ForegroundColor Cyan
 $openBrowser = Read-Host
 
@@ -321,7 +289,6 @@ Write-Host "\`\`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 `;
 
-// =============================================================================
 // DISABLE WIDGET PRELOAD
 // =============================================================================
 
@@ -329,7 +296,7 @@ $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 const disableWidgetPreloadScript = `
 #Requires -RunAsAdministrator
 
-Write-Host "\`\`n=== Widgets Disabler (non-aggressive) ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Widgets Preloading Disabler (non-aggressive) ===" -ForegroundColor Cyan
 Write-Host "This will disable widgets background processes" -ForegroundColor Yellow
 Write-Host "After the script completes, please manually hide the widgets icon:" -ForegroundColor Yellow
 Write-Host "  Right-click taskbar → Taskbar settings → Toggle Widgets off" -ForegroundColor White
@@ -337,19 +304,16 @@ Write-Host "  (Script can't modify this due to UCPD security - takes 5 seconds m
 Write-Host "This script will NOT disable WebView2, which is critical for some apps, but will prevent it from idling on widgets" -ForegroundColor Red
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     return
 }
 
-# ============================================================================
-# STEP 1: Disable widgets preloading
-# ============================================================================
-Write-Host "\`\`n[1/2] Disabling widgets preloading..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/2] Disabling widgets preloading..." -ForegroundColor Yellow
 $dshKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Dsh"
 
 try {
@@ -362,10 +326,7 @@ try {
     Write-Host "✗ Error disabling preload: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# ============================================================================
-# STEP 2: Restart Explorer to apply changes
-# ============================================================================
-Write-Host "\`\`n[2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
 try {
     Stop-Process -Name "explorer" -Force
     Start-Sleep -Seconds 2
@@ -375,7 +336,7 @@ try {
     Write-Host "⚠ Could not restart Explorer automatically" -ForegroundColor Yellow
 }
 
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ Widgets preloading disabled (background processes stopped)" -ForegroundColor Green
 Write-Host "⚠ REMINDER: Manually hide the widgets icon from your taskbar!" -ForegroundColor Yellow
 Write-Host "\`\`nⓘ  Note: Win+W shortcut still works but launches on-demand" -ForegroundColor Yellow
@@ -390,19 +351,16 @@ Write-Host "\`\`n=== Widgets Restorer ===" -ForegroundColor Cyan
 Write-Host "This will restore widgets to default behavior" -ForegroundColor Yellow
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     return
 }
 
-# ============================================================================
-# STEP 1:  Re-enable widgets preloading
-# ============================================================================
-Write-Host "\`\`n[1/2] Re-enabling widgets preloading..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/2] Re-enabling widgets preloading..." -ForegroundColor Yellow
 $dshKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Dsh"
 
 try {
@@ -416,10 +374,7 @@ try {
     Write-Host "⚠ Error: $($_.Exception.Message)" -ForegroundColor Yellow
 }
 
-# ============================================================================
-# STEP 2: Restart Explorer to apply changes
-# ============================================================================
-Write-Host "\`\`n[2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/2] Restarting Windows Explorer..." -ForegroundColor Yellow
 try {
     Stop-Process -Name "explorer" -Force
     Start-Sleep -Seconds 1
@@ -429,13 +384,12 @@ try {
     Write-Host "⚠ Could not restart Explorer automatically" -ForegroundColor Yellow
 }
 
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ Widgets restored to Windows defaults" -ForegroundColor Green
 Write-Host "\`\`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 `;
 
-// =============================================================================
 // DISABLE COPILOT
 // =============================================================================
 
@@ -444,11 +398,12 @@ const disableCopilotScript = `
 
 Write-Host "\`\`n=== Copilot Disabler ===" -ForegroundColor Cyan
 Write-Host "This will disable ALL Copilot variants across Windows using Group Policy registry keys and uninstall all Copilot app packages" -ForegroundColor Yellow
+Write-Host "Note: Edge settings only affect Microsoft Edge users" -ForegroundColor Gray
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -457,10 +412,7 @@ if ($userConfirmation.ToLower() -notin @("y", "yes")) {
 
 $removedApps = @()
 
-# ============================================================================
-# STEP 1: Disable Copilot in Windows (User level)
-# ============================================================================
-Write-Host "\`\`n[1/6] Disabling Copilot for current user..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/6] Disabling Copilot for current user..." -ForegroundColor Yellow
 $hkcuCopilot = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
 
 try {
@@ -473,10 +425,7 @@ try {
     Write-Host "✗ Error: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# ============================================================================
-# STEP 2: Disable Copilot system-wide (All users)
-# ============================================================================
-Write-Host "\`\`n[2/6] Disabling Copilot system-wide..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/6] Disabling Copilot system-wide..." -ForegroundColor Yellow
 $hklmCopilot = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot"
 try {
     if (-not (Test-Path $hklmCopilot)) {
@@ -488,11 +437,7 @@ try {
     Write-Host "✗ Error: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# ============================================================================
-# STEP 3: Disable Copilot in Edge (Browser) sidebar
-# ============================================================================
-Write-Host "\`\`n[3/6] Disabling Copilot in Edge sidebar..." -ForegroundColor Yellow
-Write-Host "Remember, this only applies to users that use Microsoft Edge!" -ForegroundColor Gray
+Write-Host "\`\`n> Step [3/6] Disabling Copilot in Edge sidebar..." -ForegroundColor Yellow
 $edgeKey = "HKLM:\SOFTWARE\Policies\Microsoft\Edge"
 try {
     if (-not (Test-Path $edgeKey)) {
@@ -505,10 +450,7 @@ try {
     Write-Host "✗ Error: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# ============================================================================
-# STEP 4: Disable Copilot suggestions in search
-# ============================================================================
-Write-Host "\`\`n[4/6] Disabling Copilot in search..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [4/6] Disabling Copilot suggestions in search..." -ForegroundColor Yellow
 $explorerKey = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
 try {
     if (-not (Test-Path $explorerKey)) {
@@ -520,10 +462,7 @@ try {
     Write-Host "✗ Error: $($_.Exception.Message)" -ForegroundColor Red
 }
 
-# ============================================================================
-# STEP 5: Uninstall ALL Copilot Apps
-# ============================================================================
-Write-Host "\`\`n[5/6] Uninstalling Copilot apps..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [5/6] Uninstalling ALL Copilot apps..." -ForegroundColor Yellow
 
 $copilotPackages = @(
     @{ Name = "Microsoft.Copilot"; Description = "Windows Copilot (Consumer)" }
@@ -553,10 +492,7 @@ if ($removedApps.Count -eq 0) {
     Write-Host "\`\`n  → Successfully removed $($removedApps.Count) app(s)" -ForegroundColor Green
 }
 
-# ============================================================================
-# STEP 6: Restart Explorer (optional, for immediate effect)
-# ============================================================================
-Write-Host "\`\`n[6/6] Restarting Windows Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [6/6] Restarting Windows Explorer..." -ForegroundColor Yellow
 try {
     Stop-Process -Name "explorer" -Force
     Start-Sleep -Seconds 2
@@ -566,7 +502,7 @@ try {
     Write-Host "⚠ Could not restart Explorer automatically" -ForegroundColor Yellow
 }
     
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ Copilot functionality disabled via registry policies" -ForegroundColor Green
 
 if ($removedApps.Count -gt 0) {
@@ -597,9 +533,9 @@ Write-Host "This will restore ALL Copilot settings to Windows defaults" -Foregro
 Write-Host "⚠ Note: This script CANNOT reinstall removed apps (use Microsoft Store)" -ForegroundColor Red
 
 Write-Host "CONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -608,10 +544,7 @@ if ($userConfirmation.ToLower() -notin @("y", "yes")) {
 
 $changesApplied = 0
 
-# ============================================================================
-# STEP 1: Remove HKCU policy
-# ============================================================================
-Write-Host "\`\`n[1/5] Restoring user-level settings..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/5] Restoring user-level settings..." -ForegroundColor Yellow
 $hkcuCopilot = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
 try {
     if (Test-Path $hkcuCopilot) {
@@ -625,10 +558,7 @@ try {
     Write-Host "⚠ Error: $($_.Exception.Message)" -ForegroundColor Yellow
 }
 
-# ============================================================================
-# STEP 2: Remove HKLM policy
-# ============================================================================
-Write-Host "\`\`n[2/5] Restoring system-wide settings..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/5] Restoring system-wide settings..." -ForegroundColor Yellow
 $hklmCopilot = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot"
 try {
     if (Test-Path $hklmCopilot) {
@@ -642,10 +572,7 @@ try {
     Write-Host "⚠ Error: $($_.Exception.Message)" -ForegroundColor Yellow
 }
 
-# ============================================================================
-# STEP 3: Restore Edge settings
-# ============================================================================
-Write-Host "\`\`n[3/5] Restoring Edge Copilot..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [3/5] Restoring Edge Copilot..." -ForegroundColor Yellow
 $edgeKey = "HKLM:\SOFTWARE\Policies\Microsoft\Edge"
 try {
     $edgeRestored = $false
@@ -667,10 +594,7 @@ try {
     Write-Host "⚠ Error: $($_.Exception.Message)" -ForegroundColor Yellow
 }
 
-# ============================================================================
-# STEP 4: Restore search settings
-# ============================================================================
-Write-Host "\`\`n[4/5] Restoring search suggestions..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [4/5] Restoring search suggestions..." -ForegroundColor Yellow
 $explorerKey = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
 try {
     if (Test-Path $explorerKey) {
@@ -688,10 +612,7 @@ try {
     Write-Host "⚠ Error: $($_.Exception.Message)" -ForegroundColor Yellow
 }
 
-# ============================================================================
-# STEP 5: Restart Explorer (for immediate effect)
-# ============================================================================
-Write-Host "\`\`n[5/5] Restarting Windows Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [5/5] Restarting Windows Explorer..." -ForegroundColor Yellow
 try {
     Stop-Process -Name "explorer" -Force
     Start-Sleep -Seconds 1
@@ -724,7 +645,6 @@ Write-Host "\`\`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 `;
 
-// =============================================================================
 // REMOVE UNWANTED GAMES & PROMOTIONAL APPS
 // =============================================================================
 
@@ -732,22 +652,16 @@ const removeBloatwareScript = `
 #Requires -RunAsAdministrator
 
 Write-Host "\`\`n=== Bloatware Remover ===" -ForegroundColor Cyan
-Write-Host "This will remove Microsoft promotional apps and games not intentionally installed by the user" -ForegroundColor Yellow
+Write-Host "This will remove promotional apps and games (Candy Crush, Clipchamp, etc.)" -ForegroundColor Yellow
+Write-Host "Essential apps preserved: Calculator, Photos, Paint, Store, Edge, Xbox" -ForegroundColor Gray
 Write-Host "\`\`nNote: Teams and OneNote will NOT be removed" -ForegroundColor Yellow
-Write-Host "Apps to be removed:" -ForegroundColor Yellow
-Write-Host "  • Games: Candy Crush, Solitaire, Bubble Witch, etc." -ForegroundColor Gray
-Write-Host "  • Promotional: Clipchamp, Microsoft Tips, News, GetHelp" -ForegroundColor Gray
-Write-Host "\`\`nApps that will NOT be touched:" -ForegroundColor Green
-Write-Host "  • Calculator, Notepad, Photos, Paint, Camera" -ForegroundColor Gray
-Write-Host "  • Microsoft Store, Edge, Settings" -ForegroundColor Gray
-Write-Host "  • Xbox apps (if you're a gamer)" -ForegroundColor Gray
-Write-Host "Feel free to edit the script if you'd like to omit/add apps to the list :)" -ForegroundColor Green
-Write-Host "This script DOES NOT have a undo/reverse script - you will have to manually reinstall the apps you want back" -ForegroundColor Red
+Write-Host "Feel free to edit the script to customize the app list" -ForegroundColor Green
+Write-Host "\`\`n⚠ This script has NO undo - reinstall manually if needed" -ForegroundColor Red
 
 Write-Host "\`\`nCONFIRMATION: Run this script?" -ForegroundColor Cyan
-$userConfirmation = Read-Host "y/n"
+$continue = Read-Host "y/n"
 
-if ($userConfirmation.ToLower() -notin @("y", "yes")) {
+if ($continue.ToLower() -notin @("y", "yes")) {
     Write-Host "You have selected not to continue. No Changes were made." -ForegroundColor Yellow
     Write-Host "Press any key to exit..." -ForegroundColor Gray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -802,10 +716,7 @@ $removed = 0
 $notFound = 0
 $failed = 0
 
-# ============================================================================
-# STEP 1: Uninstall non-critical apps that users did not choose to install ("bloatware")
-# ============================================================================
-Write-Host "\`\`n[1/2] Removing bloatware apps..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [1/2] Removing bloatware apps..." -ForegroundColor Yellow
 
 foreach ($app in $bloatwareApps) {
     $package = Get-AppxPackage -Name $app -ErrorAction SilentlyContinue
@@ -824,10 +735,7 @@ foreach ($app in $bloatwareApps) {
     }
 }
 
-# ============================================================================
-# STEP 2: Remove provisioned packages (apps that may come with laptops and such), and prevents future reinstall for new users
-# ============================================================================
-Write-Host "\`\`n[2/2] Removing provisioned packages (prevents reinstall for new users)..." -ForegroundColor Yellow
+Write-Host "\`\`n> Step [2/2] Removing provisioned packages (prevents reinstall for new users)..." -ForegroundColor Yellow
 foreach ($app in $bloatwareApps) {
     $provisioned = Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $app
     
@@ -848,17 +756,13 @@ if ($failed -gt 0) {
     Write-Host "✗ Failed: $failed apps" -ForegroundColor Red
 }
 
-Write-Host "\`\`n=== Success! ===" -ForegroundColor Cyan
+Write-Host "\`\`n=== Finished ===" -ForegroundColor Cyan
 Write-Host "✓ Bloatware has been removed" -ForegroundColor Green
 Write-Host "\`\`nⓘ  Note: Some apps may reinstall after major Windows updates" -ForegroundColor Yellow
 Write-Host "  You can re-run this script anytime to clean them up again" -ForegroundColor Gray
 Write-Host "\`\`nPress any key to exit..." -ForegroundColor Gray
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 `;
-
-// =============================================================================
-// 
-// =============================================================================
 
 const checkboxOptions: readonly CheckboxOption[] = [
     {
