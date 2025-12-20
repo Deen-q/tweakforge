@@ -1,37 +1,154 @@
-# Welcome
-Checkout TweakForge at https://tweakforge.tools/
+# TweakForge
 
-## About
-- An easy way to set up a PC, especially after a clean install of Windows. There's no account to make, just hop onto the site and you're good to go
-- A highly accessible (e.g., the app can be used with only a keyboard if needed) and beginner friendly app, aimed to help people of any skill/ability level become more comfortable with basic scripting
-- No ads or invasion of privacy - just core functionality
-- The app is in active development - new features and scripts on route!
-- Some scripts may be temporarily disabled if it comes to light that they no longer work
+Customise Windows 11 through browser-based registry scripts. Adjust features to match your preferences - no installation required.
 
-## Currently in progress:
-- Upgrade GitHub Actions pipeline (more tests and new Docker image on push to main)
-- Add more scripts
-- Add about page
-- Add in depth break-down for 1 of the scripts (restore classic right-click menu)
+**Try it now:** https://tweakforge.tools/
 
-Suggestions are always welcome :)
+### Built With
+- Next.js + TypeScript + Tailwind + Jest
 
-## How to test locally
-(Image currently out of date!! pipeline to be updated soon to create a new Image every after every push)
-Assuming Docker Desktop is installed:
+## Overview
 
-1) Clone the repo
-2) cd to said repo and then run: docker build -t tweakforge .
-3) Run the container: docker run -d -p 3000:3000 tweakforge
-4) Go to http://localhost:3000 in your browser
-5) Stop the container when finished: docker stop tweakforge
-6) Optional: docker rm tweakforge
+TweakForge is a web-based utility (unlike the numerous CLI based apps) designed to simplify Windows PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations.
 
-## How I test scripts (before merging main):
-(A repo detailing the full process may be made later. In the end I automated the process with a ps1 script)
-I use disposable Hyper-V Windows VMs, and by this I mean:
-- Base Setup: Created clean Windows VM, and made the disk read-only "template" (a parent/base disk)
-- Differencing Disks: Each test uses a temporary differencing disk that only stores changes from the base
-- Test Cycle: Boot VM → Run script → Verify results → Delete differencing disk → Create fresh one for next test
-- Clean Slate: Every test starts from identical  Windows state for consistent and reliable script validation
-- Lightweight: Differencing disks are <1GB vs full snapshots, making rapid test iterations practical
+### Key Features
+
+- **Zero-friction onboarding** – No account creation required; immediate access to all functionality
+- **Accessibility-first design** – Full keyboard navigation support and beginner-friendly interface
+- **Privacy-focused** – No advertisements, tracking, or data collection
+- **Active development** – Regular updates with new scripts and features
+- **Transparency** – Scripts may be temporarily disabled if issues are identified
+
+## Project Status
+
+**Current Development Priorities:**
+- Expanding script library
+- Increasing unit test coverage
+- Implementing integration test suite
+- Introduce script versioning
+
+## Local Development
+
+### Prerequisites
+- **Option 1:** Node.js v22.11.0 or higher
+- **Option 2:** Docker Desktop
+
+### Setup Instructions (Node.js)
+
+```bash
+# Clone the repository
+git clone https://github.com/Deen-q/tweakforge.git
+cd tweakforge
+
+# Install dependencies and start development server
+npm install
+npm run dev
+
+# Application runs at http://localhost:3000 with hot module replacement enabled
+```
+
+### Setup Instructions (Docker)
+
+```bash
+# Clone the repository
+git clone https://github.com/Deen-q/tweakforge.git
+cd tweakforge
+
+# Build the Docker image
+docker build -t tweakforge .
+
+# Run the container (note the --name flag)
+docker run -d -p 3000:3000 --name tweakforgecontainer tweakforge
+
+# Access the application at http://localhost:3000
+
+# Stop the container
+docker stop tweakforgecontainer
+
+# Optional: Remove the container
+docker rm tweakforgecontainer
+
+# Note: Docker doesn't auto-reload like Node.js HMR - rebuild the image after making changes
+```
+<br>
+<details>
+<summary><b>Help, I'm new to Docker</b></summary>
+
+### Understanding the Run Command
+
+**`docker run -d -p 3000:3000 --name tweakforgecontainer tweakforge`**
+
+- **`docker run`** - Create and start a new container from an image
+- **`-d`** (detached mode) - Run in background, freeing up your terminal
+- **`-p 3000:3000`** (port mapping) - Forward `localhost:3000` → container port `3000`
+- **`--name tweakforgecontainer`** - Give the container a human-readable name
+- **`tweakforge`** - The image name to run (created with `docker build`)
+
+### Common Commands
+
+```bash
+# Control your container
+docker stop tweakforgecontainer
+docker start tweakforgecontainer
+docker restart tweakforgecontainer
+docker rm tweakforgecontainer  # Remove (must stop first)
+
+# Monitor containers
+docker ps                        # Show running containers
+docker ps -a                     # Show all containers (including stopped)
+
+# View logs
+docker logs tweakforgecontainer          # View logs
+docker logs -f tweakforgecontainer       # Follow logs in real-time
+
+# Debugging
+docker exec -it tweakforgecontainer sh   # Access container shell
+```
+
+### Rebuild After Changes
+
+```bash
+docker stop tweakforgecontainer
+docker rm tweakforgecontainer
+docker build -t tweakforge .
+docker run -d -p 3000:3000 --name tweakforgecontainer tweakforge
+```
+
+</details>
+<br>
+
+**Development Workflow:**
+- Create a new branch for your changes before beginning work
+- Use the Node.js setup for active development (instant feedback)
+- Use Docker to test the production build
+- Run tests via `npm run test` before pushing any changes
+
+## Testing Methodology
+
+Scripts undergo validation in isolated Windows environments before merging to the main branch. The testing process uses Hyper-V virtual machines with a differencing disk strategy:
+
+**Infrastructure:**
+- **Base Image** – Clean Windows installation with read-only parent disk serving as immutable template
+- **Differencing Disks** – Lightweight, test-specific disks that capture only changes from the base image
+- **Test Workflow** – Boot VM → Execute script → Validate results → Discard differencing disk → Generate fresh disk for next iteration
+- **Benefits** – Ensures consistent test environment while maintaining rapid iteration speed (differencing disks typically <5GB vs. multi-GB snapshots)
+
+*Note: A detailed markdown file documenting the full automated testing process may be published in the future. The current implementation uses a batch file for automation.*
+
+## Safety & Transparency
+
+- All scripts are open source and reviewable in `/src/app/data/checkboxOptions.ts`
+- Scripts require administrator privileges to modify system settings
+- Despite all the care put into the scripts, it is still recommended you either backup your entire registry or create a system restore point before applying changes
+
+## Contributing
+
+Contributions welcome! Please:
+1. Open an issue to discuss proposed changes
+2. Fork the repository and create a feature branch
+3. Ensure tests pass (`npm run test`)
+4. Submit a pull request with clear description
+
+## License
+
+[GNU AFFERO GENERAL PUBLIC LICENSE Version 3 (AGPL-3.0)](LICENSE)

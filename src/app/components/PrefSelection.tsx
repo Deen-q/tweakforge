@@ -116,7 +116,7 @@ export default function PrefSelection({
                                                 p-2
                                                 overflow-hidden text-ellipsis
                                             "
-                                            title={selectedScriptObject.name}
+                                            title={selectedScriptObject.description}
                                         />
                                         <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
                                             type="button"
@@ -140,16 +140,18 @@ export default function PrefSelection({
                                             {/* need a more graceful way to tell user script has been copied to clipboard */}
 
                                         </button>
-                                        <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
-                                            "rev-diagonal-stripes"
-                                            : "bg-slate-700 hover:bg-slate-700/10"}`}
-                                            type="button"
-                                            title="Copy 'undo' script"
-                                            onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}
-                                            disabled={!selectedScriptObject.undoScript}
-                                        >
-                                            <UndoIcon className="w-5" />
-                                        </button>
+                                        {selectedScriptObject.undoScript &&
+                                            <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
+                                                "rev-diagonal-stripes"
+                                                : "bg-slate-700 hover:bg-slate-700/10"}`}
+                                                type="button"
+                                                title="Copy 'undo' script"
+                                                onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}
+                                                disabled={!selectedScriptObject.undoScript}
+                                            >
+                                                <UndoIcon className="w-5" />
+                                            </button>
+                                        }
                                         {/* NEED A SECOND INSPECT BUTTON FOR UNDO SCRIPTS */}
                                     </div>
                                 );
