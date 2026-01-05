@@ -34,8 +34,8 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 
 Write-Host "\`\`n> Step [1/2] Creating registry entry..." -ForegroundColor Yellow
 try {
-    New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Name "InprocServer32" -Force | Out-Null
-    Set-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Name "(Default)" -Value ""
+    New-Item -Path "HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Name "InprocServer32" -Force | Out-Null
+    Set-ItemProperty -Path "HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" -Name "(Default)" -Value ""
     Write-Host "✓ Registry key created successfully" -ForegroundColor Green
 } catch {
     Write-Host "✗ Error creating registry key: $($_.Exception.Message)" -ForegroundColor Red
@@ -79,8 +79,8 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 
 Write-Host "\`\`n> Step [1/2] Removing registry entry..." -ForegroundColor Yellow
 try {
-    if (Test-Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}") {
-        Remove-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Recurse -Force
+    if (Test-Path "HKCU:\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}") {
+        Remove-Item -Path "HKCU:\\oftware\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" -Recurse -Force
         Write-Host "✓ Registry key removed successfully" -ForegroundColor Green
     } else {
         Write-Host "✓ Registry key not found (already removed or never existed)" -ForegroundColor Green
@@ -141,9 +141,9 @@ if ($process) {
 }
 
 Write-Host "\`\`n> Step [2/5] Uninstalling OneDrive..." -ForegroundColor Yellow
-$oneDriveSetup = "$env:SystemRoot\SysWOW64\OneDriveSetup.exe"
+$oneDriveSetup = "$env:SystemRoot\\SysWOW64\\OneDriveSetup.exe"
 if (-not (Test-Path $oneDriveSetup)) {
-    $oneDriveSetup = "$env:SystemRoot\System32\OneDriveSetup.exe"
+    $oneDriveSetup = "$env:SystemRoot\\System32\\OneDriveSetup.exe"
 }
 
 if (Test-Path $oneDriveSetup) {
@@ -153,10 +153,10 @@ if (Test-Path $oneDriveSetup) {
     Write-Host "⚠ OneDrive installer not found (may already be removed)" -ForegroundColor Yellow
 }
 
-Write-Host "\`\`n> Step [3/5] Removing OneDrive from File Explorer..." -ForegroundColor Yellow
+Write-Host "\`\`n > Step [3/5] Removing OneDrive from File Explorer..." -ForegroundColor Yellow
 $clsidPaths = @(
-    "HKCU:\Software\Classes\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}",
-    "HKCU:\Software\Classes\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+    "HKCU:\\Software\\Classes\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}",
+    "HKCU:\\Software\\Classes\\Wow6432Node\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 )
 foreach ($path in $clsidPaths) {
     if (Test-Path $path) {
@@ -167,8 +167,8 @@ Write-Host "✓ OneDrive removed from File Explorer sidebar" -ForegroundColor Gr
 
 Write-Host "\`\`n> Step [4/5] Removing OneDrive from startup (PREVENTS TERMINAL FLASHING)..." -ForegroundColor Yellow
 $runKeys = @(
-    "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+    "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+    "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\Run"
 )
 foreach ($runKey in $runKeys) {
     if (Test-Path $runKey) {
@@ -181,12 +181,12 @@ foreach ($runKey in $runKeys) {
 }
 
 # Also remove from StartupApproved
-$startupApproved = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run"
+$startupApproved = "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run"
 if (Test-Path $startupApproved) {
     Remove-ItemProperty -Path $startupApproved -Name "OneDrive" -Force -ErrorAction SilentlyContinue
 }
 
-Write-Host "✓ OneDrive removed from startup (no more terminal flashing!)" -ForegroundColor Green
+Write-Host "✓ OneDrive removed from startup (avoids potential terminal flashing)" -ForegroundColor Green
 
 Write-Host "\`\`n> Step [5/5] Cleaning up OneDrive folders..." -ForegroundColor Yellow
 
@@ -203,8 +203,8 @@ if (Test-Path $userOneDrive) {
 }
 
 $oneDriveFolders = @(
-    "$env:LOCALAPPDATA\Microsoft\OneDrive",
-    "$env:PROGRAMDATA\Microsoft OneDrive"
+    "$env:LOCALAPPDATA\\Microsoft\\OneDrive",
+    "$env:PROGRAMDATA\\Microsoft OneDrive"
 )
 
 foreach ($folder in $oneDriveFolders) {
@@ -245,8 +245,8 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 
 Write-Host "\`\`n> Step [1/2] Cleaning up broken startup entries..." -ForegroundColor Yellow
 $runKeys = @(
-    "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+    "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
+    "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
 )
 $cleaned = $false
 foreach ($runKey in $runKeys) {
@@ -259,7 +259,7 @@ foreach ($runKey in $runKeys) {
     }
 }
 
-$startupApproved = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run"
+$startupApproved = "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run"
 if (Test-Path $startupApproved) {
     Remove-ItemProperty -Path $startupApproved -Name "OneDrive" -Force -ErrorAction SilentlyContinue
 }
@@ -314,7 +314,7 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 }
 
 Write-Host "\`\`n> Step [1/2] Disabling widgets preloading..." -ForegroundColor Yellow
-$dshKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Dsh"
+$dshKey = "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Dsh"
 
 try {
     if (-not (Test-Path $dshKey)) {
@@ -361,7 +361,7 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 }
 
 Write-Host "\`\`n> Step [1/2] Re-enabling widgets preloading..." -ForegroundColor Yellow
-$dshKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Dsh"
+$dshKey = "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Dsh"
 
 try {
     if (Test-Path $dshKey) {
@@ -413,7 +413,7 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 $removedApps = @()
 
 Write-Host "\`\`n> Step [1/6] Disabling Copilot for current user..." -ForegroundColor Yellow
-$hkcuCopilot = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
+$hkcuCopilot = "HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot"
 
 try {
     if (-not (Test-Path $hkcuCopilot)) {
@@ -426,7 +426,7 @@ try {
 }
 
 Write-Host "\`\`n> Step [2/6] Disabling Copilot system-wide..." -ForegroundColor Yellow
-$hklmCopilot = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot"
+$hklmCopilot = "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot"
 try {
     if (-not (Test-Path $hklmCopilot)) {
         New-Item -Path $hklmCopilot -Force | Out-Null
@@ -438,7 +438,7 @@ try {
 }
 
 Write-Host "\`\`n> Step [3/6] Disabling Copilot in Edge sidebar..." -ForegroundColor Yellow
-$edgeKey = "HKLM:\SOFTWARE\Policies\Microsoft\Edge"
+$edgeKey = "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge"
 try {
     if (-not (Test-Path $edgeKey)) {
         New-Item -Path $edgeKey -Force | Out-Null
@@ -451,7 +451,7 @@ try {
 }
 
 Write-Host "\`\`n> Step [4/6] Disabling Copilot suggestions in search..." -ForegroundColor Yellow
-$explorerKey = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
+$explorerKey = "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer"
 try {
     if (-not (Test-Path $explorerKey)) {
         New-Item -Path $explorerKey -Force | Out-Null
@@ -545,7 +545,7 @@ if ($continue.ToLower() -notin @("y", "yes")) {
 $changesApplied = 0
 
 Write-Host "\`\`n> Step [1/5] Restoring user-level settings..." -ForegroundColor Yellow
-$hkcuCopilot = "HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
+$hkcuCopilot = "HKCU:\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot"
 try {
     if (Test-Path $hkcuCopilot) {
         Remove-Item -Path $hkcuCopilot -Recurse -Force
@@ -559,7 +559,7 @@ try {
 }
 
 Write-Host "\`\`n> Step [2/5] Restoring system-wide settings..." -ForegroundColor Yellow
-$hklmCopilot = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot"
+$hklmCopilot = "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot"
 try {
     if (Test-Path $hklmCopilot) {
         Remove-Item -Path $hklmCopilot -Recurse -Force
@@ -573,7 +573,7 @@ try {
 }
 
 Write-Host "\`\`n> Step [3/5] Restoring Edge Copilot..." -ForegroundColor Yellow
-$edgeKey = "HKLM:\SOFTWARE\Policies\Microsoft\Edge"
+$edgeKey = "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Edge"
 try {
     $edgeRestored = $false
     if (Test-Path $edgeKey) {
@@ -595,7 +595,7 @@ try {
 }
 
 Write-Host "\`\`n> Step [4/5] Restoring search suggestions..." -ForegroundColor Yellow
-$explorerKey = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer"
+$explorerKey = "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer"
 try {
     if (Test-Path $explorerKey) {
         $removed = Remove-ItemProperty -Path $explorerKey -Name "DisableSearchBoxSuggestions" -ErrorAction SilentlyContinue

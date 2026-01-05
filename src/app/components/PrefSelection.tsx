@@ -35,7 +35,7 @@ export default function PrefSelection({
         if (!e.target.checked) setSelectedScriptIds(prev => prev.filter(scriptId => scriptId !== e.target.name));
     }, []);
 
-    const selectedScriptsMap = useMemo(() => { // {} used because the [] look out of place otherwise
+    const selectedScriptsMap = useMemo(() => {
         return new Map(checkboxOptions.map((option) => [option.id, option])) // ["script1", {*script1 object*}]
     }, []);
 

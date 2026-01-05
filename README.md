@@ -22,10 +22,10 @@ TweakForge is a web-based utility (unlike the numerous CLI based apps) designed 
 ## Project Status
 
 **Current Development Priorities:**
-- Expanding script library
 - Increasing unit test coverage
-- Implementing integration test suite
+- Implementing integration test suite (likely Cypress)
 - Introduce script versioning
+- Expanding script library
 
 ## Local Development
 
