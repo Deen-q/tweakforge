@@ -25,13 +25,8 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-      # commenting out linting for now since it's giving me a headache and isnt that important
-      
-      # clear next.js cache before linting
-    # - name: Run ESLint
-    #   run: |
-    #     rm -rf .next
-    #     npm run lint
+    - name: Run ESLint
+      run: npm run lint
     
     - name: Run tests
       run: npm run test
