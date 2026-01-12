@@ -1,22 +1,35 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
+import { CheckboxOption } from "../data/checkboxOptions";
 import { CopyIcon, InspectIcon, UndoIcon } from "./icons";
+import { Ps1Scripts } from "@/getscripts/getScripts";
+import { getCheckboxOptions } from "../data/checkboxOptions";
 
 interface PrefSelectionProps {
+    scripts: Ps1Scripts;
     setShowModal: (value: boolean) => void;
     setModalObject: (value: CheckboxOption | null) => void;
 }
 
 export default function PrefSelection({
+    scripts,
     setShowModal,
     setModalObject,
 }: PrefSelectionProps) {
-    const [filteredCheckboxes, setFilteredCheckboxes] = useState<typeof checkboxOptions>(checkboxOptions);  // checkboxOptions = source of truth
+
+    const checkboxOptions = useMemo(() => {
+        return getCheckboxOptions(scripts)
+    }, [scripts]);
+
+    const [filteredCheckboxes, setFilteredCheckboxes] = useState<CheckboxOption[]>(checkboxOptions);
     const [selectedScriptIds, setSelectedScriptIds] = useState<string[]>([]);
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [activeCopiedButton, setActiveCopiedButton] = useState<string>("");
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+    const selectedScriptsMap = useMemo(() => {
+        return new Map(checkboxOptions.map((option) => [option.id, option])) // ["script1", {*script1 object*}]
+    }, [checkboxOptions]);
 
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -28,15 +41,11 @@ export default function PrefSelection({
                     option.name.toLowerCase().includes(searchTerm)
                 ));
         };
-    }, []);
+    }, [checkboxOptions]);
 
     const handleCheckboxChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked) setSelectedScriptIds(prev => [...prev, e.target.name]);
         if (!e.target.checked) setSelectedScriptIds(prev => prev.filter(scriptId => scriptId !== e.target.name));
-    }, []);
-
-    const selectedScriptsMap = useMemo(() => {
-        return new Map(checkboxOptions.map((option) => [option.id, option])) // ["script1", {*script1 object*}]
     }, []);
 
     const handleCopyClick = (scriptId: string, buttonType: 'copy' | 'undo') => {
@@ -69,7 +78,7 @@ export default function PrefSelection({
                     type="text"
                     className="border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
                     placeholder="search scripts (e.g., 'onedrive'...)"
-                    onChange={handleSearchChange} // setFilteredCheckboxes
+                    onChange={handleSearchChange}
                 />
                 <fieldset className="w-full">
                     <legend><h4 className="text-center py-2"><strong>Select your scripts:</strong></h4></legend>
@@ -80,7 +89,7 @@ export default function PrefSelection({
                                 className="focus:ring-2 focus:ring-blue-300 duration-150"
                                 id={filteredOption.id}
                                 name={filteredOption.id}
-                                onChange={handleCheckboxChange} // setSelectedScriptIds
+                                onChange={handleCheckboxChange}
                                 checked={selectedScriptIds.includes(filteredOption.id)} // could use Set + .has
                             />
                             <label htmlFor={filteredOption.id} className="pl-2">{filteredOption.name}</label>
@@ -96,7 +105,7 @@ export default function PrefSelection({
                     {
                         selectedScriptIds.length === 0 ?
                             <div className="h-full flex items-center text-center whitespace-pre-wrap">
-                                <h4 className=""><strong>{`No scripts selected.\n💡 Tip: Check boxes on the left to add scripts here.`}</strong></h4>
+                                <h4 className=""><strong>{`No scripts selected.\nCheck boxes on the left to add scripts here.`}</strong></h4>
                             </div>
                             :
                             selectedScriptIds.map((id) => {

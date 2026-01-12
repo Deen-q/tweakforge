@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import PrefSelection from "./components/PrefSelection";
 import ToggleDropdown from "./components/ToggleDropdown";
@@ -10,11 +10,21 @@ import ViewScriptModal from "./components/ViewScriptModal";
 import { CheckboxOption } from "./data/checkboxOptions";
 import { CopyIcon, UndoIcon } from "./components/icons";
 import Footer from "./components/Footer";
+import { getPs1Scripts, Ps1Scripts } from "@/getscripts/getScripts";
 
 export default function Home() {
+  const [scripts, setScripts] = useState<Ps1Scripts | null>(null);
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalObject, setModalObject] = useState<CheckboxOption | null>(null);
+
+  useEffect(() => {
+    async function loadScripts() {
+      const data = await getPs1Scripts();
+      setScripts(data)
+    }
+    loadScripts();
+  }, []);
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
@@ -30,7 +40,7 @@ export default function Home() {
 
       <div className="flex flex-col flex-1 bg-slate-700">
 
-        {showModal && modalObject && // cannot accidently show empty modals now
+        {showModal && modalObject &&
           <ViewScriptModal
             setShowModal={setShowModal}
             modalObject={modalObject}
@@ -38,15 +48,11 @@ export default function Home() {
         }
 
         <a href="https://github.com/Deen-q/tweakforge" target="_blank" rel="noopener noreferrer" className="absolute top-8 right-4 lg:top-4 lg:right-4" >
-
-          {/* make github image larger on hover <<<< */}
-          {/* and fix positioning on smaller screens */}
           <Image
-            className="cursor-pointer hover:scale-98 w-14 md:w-24"
+            className="cursor-pointer hover:scale-102 w-14 md:w-24"
             src={githubIcon}
             alt=""
-            title="GitHub icon by Icons8"
-          // <a target="_blank" href="https://icons8.com/icon/80462/github">GitHub</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+            title="GitHub icon by Icons8 https://icons8.com/icon/80462/github"
           />
         </a>
         <header className="text-center pt-1">
@@ -60,10 +66,15 @@ export default function Home() {
         ">
           <div className="flex flex-col items-center">
 
-            <PrefSelection
-              setShowModal={setShowModal}
-              setModalObject={setModalObject}
-            />
+            {scripts ? (
+              <PrefSelection
+                setShowModal={setShowModal}
+                setModalObject={setModalObject}
+                scripts={scripts}
+              />
+            ) : (
+              <div>Loading TweakForge...</div>
+            )}
 
             <div className="flex flex-col items-center xl:w-200">
               <div className="pt-2 pb-1">
