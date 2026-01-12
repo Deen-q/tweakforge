@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import Home from '../app/page';
 
 describe('Home page', () => {
@@ -10,10 +10,9 @@ describe('Home page', () => {
     it('renders Home, which renders NavBar', () => {
         expect(screen.getByRole('navigation')).toBeInTheDocument();
     })
-    // giving the test as much as 60 000ms didnt work either, will fix this asap
-    // it('renders first checkbox and checks it', async () => {
-    //     const checkbox = screen.getByRole('checkbox', { name: "Disable OneDrive" });
-    //     await userEvent.click(checkbox);
-    //     expect(checkbox).toBeChecked();
-    // })
+    it('renders first checkbox and checks it', async () => {
+        const checkbox = screen.getByRole('checkbox', { name: "Disable OneDrive" });
+        await userEvent.click(checkbox);
+        expect(checkbox).toBeChecked();
+    })
 })

@@ -3,28 +3,25 @@
 import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import PrefSelection from "./components/PrefSelection";
-import ToggleDropdown from "./components/ToggleDropdown";
-import githubIcon from "../app/assets/icons8-github.svg"
-import Image from "next/image";
-import ViewScriptModal from "./components/ViewScriptModal";
+import { GitHubCatIcon } from "./components/icons";
 import { CheckboxOption } from "./data/checkboxOptions";
 import { CopyIcon, UndoIcon } from "./components/icons";
 import Footer from "./components/Footer";
-import { getPs1Scripts, Ps1Scripts } from "@/getscripts/getScripts";
+import dynamic from "next/dynamic";
+const ToggleDropdown = dynamic(() => import('./components/ToggleDropdown'));
+const ViewScriptModal = dynamic(() => import('./components/ViewScriptModal'));
 
 export default function Home() {
-  const [scripts, setScripts] = useState<Ps1Scripts | null>(null);
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalObject, setModalObject] = useState<CheckboxOption | null>(null);
 
+  // to prevent issues found when: throttling network to 3G AND interacting which checkboxes before page fully loads
+  const [isHydrated, setisHydrated] = useState<boolean>(false);
+
   useEffect(() => {
-    async function loadScripts() {
-      const data = await getPs1Scripts();
-      setScripts(data)
-    }
-    loadScripts();
-  }, []);
+    setisHydrated(true);
+  }, [])
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
@@ -48,12 +45,7 @@ export default function Home() {
         }
 
         <a href="https://github.com/Deen-q/tweakforge" target="_blank" rel="noopener noreferrer" className="absolute top-8 right-4 lg:top-4 lg:right-4" >
-          <Image
-            className="cursor-pointer hover:scale-102 w-14 md:w-24"
-            src={githubIcon}
-            alt=""
-            title="GitHub icon by Icons8 https://icons8.com/icon/80462/github"
-          />
+          <GitHubCatIcon />
         </a>
         <header className="text-center pt-1">
           ⚠️ Only use TweakForge from the official domain: <strong>tweakforge.tools</strong>
@@ -66,15 +58,11 @@ export default function Home() {
         ">
           <div className="flex flex-col items-center">
 
-            {scripts ? (
-              <PrefSelection
-                setShowModal={setShowModal}
-                setModalObject={setModalObject}
-                scripts={scripts}
-              />
-            ) : (
-              <div>Loading TweakForge...</div>
-            )}
+            <PrefSelection
+              setShowModal={setShowModal}
+              setModalObject={setModalObject}
+              disabled={!isHydrated}
+            />
 
             <div className="flex flex-col items-center xl:w-200">
               <div className="pt-2 pb-1">
@@ -118,7 +106,7 @@ export default function Home() {
                       <li>Minimise the window and go back to where the scripts are.</li>
                       <li>Check the script you want, and a <strong>copy</strong> button will appear. Press <strong>copy</strong></li>
                       <li>In the PowerShell window, <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">ctrl + v</kbd> or Right-click paste.</li>
-                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> to execute.</li> congrats, you just ran a script :D
+                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> to execute.</li> <li>congrats, you just ran a script :D</li>
                     </ol>
                     <div className="bg-yellow-900/20 border border-yellow-500/30 rounded p-3 mt-4 mr-2 ml-2">
                       <p className="text-yellow-200 text-sm">

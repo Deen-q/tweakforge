@@ -4,7 +4,6 @@ import { CheckboxOption } from "../data/checkboxOptions";
 
 interface ViewScriptModalProps {
     setShowModal: (value: boolean) => void;
-    // modalObject: object | undefined;
     modalObject: CheckboxOption | null;
 }
 
@@ -28,7 +27,7 @@ export default function ViewScriptModal({
             </div>
             <div className="">
                 <textarea
-                    value={modalObject?.script}
+                    value={modalObject?.script ?? ""}
                     readOnly
                     className="resize-none mt-1.5 
                     w-78 h-30 pl-12 pr-12

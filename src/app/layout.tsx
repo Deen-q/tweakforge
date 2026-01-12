@@ -26,6 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+      </head>
       <body
         // default was className={`${shareTechMono.variable} etc, not sure why .className would work...
         className={`${ibmPlex.className} ${shareTechMono.className}`}

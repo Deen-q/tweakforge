@@ -15,7 +15,7 @@ const scriptFiles = {
     disableWidgetPreloadUndo: 'disableWidgetPreload.undo.ps1',
     disableCopilot: 'disableCopilot.ps1',
     disableCopilotUndo: 'disableCopilot.undo.ps1',
-    removeBloatware: 'removeBloatware.ps1',
+    removePreinstalledApps: 'removePreinstalledApps.ps1',
 };
 
 export async function getPs1Scripts() {

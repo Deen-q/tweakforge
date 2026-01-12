@@ -1,27 +1,20 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CheckboxOption } from "../data/checkboxOptions";
+import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
 import { CopyIcon, InspectIcon, UndoIcon } from "./icons";
-import { Ps1Scripts } from "@/getscripts/getScripts";
-import { getCheckboxOptions } from "../data/checkboxOptions";
 
 interface PrefSelectionProps {
-    scripts: Ps1Scripts;
     setShowModal: (value: boolean) => void;
     setModalObject: (value: CheckboxOption | null) => void;
+    disabled: boolean;
 }
 
 export default function PrefSelection({
-    scripts,
     setShowModal,
     setModalObject,
+    disabled,
 }: PrefSelectionProps) {
-
-    const checkboxOptions = useMemo(() => {
-        return getCheckboxOptions(scripts)
-    }, [scripts]);
-
     const [filteredCheckboxes, setFilteredCheckboxes] = useState<CheckboxOption[]>(checkboxOptions);
     const [selectedScriptIds, setSelectedScriptIds] = useState<string[]>([]);
     const [activeCopiedButton, setActiveCopiedButton] = useState<string>("");
@@ -29,7 +22,7 @@ export default function PrefSelection({
 
     const selectedScriptsMap = useMemo(() => {
         return new Map(checkboxOptions.map((option) => [option.id, option])) // ["script1", {*script1 object*}]
-    }, [checkboxOptions]);
+    }, []);
 
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -41,7 +34,7 @@ export default function PrefSelection({
                     option.name.toLowerCase().includes(searchTerm)
                 ));
         };
-    }, [checkboxOptions]);
+    }, []);
 
     const handleCheckboxChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked) setSelectedScriptIds(prev => [...prev, e.target.name]);
@@ -76,9 +69,10 @@ export default function PrefSelection({
             <div className="h-full flex flex-col flex-1 pr-4">
                 <input
                     type="text"
-                    className="border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
+                    className={`border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5 ${disabled == false ? "cursor-wait" : ""}`}
                     placeholder="search scripts (e.g., 'onedrive'...)"
                     onChange={handleSearchChange}
+                    disabled={disabled}
                 />
                 <fieldset className="w-full">
                     <legend><h4 className="text-center py-2"><strong>Select your scripts:</strong></h4></legend>
@@ -86,11 +80,12 @@ export default function PrefSelection({
                         <div className="py-1" key={filteredOption.id}>
                             <input
                                 type="checkbox"
-                                className="focus:ring-2 focus:ring-blue-300 duration-150"
+                                className={`focus:ring-2 focus:ring-blue-300 duration-150 ${disabled == false ? "cursor-wait opacity-90" : ""}`}
                                 id={filteredOption.id}
                                 name={filteredOption.id}
                                 onChange={handleCheckboxChange}
                                 checked={selectedScriptIds.includes(filteredOption.id)} // could use Set + .has
+                                disabled={disabled}
                             />
                             <label htmlFor={filteredOption.id} className="pl-2">{filteredOption.name}</label>
                         </div>
