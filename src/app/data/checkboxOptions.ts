@@ -668,11 +668,11 @@ Write-Host "Press any key to exit..." -ForegroundColor Gray
     undoDescription: "Returns Copilot to its default state",
     },
         {
-    id: "removeBloatware",
-    name: "Remove Bloatware (non-aggressive)",
+    id: "removePreinstalledApps",
+    name: "Remove Preinstalled Apps (non-aggressive)",
     script: `#Requires -RunAsAdministrator
 
-Write-Host "=== Bloatware Remover ===" -ForegroundColor Cyan
+Write-Host "=== Preinstalled Apps Remover ===" -ForegroundColor Cyan
 Write-Host "This will remove promotional apps and games (Candy Crush, Clipchamp, etc.)" -ForegroundColor Yellow
 Write-Host "Essential apps preserved: Calculator, Photos, Paint, Store, Edge, Xbox" -ForegroundColor Gray
 Write-Host "Note: Teams and OneNote will NOT be removed" -ForegroundColor Yellow
@@ -689,13 +689,13 @@ if (\$continue.ToLower() -notin @("y", "yes")) {
     return
 }
 
-# define bloatware apps to remove
-\$bloatwareApps = @(
+# define preinstalled/non-core apps to remove
+\$preinstalledApps = @(
     # Games
     "*CandyCrush*",
     "*BubbleWitch*",
     "*MarchofEmpires*",
-    "*Minecraft*",
+    # "*Minecraft*",
     "*Solitaire*",
     "*Disney*",
     "*FarmVille*",
@@ -707,11 +707,11 @@ if (\$continue.ToLower() -notin @("y", "yes")) {
     "Microsoft.Getstarted",
     "Microsoft.Microsoft3DViewer",
     "Microsoft.MixedReality.Portal",
-    "Microsoft.Print3D",
+    # "Microsoft.Print3D",
     "Microsoft.SkypeApp",
     "Clipchamp.Clipchamp",
-    "Microsoft.Todos",
-    "Microsoft.PowerAutomateDesktop",
+    # "Microsoft.Todos",
+    # "Microsoft.PowerAutomateDesktop",
     
     # News/weather/finance (old UWP versions)
     "Microsoft.BingNews",
@@ -725,7 +725,7 @@ if (\$continue.ToLower() -notin @("y", "yes")) {
     "*Twitter*",  # if it still exists
     "*TikTok*",
     "*Instagram*",
-    "*Spotify*",  # Trial version pre-installed on some OEM PCs
+    # "*Spotify*",  # Trial version pre-installed on some OEM PCs - commented out in case it uninstalls non-preinstalled version. needs to be tested in VM
     "*Duolingo*",
     "*Uber*",
     "*PandoraMedia*",
@@ -737,9 +737,9 @@ if (\$continue.ToLower() -notin @("y", "yes")) {
 \$notFound = 0
 \$failed = 0
 
-Write-Host "> Step [1/2] Removing bloatware apps..." -ForegroundColor Yellow
+Write-Host "> Step [1/2] Removing preinstalledApps apps..." -ForegroundColor Yellow
 
-foreach (\$app in \$bloatwareApps) {
+foreach (\$app in \$preinstalledApps) {
     \$package = Get-AppxPackage -Name \$app -ErrorAction SilentlyContinue
     
     if (\$package) {
@@ -759,7 +759,7 @@ foreach (\$app in \$bloatwareApps) {
 }
 
 Write-Host "> Step [2/2] Removing provisioned packages (prevents reinstall for new users)..." -ForegroundColor Yellow
-foreach (\$app in \$bloatwareApps) {
+foreach (\$app in \$preinstalledApps) {
     \$provisioned = Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like \$app
     
     if (\$provisioned) {
@@ -781,7 +781,7 @@ if (\$failed -gt 0) {
 }
 
 Write-Host "=== Finished ===" -ForegroundColor Cyan
-Write-Host "Bloatware has been removed" -ForegroundColor Green
+Write-Host "PreinstalledApps have been removed" -ForegroundColor Green
 Write-Host "  Note: Some apps may reinstall after major Windows updates" -ForegroundColor Yellow
 Write-Host "  You can re-run this script anytime to clean them up again" -ForegroundColor Gray
 Write-Host "Press any key to exit..." -ForegroundColor Gray
