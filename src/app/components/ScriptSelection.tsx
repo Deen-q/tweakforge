@@ -4,17 +4,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
 import { CopyIcon, InspectIcon, InspectUndoIcon, UndoIcon } from "./icons";
 
-interface PrefSelectionProps {
+interface ScriptSelectionProps {
     setShowModal: (value: boolean) => void;
     setModalObject: (value: CheckboxOption | null) => void;
     setActiveModal: (value: "forward" | "reverse" | "none") => void;
 }
 
-export default function PrefSelection({
+export default function ScriptSelection({
     setShowModal,
     setModalObject,
     setActiveModal,
-}: PrefSelectionProps) {
+}: ScriptSelectionProps) {
     const [filteredCheckboxes, setFilteredCheckboxes] = useState<CheckboxOption[]>(checkboxOptions);
     const [selectedScriptIds, setSelectedScriptIds] = useState<string[]>([]);
     const [activeCopiedButton, setActiveCopiedButton] = useState<string>("");

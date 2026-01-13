@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import NavBar from "./components/NavBar";
-import PrefSelection from "./components/PrefSelection";
+import ScriptSelection from "./components/ScriptSelection";
 import { GitHubCatIcon, InspectIcon, InspectUndoIcon } from "./components/icons";
 import { CheckboxOption } from "./data/checkboxOptions";
 import { CopyIcon, UndoIcon } from "./components/icons";
@@ -54,7 +54,7 @@ export default function Home() {
         ">
           <div className="flex flex-col items-center">
 
-            <PrefSelection
+            <ScriptSelection
               setShowModal={setShowModal}
               setModalObject={setModalObject}
               setActiveModal={setActiveModal}
