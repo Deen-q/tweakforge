@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NavBar from "./components/NavBar";
 import PrefSelection from "./components/PrefSelection";
-import { GitHubCatIcon } from "./components/icons";
+import { GitHubCatIcon, InspectIcon, InspectUndoIcon } from "./components/icons";
 import { CheckboxOption } from "./data/checkboxOptions";
 import { CopyIcon, UndoIcon } from "./components/icons";
 import Footer from "./components/Footer";
@@ -15,13 +15,7 @@ export default function Home() {
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalObject, setModalObject] = useState<CheckboxOption | null>(null);
-
-  // to prevent issues found when: throttling network to 3G AND interacting which checkboxes before page fully loads
-  const [isHydrated, setisHydrated] = useState<boolean>(false);
-
-  useEffect(() => {
-    setisHydrated(true);
-  }, [])
+  const [activeModal, setActiveModal] = useState<"forward" | "reverse" | "none">("none");
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
@@ -31,7 +25,7 @@ export default function Home() {
     // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
 
-      <aside className="sm:bg-slate-800 sm:p-4"> {/*sm: fixed the wacky white spaces around prefselect*/}
+      <aside className="sm:bg-slate-800 sm:p-4"> {/*sm: fixed the wacky white spaces around scriptselect*/}
         <NavBar />
       </aside>
 
@@ -41,6 +35,8 @@ export default function Home() {
           <ViewScriptModal
             setShowModal={setShowModal}
             modalObject={modalObject}
+            activeModal={activeModal}
+            setActiveModal={setActiveModal}
           />
         }
 
@@ -61,7 +57,7 @@ export default function Home() {
             <PrefSelection
               setShowModal={setShowModal}
               setModalObject={setModalObject}
-              disabled={!isHydrated}
+              setActiveModal={setActiveModal}
             />
 
             <div className="flex flex-col items-center xl:w-200">
@@ -77,7 +73,8 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div>
-                    <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back</p>
+                    <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back.</p>
+                    <p>{`you're`} encouraged to look at the scripts with the <InspectIcon stroke={"white"} /> <span className="text-white">(inspect)</span> and <InspectUndoIcon stroke={"white"} /> <span className="text-white">(undo inspect)</span> icons, before you run a script.</p>
                   </div>
                 </ToggleDropdown>
 
@@ -88,7 +85,14 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div>
-                    <p className="underline font-semibold text-blue-300 mb-1">Step 1: Open PowerShell as Administrator</p>
+                    <p className="underline font-semibold text-blue-300 mb-1">Step 1: Look for a script you like</p>
+                    <ol className="list-decimal list-inside space-y-1 ml-4">
+                      <li>Find a script you like under {`"Select your scripts"`} and check at least 1 box</li>
+                      <li>When a box is checked, {`it's`} respective bar will appear under {`"Checked scripts"`}.</li>
+                      <li>To the right of the bar, {`you'll`} see some buttons including <InspectIcon stroke={"white"} /> <span className="text-white">(inspect)</span> and <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> for the script you just checked.</li>
+                      <li>Once {`you're`} happy with the script and {`you've`} hit the copy button, proceed to running the script, in the steps below!</li>
+                    </ol>
+                    <h4 className="underline font-semibold text-blue-300 mt-4 mb-1">Step 2: Open PowerShell and run your script</h4>
                     <ol className="list-decimal list-inside space-y-1 ml-4">
                       <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs inline-flex items-center gap-1">
                         <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
@@ -97,20 +101,17 @@ export default function Home() {
                         (Windows) + R
                       </kbd>
                       </li>
-                      <li>Type <code className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">powershell</code> - don`t hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> yet</li>
+                      <li>Type <code className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">powershell</code> - {`don't`} hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> yet - you need to open as Admin first.</li>
                       <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Ctrl + Shift + Enter</kbd> (this opens as administrator)</li>
-                      <li>Click <strong>Yes</strong> when Windows asks for permission</li>
-                    </ol>
-                    <h4 className="underline font-semibold text-blue-300 mt-4 mb-1">Step 2: Run the Script</h4>
-                    <ol className="list-decimal list-inside space-y-1 ml-4">
-                      <li>Minimise the window and go back to where the scripts are.</li>
-                      <li>Check the script you want, and a <strong>copy</strong> button will appear. Press <strong>copy</strong></li>
-                      <li>In the PowerShell window, <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">ctrl + v</kbd> or Right-click paste.</li>
-                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> to execute.</li> <li>congrats, you just ran a script :D</li>
+                      <li>Click <strong>Yes</strong> when Windows asks for permission. {`You've`} now opened PowerShell, ready to run your script.</li>
+                      <li>With the script you copied earlier (copy again if needed), paste it using <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">ctrl + v</kbd> or Right-click paste into the PowerShell window.</li>
+                      <li>Press <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> to execute - {`don't`} worry, it {`won't`} run without your confirmation in the next step!</li>
+                      <li>Within PowerShell, review the script details carefully—each step will show what changes will be made. If everything looks correct, type <strong>yes</strong> or <strong>y</strong> and then <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd> again to finally execute the script.</li>
+                      <li>Congrats, you just ran a script! Keep reading what it says in the command line (within PowerShell) to see each step as {`it's`} carried out.</li>
                     </ol>
                     <div className="bg-yellow-900/20 border border-yellow-500/30 rounded p-3 mt-4 mr-2 ml-2">
                       <p className="text-yellow-200 text-sm">
-                        <span className="font-semibold">💡 Tip:</span> Some scripts may take a few seconds to complete. Don`t close PowerShell until you see the process finish.
+                        <span className="font-semibold">Tip:</span> Some scripts may take a few seconds to complete. {`Don't`} close PowerShell until you see the process finish.
                       </p>
                     </div>
                   </div>
@@ -134,7 +135,7 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div>
-                    <p>each checked script has a reverse/undo script. use the <UndoIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
+                    <p>*most* scripts have a reverse/undo script. with the exception of {`"Remove Preinstalled Apps"`}, use the <UndoIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
                   </div>
                 </ToggleDropdown>
               </div>

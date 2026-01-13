@@ -5,29 +5,44 @@ import { CheckboxOption } from "../data/checkboxOptions";
 interface ViewScriptModalProps {
     setShowModal: (value: boolean) => void;
     modalObject: CheckboxOption | null;
+    activeModal: "forward" | "reverse" | "none";
+    setActiveModal: (value: "forward" | "reverse" | "none") => void;
 }
 
-// turned into a generic component, later
 export default function ViewScriptModal({
     setShowModal,
     modalObject,
+    activeModal,
+    setActiveModal,
 }: ViewScriptModalProps) {
 
     const modalDimensions = "w-80 h-40 md:w-112 md:h-56 lg:w-144 lg:h-72 xl:w-168 xl:h-84";
     const modalPositioning = "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
 
+    const modalTitle = activeModal === "forward" ? modalObject?.name : `Undo ${modalObject?.name}`;
+    const modalContent = activeModal === "forward" ? modalObject?.script : modalObject?.undoScript;
+
     return (
         <div className={`flex flex-col items-center rounded border z-10 bg-slate-800 border-blue-300 ${modalPositioning} ${modalDimensions}`}>
             <div className="flex justify-between w-full px-6 py-1 bg-slate-700">
-                <span className="">{modalObject?.name}:</span>
+                <span className="">{modalTitle}:</span>
                 <button
+                    aria-label="Close"
                     className="cursor-pointer hover:bg-slate-400 text-red-600 rounded w-5"
-                    onClick={() => setShowModal(false)}
-                >x</button>
+                    onClick={() => {
+                        setShowModal(false)
+                        setActiveModal("none")
+                    }
+                    }
+                // handle escape key? stretch goal: modal focus trapping?
+                >
+                    x
+                </button>
             </div>
-            <div className="">
+            <div>
                 <textarea
-                    value={modalObject?.script ?? ""}
+                    aria-label="Modal Content"
+                    value={modalContent ?? ""}
                     readOnly
                     className="resize-none mt-1.5 
                     w-78 h-30 pl-12 pr-12

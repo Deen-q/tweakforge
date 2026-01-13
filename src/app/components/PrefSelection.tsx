@@ -2,18 +2,18 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
-import { CopyIcon, InspectIcon, UndoIcon } from "./icons";
+import { CopyIcon, InspectIcon, InspectUndoIcon, UndoIcon } from "./icons";
 
 interface PrefSelectionProps {
     setShowModal: (value: boolean) => void;
     setModalObject: (value: CheckboxOption | null) => void;
-    disabled: boolean;
+    setActiveModal: (value: "forward" | "reverse" | "none") => void;
 }
 
 export default function PrefSelection({
     setShowModal,
     setModalObject,
-    disabled,
+    setActiveModal,
 }: PrefSelectionProps) {
     const [filteredCheckboxes, setFilteredCheckboxes] = useState<CheckboxOption[]>(checkboxOptions);
     const [selectedScriptIds, setSelectedScriptIds] = useState<string[]>([]);
@@ -69,10 +69,9 @@ export default function PrefSelection({
             <div className="h-full flex flex-col flex-1 pr-4">
                 <input
                     type="text"
-                    className={`border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5 ${disabled == false ? "cursor-wait" : ""}`}
+                    className="border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
                     placeholder="search scripts (e.g., 'onedrive'...)"
                     onChange={handleSearchChange}
-                    disabled={disabled}
                 />
                 <fieldset className="w-full">
                     <legend><h4 className="text-center py-2"><strong>Select your scripts:</strong></h4></legend>
@@ -80,12 +79,11 @@ export default function PrefSelection({
                         <div className="py-1" key={filteredOption.id}>
                             <input
                                 type="checkbox"
-                                className={`focus:ring-2 focus:ring-blue-300 duration-150 ${disabled == false ? "cursor-wait opacity-90" : ""}`}
+                                className="focus:ring-2 focus:ring-blue-300 duration-150"
                                 id={filteredOption.id}
                                 name={filteredOption.id}
                                 onChange={handleCheckboxChange}
                                 checked={selectedScriptIds.includes(filteredOption.id)} // could use Set + .has
-                                disabled={disabled}
                             />
                             <label htmlFor={filteredOption.id} className="pl-2">{filteredOption.name}</label>
                         </div>
@@ -128,6 +126,7 @@ export default function PrefSelection({
                                             onClick={() => {
                                                 setShowModal(true)
                                                 setModalObject(selectedScriptObject)
+                                                setActiveModal("forward")
                                             }}
                                         >
                                             <InspectIcon className="w-5" />
@@ -156,7 +155,19 @@ export default function PrefSelection({
                                                 <UndoIcon className="w-5" />
                                             </button>
                                         }
-                                        {/* NEED A SECOND INSPECT BUTTON FOR UNDO SCRIPTS */}
+                                        {selectedScriptObject.undoScript &&
+                                            <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
+                                                type="button"
+                                                title="Inspect 'undo' Script"
+                                                onClick={() => {
+                                                    setShowModal(true)
+                                                    setModalObject(selectedScriptObject)
+                                                    setActiveModal("reverse")
+                                                }}
+                                            >
+                                                <InspectUndoIcon className="w-5" />
+                                            </button>
+                                        }
                                     </div>
                                 );
                             })
