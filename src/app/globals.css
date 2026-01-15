@@ -1,6 +1,32 @@
 /* tailwind v4 btw */
 @import "tailwindcss";
 
+/* make css variables after */
+.bg-nav {
+  background-color: #1d293d;
+}
+
+.bg-main {
+  background-color: #314158;
+}
+
+.bg-selection {
+  background-color: #435b7a;
+}
+
+.bg-accent {
+  background-color: #8ec5ff;
+}
+
+.text-header {
+  color: #E8DCB9;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8ec5ff transparent;
+}
+
 /* Hopefully this complies with accessibility */
 .diagonal-stripes {
   background: repeating-linear-gradient(315deg,

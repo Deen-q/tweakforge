@@ -25,7 +25,7 @@ export default function Home() {
     // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
 
-      <aside className="sm:bg-slate-800 sm:p-4"> {/*sm: fixed the wacky white spaces around scriptselect*/}
+      <aside className="bg-nav md:p-2">
         <NavBar />
       </aside>
 
@@ -43,14 +43,15 @@ export default function Home() {
         <a href="https://github.com/Deen-q/tweakforge" target="_blank" rel="noopener noreferrer" className="absolute top-8 right-4 lg:top-4 lg:right-4" >
           <GitHubCatIcon />
         </a>
-        <header className="text-center pt-1">
+        <header className="text-center text-header pt-1">
           ⚠️ Only use TweakForge from the official domain: <strong>tweakforge.tools</strong>
         </header>
         <main className="
         flex flex-1 flex-col justify-center items-center 
-        bg-slate-700 p-6
         overflow-hidden sm:overflow-auto
         h-screen sm:h-auto
+        bg-pale-slate
+        p-6
         ">
           <div className="flex flex-col items-center">
 

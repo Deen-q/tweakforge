@@ -20,6 +20,9 @@ export default function ScriptSelection({
     const [activeCopiedButton, setActiveCopiedButton] = useState<string>("");
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    const buttonSizeStyles = "border h-6 md:h-8 md:max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10";
+    const buttonIconStyles = "w-4 md:w-5"
+
     const selectedScriptsMap = useMemo(() => {
         return new Map(checkboxOptions.map((option) => [option.id, option])) // ["script1", {*script1 object*}]
     }, []);
@@ -62,21 +65,29 @@ export default function ScriptSelection({
         <div className="
         flex justify-center items-center
         w-94 md:w-150 lg:w-210 xl:w-250 xl:h-80
-        bg-blue-300/20 border border-blue-300 rounded
-        p-4
+        bg-selection border border-blue-300 
+        rounded-lg
+        p-6
         ">
             {/*left segment -> gap-4 didnt seem adequate for space around the divider*/}
-            <div className="h-full flex flex-col flex-1 pr-4">
-                <input
-                    type="text"
-                    className="border w-full bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
-                    placeholder="search scripts (e.g., 'onedrive'...)"
-                    onChange={handleSearchChange}
-                />
-                <fieldset className="w-full">
-                    <legend><h4 className="text-center py-2"><strong>Select your scripts:</strong></h4></legend>
+            <div className="h-full flex flex-col flex-1 overflow-y-auto pr-5">
+                <div className="sticky top-0 z-10 bg-selection">
+                    <div className="pb-1">
+                        <input
+                            type="text"
+                            className="border w-full rounded-lg bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
+                            placeholder="search scripts (e.g., 'onedrive'...)"
+                            onChange={handleSearchChange}
+                        />
+                    </div>
+                    <div className="bg-slate-800 rounded-bl-lg rounded-tr-lg text-center py-2">
+                        <strong>Select your scripts:</strong>
+                    </div>
+                </div>
+                <fieldset className="w-full" aria-label="Select your scripts">
+                    <legend className="sr-only">Select your scripts</legend>
                     {filteredCheckboxes && filteredCheckboxes.map((filteredOption) =>
-                        <div className="py-1" key={filteredOption.id}>
+                        <div className="py-1 pl-1" key={filteredOption.id}>
                             <input
                                 type="checkbox"
                                 className="focus:ring-2 focus:ring-blue-300 duration-150"
@@ -91,13 +102,16 @@ export default function ScriptSelection({
                 </fieldset>
             </div>
 
-            <div className={`h-full flex flex-1 flex-col justify-start items-center border-l pl-4`}>
-                <h4 className="pb-2"><strong>Checked Scripts:</strong></h4>
+            <div className="h-full flex flex-1 flex-col justify-start items-center border-l overflow-y-auto overflow-x-hidden pl-5">
+                {/* <h3 className="pb-2"><strong>Checked Scripts:</strong></h3> */}
+                <div className="w-full sticky top-0 z-10 bg-slate-800 rounded-tl-lg rounded-br-lg text-center py-2 mb-1">
+                    <strong>Checked scripts:</strong>
+                </div>
 
                 <div className="h-full w-full gap-2 flex flex-col">
                     {
                         selectedScriptIds.length === 0 ?
-                            <div className="h-full flex items-center text-center whitespace-pre-wrap">
+                            <div className="h-full flex items-center text-center">
                                 <h4 className=""><strong>{`No scripts selected.\nCheck boxes on the left to add scripts here.`}</strong></h4>
                             </div>
                             :
@@ -106,21 +120,21 @@ export default function ScriptSelection({
                                 if (!selectedScriptObject) return null;
                                 return (
                                     <div
-                                        className="flex gap-2 animate-slide" key={selectedScriptObject.id}>
+                                        className="flex gap-1 md:gap-2 animate-slide" key={selectedScriptObject.id}>
                                         <input
                                             type="text"
                                             readOnly
                                             value={selectedScriptObject.script}
                                             // flex-1 min-w-2 ruins the design on mobiles
                                             className="
-                                                flex-1 w-2
+                                                flex-1 w-2 h-6 md:h-8
                                                 text-xs bg-slate-200/40 text-slate-800 rounded border border-slate-800
-                                                p-2
                                                 overflow-hidden text-ellipsis
+                                                p-2
                                             "
                                             title={selectedScriptObject.description}
                                         />
-                                        <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
+                                        <button className={buttonSizeStyles}
                                             type="button"
                                             title="Inspect Script"
                                             onClick={() => {
@@ -129,9 +143,9 @@ export default function ScriptSelection({
                                                 setActiveModal("forward")
                                             }}
                                         >
-                                            <InspectIcon className="w-5" />
+                                            <InspectIcon className={buttonIconStyles} />
                                         </button>
-                                        <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${activeCopiedButton === `${selectedScriptObject.id}-copy` ?
+                                        <button className={`${buttonSizeStyles} ${activeCopiedButton === `${selectedScriptObject.id}-copy` ?
                                             "diagonal-stripes"
                                             : "bg-slate-700 hover:bg-slate-700/10"}`}
                                             type="button"
@@ -139,12 +153,12 @@ export default function ScriptSelection({
                                             onClick={() => handleCopyClick(selectedScriptObject.id, 'copy')}
                                             disabled={!selectedScriptObject.script}
                                         >
-                                            <CopyIcon className="w-5" />
+                                            <CopyIcon className={buttonIconStyles} />
                                             {/* need a more graceful way to tell user script has been copied to clipboard */}
 
                                         </button>
                                         {selectedScriptObject.undoScript &&
-                                            <button className={`border max-w-[3-rem] cursor-pointer rounded p-1 ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
+                                            <button className={`${buttonSizeStyles} ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
                                                 "rev-diagonal-stripes"
                                                 : "bg-slate-700 hover:bg-slate-700/10"}`}
                                                 type="button"
@@ -152,11 +166,11 @@ export default function ScriptSelection({
                                                 onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}
                                                 disabled={!selectedScriptObject.undoScript}
                                             >
-                                                <UndoIcon className="w-5" />
+                                                <UndoIcon className={buttonIconStyles} />
                                             </button>
                                         }
                                         {selectedScriptObject.undoScript &&
-                                            <button className="border max-w-[3-rem] cursor-pointer rounded p-1 bg-slate-700 hover:bg-slate-700/10"
+                                            <button className={buttonSizeStyles}
                                                 type="button"
                                                 title="Inspect 'undo' Script"
                                                 onClick={() => {
@@ -165,7 +179,7 @@ export default function ScriptSelection({
                                                     setActiveModal("reverse")
                                                 }}
                                             >
-                                                <InspectUndoIcon className="w-5" />
+                                                <InspectUndoIcon className={buttonIconStyles} />
                                             </button>
                                         }
                                     </div>

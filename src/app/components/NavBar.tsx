@@ -13,9 +13,11 @@ export default function NavBar() {
     return (
         <nav className="
         flex fixed justify-evenly items-center bottom-0 left-0 right-0 
-        h-14 bg-slate-900/95 backdrop-blur-xs
-        sm:static sm:flex-col sm:h-full sm:justify-between sm:bg-transparent sm:w-24
+        h-18 backdrop-blur-xs
+        sm:static sm:flex-col sm:h-full sm:justify-between sm:w-24
+        bg-nav
         transition-all duration-200
+        md:p-2
         ">
             <div className="hidden sm:block">
                 <h1 className="font-bold">TweakForge</h1>
