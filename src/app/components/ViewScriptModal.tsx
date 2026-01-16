@@ -45,7 +45,7 @@ export default function ViewScriptModal({
                     value={modalContent ?? ""}
                     readOnly
                     className="resize-none mt-1.5 
-                    w-78 h-30 pl-12 pr-12
+                    w-78 h-30 px-12
                     md:w-110 md:h-54 md:max-w-110 md:max-h-44
                     lg:w-142 lg:h-70 lg:max-w-142 lg:max-h-58
                     xl:w-145 xl:h-65 xl:max-h-80 

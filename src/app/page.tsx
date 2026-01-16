@@ -25,7 +25,7 @@ export default function Home() {
     // overflow-hidden to prevent global scrolling glitch; all content is still reachable (accessibility)
     <div className="flex overflow-hidden min-h-screen text-white text-xs md:text-base">
 
-      <aside className="bg-nav md:p-2">
+      <aside className="bg-slate-800 md:p-2">
         <NavBar />
       </aside>
 
@@ -40,7 +40,7 @@ export default function Home() {
           />
         }
 
-        <a href="https://github.com/Deen-q/tweakforge" target="_blank" rel="noopener noreferrer" className="absolute top-8 right-4 lg:top-4 lg:right-4" >
+        <a href="https://github.com/Deen-q/tweakforge" target="_blank" rel="noopener noreferrer" className="absolute top-[-14] md:top-2 right-0 lg:top-4 lg:right-4" >
           <GitHubCatIcon />
         </a>
         <header className="text-center text-header pt-1">
@@ -50,10 +50,9 @@ export default function Home() {
         flex flex-1 flex-col justify-center items-center 
         overflow-hidden sm:overflow-auto
         h-screen sm:h-auto
-        bg-pale-slate
-        p-6
+        p-5 md:p-6
         ">
-          <div className="flex flex-col items-center">
+          <div className="h-full md:h-auto flex flex-col items-center">
 
             <ScriptSelection
               setShowModal={setShowModal}
@@ -130,7 +129,7 @@ export default function Home() {
                 </ToggleDropdown>
 
                 <ToggleDropdown
-                  title="help, how do I reverse/undo the script I ran?"
+                  title="help, how do I reverse/undo a script I just ran?"
                   id="dropdown-four"
                   isOpen={activeDropdownId === "dropdown-four"}
                   changeActiveDropdownId={changeActiveDropdownId}

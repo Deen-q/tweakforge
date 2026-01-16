@@ -2,20 +2,8 @@
 @import "tailwindcss";
 
 /* make css variables after */
-.bg-nav {
-  background-color: #1d293d;
-}
-
-.bg-main {
-  background-color: #314158;
-}
-
 .bg-selection {
   background-color: #435b7a;
-}
-
-.bg-accent {
-  background-color: #8ec5ff;
 }
 
 .text-header {

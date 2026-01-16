@@ -15,7 +15,7 @@ export default function NavBar() {
         flex fixed justify-evenly items-center bottom-0 left-0 right-0 
         h-18 backdrop-blur-xs
         sm:static sm:flex-col sm:h-full sm:justify-between sm:w-24
-        bg-nav
+        bg-slate-800
         transition-all duration-200
         md:p-2
         ">

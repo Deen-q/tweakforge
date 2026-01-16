@@ -63,14 +63,14 @@ export default function ScriptSelection({
 
     return (
         <div className="
-        flex justify-center items-center
-        w-94 md:w-150 lg:w-210 xl:w-250 xl:h-80
+        md:flex justify-center items-center
+        w-70 md:w-150 lg:w-210 xl:w-250 xl:h-80
         bg-selection border border-blue-300 
         rounded-lg
-        p-6
+        p-4 md:p-6
         ">
             {/*left segment -> gap-4 didnt seem adequate for space around the divider*/}
-            <div className="h-full flex flex-col flex-1 overflow-y-auto pr-5">
+            <div className="h-34 md:h-full flex flex-col flex-1 overflow-y-auto md:pr-5">
                 <div className="sticky top-0 z-10 bg-selection">
                     <div className="pb-1">
                         <input
@@ -102,17 +102,18 @@ export default function ScriptSelection({
                 </fieldset>
             </div>
 
-            <div className="h-full flex flex-1 flex-col justify-start items-center border-l overflow-y-auto overflow-x-hidden pl-5">
-                {/* <h3 className="pb-2"><strong>Checked Scripts:</strong></h3> */}
-                <div className="w-full sticky top-0 z-10 bg-slate-800 rounded-tl-lg rounded-br-lg text-center py-2 mb-1">
-                    <strong>Checked scripts:</strong>
-                </div>
+            <div className="h-34 md:h-full flex flex-1 flex-col justify-start items-center border-t md:border-l md:border-t-0 overflow-y-auto overflow-x-hidden md:pl-5">
+                <div className="w-full sticky top-0 z-10 bg-selection">
+                    <div className="bg-slate-800 rounded-tl-lg rounded-br-lg text-center py-2 mt-2 mb-1 md:mt-0">
+                        <strong>Checked scripts:</strong>
+                    </div>
 
+                </div>
                 <div className="h-full w-full gap-2 flex flex-col">
                     {
                         selectedScriptIds.length === 0 ?
                             <div className="h-full flex items-center text-center">
-                                <h4 className=""><strong>{`No scripts selected.\nCheck boxes on the left to add scripts here.`}</strong></h4>
+                                <h4 className=""><strong>{`No scripts selected.\nCheck boxes to add scripts here.`}</strong></h4>
                             </div>
                             :
                             selectedScriptIds.map((id) => {
