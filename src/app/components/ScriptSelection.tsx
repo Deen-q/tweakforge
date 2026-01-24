@@ -71,7 +71,7 @@ export default function ScriptSelection({
         ">
             {/*left segment -> gap-4 didnt seem adequate for space around the divider*/}
             <div className="h-34 md:h-full flex flex-col flex-1 overflow-y-auto md:pr-5">
-                <div className="sticky top-0 z-10 bg-selection">
+                <div className="sticky top-0 z-2 bg-selection">
                     <div className="pb-1">
                         <input
                             type="text"
@@ -103,7 +103,7 @@ export default function ScriptSelection({
             </div>
 
             <div className="h-34 md:h-full flex flex-1 flex-col justify-start items-center border-t md:border-l md:border-t-0 overflow-y-auto overflow-x-hidden md:pl-5">
-                <div className="w-full sticky top-0 z-10 bg-selection">
+                <div className="w-full sticky top-0 z-2 bg-selection">
                     <div className="bg-slate-800 rounded-tl-lg rounded-br-lg text-center py-2 mt-2 mb-1 md:mt-0">
                         <strong>Checked scripts:</strong>
                     </div>
