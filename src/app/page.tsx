@@ -61,7 +61,7 @@ export default function Home() {
             />
 
             <div className="flex flex-col items-center xl:w-200">
-              <div className="pt-2 pb-1">
+              <div className="pt-2 pb-1 xl:mb-6">
                 <p>not sure where to start? check out the dropdown menus, below :)</p>
               </div>
 

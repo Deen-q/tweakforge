@@ -11,6 +11,11 @@ Customise Windows 11 through browser-based registry scripts. Adjust features to 
 
 TweakForge is a web-based utility (unlike the numerous CLI based apps) designed to simplify Windows PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations.
 
+## Architecture Descisions
+- Scripts are loaded at build time via build-scripts > generateCheckboxOptions.js. A database was considered and rejected: the data is static, write operations don't exist, and runtime latency would be added with no benefit
+- If the script count grew significantly or user-specific features (favourites, history etc) were introduced, a lightweight DB like Turso (SQLite over HTTP, serverless-friendly) would be the next step
+- I wanted to avoid forcing this as a fullstack app if it doesn't make sense
+
 ### Key Features
 
 - **Zero-friction onboarding** – No account creation required; immediate access to all functionality

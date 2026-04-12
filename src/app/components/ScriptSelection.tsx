@@ -72,15 +72,15 @@ export default function ScriptSelection({
             {/*left segment -> gap-4 didnt seem adequate for space around the divider*/}
             <div className="h-34 md:h-full flex flex-col flex-1 overflow-y-auto md:pr-5">
                 <div className="sticky top-0 z-2 bg-selection">
-                    <div className="pb-1">
+                    <div className="pb-1 md:pb-2 flex justify-center">
                         <input
                             type="text"
-                            className="border w-full rounded-lg bg-slate-700 focus:ring-2 focus:ring-white duration-150 p-1.5"
-                            placeholder="search scripts (e.g., 'onedrive'...)"
+                            className="border w-[calc(100%-0.5rem)] h-8 md:h-10 rounded-lg text-center focus:text-left bg-slate-700 focus:ring-2 focus:ring-white duration-150 my-0.5 px-4"
+                            placeholder="search scripts e.g., 'onedrive'..."
                             onChange={handleSearchChange}
                         />
                     </div>
-                    <div className="bg-slate-800 rounded-bl-lg rounded-tr-lg text-center py-2">
+                    <div className="bg-slate-800 rounded-bl-lg rounded-tr-lg text-center py-2 md:mb-2">
                         <strong>Select your scripts:</strong>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ export default function ScriptSelection({
 
             <div className="h-34 md:h-full flex flex-1 flex-col justify-start items-center border-t md:border-l md:border-t-0 overflow-y-auto overflow-x-hidden md:pl-5">
                 <div className="w-full sticky top-0 z-2 bg-selection">
-                    <div className="bg-slate-800 rounded-tl-lg rounded-br-lg text-center py-2 mt-2 mb-1 md:mt-0">
+                    <div className="bg-slate-800 rounded-tl-lg rounded-br-lg text-center py-2 mt-2 mb-2 md:mt-0 md:mb-3">
                         <strong>Checked scripts:</strong>
                     </div>
 
@@ -112,7 +112,7 @@ export default function ScriptSelection({
                 <div className="h-full w-full gap-2 flex flex-col">
                     {
                         selectedScriptIds.length === 0 ?
-                            <div className="h-full flex items-center text-center">
+                            <div className="h-full flex items-center text-center md:px-1">
                                 <h4 className=""><strong>{`No scripts selected.\nCheck boxes to add scripts here.`}</strong></h4>
                             </div>
                             :
