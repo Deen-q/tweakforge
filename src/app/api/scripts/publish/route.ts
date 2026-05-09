@@ -20,12 +20,13 @@ export async function POST(req: NextRequest) { // do not rename, Next looks for 
 
         if (!authorisationHeader || token !== process.env.PUBLISH_SECRET) {
             return NextResponse.json('Unauthorized', { status: 401 });
-        }
+        };
         const body: PublishPayload = await req.json();
         const { slug, name, content, changelog } = body;
 
         const hash = crypto.createHash('sha256').update(content).digest('hex');
 
+        // before progressing: surely the rows indicate new entries, so, surely slug = slug returns columns???
         const result = await sql`SELECT * FROM scripts WHERE slug = ${slug}`; // arr of rows
 
         const dbHash = result[0]?.content_hash;
@@ -36,13 +37,13 @@ export async function POST(req: NextRequest) { // do not rename, Next looks for 
             (slug, name, content_hash, version, changelog)
             VALUES (${slug}, ${name}, ${hash}, ${version}, ${changelog})
             `
-            return NextResponse.json({ message: 'New version added' }, { status: 200 })
+            return NextResponse.json({ message: 'New version added' }, { status: 200 });
         } else { // dbHash === hash
             return NextResponse.json({ message: 'No change' }, { status: 200 });
         };
 
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-    }
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    };
 }
