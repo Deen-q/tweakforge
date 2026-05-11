@@ -130,3 +130,5 @@ try {
     console.log("error writing file, error message is: ", error.message);
     process.exit(1);
 }
+
+module.exports = { scriptMetadata }; 
