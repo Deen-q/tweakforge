@@ -148,7 +148,7 @@ export default function ScriptSelection({
                                         </button>
                                         <button className={`${buttonSizeStyles} ${activeCopiedButton === `${selectedScriptObject.id}-copy` ?
                                             "diagonal-stripes"
-                                            : "bg-slate-700 hover:bg-slate-700/10"}`}
+                                            : "bg-slate-700 hover:bg-slate-700/10 hover:cursor-copy"}`}
                                             type="button"
                                             title="Copy to clipboard"
                                             onClick={() => handleCopyClick(selectedScriptObject.id, 'copy')}
@@ -161,7 +161,7 @@ export default function ScriptSelection({
                                         {selectedScriptObject.undoScript &&
                                             <button className={`${buttonSizeStyles} ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
                                                 "rev-diagonal-stripes"
-                                                : "bg-slate-700 hover:bg-slate-700/10"}`}
+                                                : "bg-slate-700 hover:bg-slate-700/10 hover:cursor-copy"}`}
                                                 type="button"
                                                 title="Copy 'undo' script"
                                                 onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}

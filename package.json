@@ -2,6 +2,7 @@
   "name": "tweakforge",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "npm run generate-scripts && next dev --turbopack",
     "build": "npm run generate-scripts && next build",

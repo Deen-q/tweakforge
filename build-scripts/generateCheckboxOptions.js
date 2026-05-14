@@ -131,4 +131,4 @@ try {
     process.exit(1);
 }
 
-module.exports = { scriptMetadata }; 
+export default scriptMetadata; 

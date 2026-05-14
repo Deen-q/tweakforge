@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import ScriptSelection from "./components/ScriptSelection";
 import { GitHubCatIcon, InspectIcon, InspectUndoIcon } from "./components/icons";
@@ -11,11 +11,48 @@ import dynamic from "next/dynamic";
 const ToggleDropdown = dynamic(() => import('./components/ToggleDropdown'));
 const ViewScriptModal = dynamic(() => import('./components/ViewScriptModal'));
 
+interface VersionDataShape {
+  slug: string,
+  name: string,
+  version: number,
+  changelog: string,
+  created_at: Date,
+}
+
+export type BySlug = { // better to derive than duplicate
+  [slug: string]: Pick<VersionDataShape, "version" | "changelog" | "created_at">
+};
+
 export default function Home() {
+  const [versionData, setVersionData] = useState<BySlug | null>(null);
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalObject, setModalObject] = useState<CheckboxOption | null>(null);
   const [activeModal, setActiveModal] = useState<"forward" | "reverse" | "none">("none");
+
+  const url = "/api/scripts";
+  // after: preventing double run on the useEffect
+  useEffect(() => {
+    const fetchVersionData = async () => {
+      try {
+        const res = await fetch(url);
+        const data: VersionDataShape[] = await res.json();
+        const bySlug: BySlug = {};
+
+        for (const item of data) { // obj[key] = value
+          bySlug[item.slug] = {
+            version: item.version,
+            changelog: item.changelog,
+            created_at: item.created_at,
+          };
+        }
+        setVersionData(bySlug);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchVersionData();
+  }, [])
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
@@ -37,6 +74,7 @@ export default function Home() {
             modalObject={modalObject}
             activeModal={activeModal}
             setActiveModal={setActiveModal}
+            versionData={versionData}
           />
         }
 
