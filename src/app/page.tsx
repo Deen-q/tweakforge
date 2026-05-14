@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import ScriptSelection from "./components/ScriptSelection";
-import { GitHubCatIcon, InspectIcon, InspectUndoIcon } from "./components/icons";
+import { GitHubCatIcon, InspectIcon, InspectUndoCopyIcon } from "./components/icons";
 import { CheckboxOption } from "./data/checkboxOptions";
-import { CopyIcon, UndoIcon } from "./components/icons";
+import { CopyIcon, UndoCopyIcon } from "./components/icons";
 import Footer from "./components/Footer";
 import dynamic from "next/dynamic";
 const ToggleDropdown = dynamic(() => import('./components/ToggleDropdown'));
@@ -112,7 +112,7 @@ export default function Home() {
                 >
                   <div>
                     <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back.</p>
-                    <p>{`you're`} encouraged to look at the scripts with the <InspectIcon stroke={"white"} /> <span className="text-white">(inspect)</span> and <InspectUndoIcon stroke={"white"} /> <span className="text-white">(undo inspect)</span> icons, before you run a script.</p>
+                    <p>{`you're`} encouraged to look at the scripts with the <InspectIcon stroke={"white"} /> <span className="text-white">(inspect)</span> and <InspectUndoCopyIcon stroke={"white"} /> <span className="text-white">(undo inspect)</span> icons, before you run a script.</p>
                   </div>
                 </ToggleDropdown>
 
@@ -173,7 +173,7 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div>
-                    <p>*most* scripts have a reverse/undo script. with the exception of {`"Remove Preinstalled Apps"`}, use the <UndoIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
+                    <p>*most* scripts have a reverse/undo script. with the exception of {`"Remove Preinstalled Apps"`}, use the <UndoCopyIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
                   </div>
                 </ToggleDropdown>
               </div>

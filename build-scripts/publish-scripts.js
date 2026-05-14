@@ -44,8 +44,8 @@ async function main() {
             console.log(`Currently publishing: ${script.id}...`);
             await sendPayload(payload);
 
-            if (script.undoScriptFile) {
-                const undoContent = fs.readFileSync(`${ps1Dir}/${script.undoScriptFile}`, 'utf-8');
+            if (script.scriptFileUndo) {
+                const undoContent = fs.readFileSync(`${ps1Dir}/${script.scriptFileUndo}`, 'utf-8');
                 const undoPayload = {
                     slug: `${script.id}Undo`,
                     name: `${script.name}Undo`,

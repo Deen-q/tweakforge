@@ -13,7 +13,7 @@ const scriptMetadata = [
         id: "restoreRightClickMenu",
         name: "Restore Classic Right-click Menu",
         scriptFile: "classicRightClick.ps1",
-        undoScriptFile: "classicRightClick.undo.ps1",
+        scriptFileUndo: "classicRightClick.undo.ps1",
         description: "Returns the original right-click menu when in file explorer",
         undoDescription: "Back to default: Windows 11 right-click menu"
     },
@@ -21,7 +21,7 @@ const scriptMetadata = [
         id: "disableOneDrive",
         name: "Disable OneDrive",
         scriptFile: "disableOneDrive.ps1",
-        undoScriptFile: "disableOneDrive.undo.ps1",
+        scriptFileUndo: "disableOneDrive.undo.ps1",
         description: "Completely removes OneDrive from your Local Machine (via HKLM)",
         undoDescription: "Return OneDrive as it was. Will offer to take you to official reinstall web page"
     },
@@ -29,7 +29,7 @@ const scriptMetadata = [
         id: "disableWidgetPreload",
         name: "Disable Widget Preload",
         scriptFile: "disableWidgetPreload.ps1",
-        undoScriptFile: "disableWidgetPreload.undo.ps1",
+        scriptFileUndo: "disableWidgetPreload.undo.ps1",
         description: "Stops widgets from running in background (potentially saves 100-200MB RAM) without breaking other apps via WebView2",
         undoDescription: "Restore widgets to default behavior"
     },
@@ -37,7 +37,7 @@ const scriptMetadata = [
         id: "disableCopilot",
         name: "Disable Copilot",
         scriptFile: "disableCopilot.ps1",
-        undoScriptFile: "disableCopilot.undo.ps1",
+        scriptFileUndo: "disableCopilot.undo.ps1",
         description: "Disables copilot at the user-level AND system-wide (REVERSIBLE), including: copilot in Edge sidebar, copilot suggestions in search",
         undoDescription: "Returns Copilot to its default state"
     },
@@ -45,7 +45,7 @@ const scriptMetadata = [
         id: "removePreinstalledApps",
         name: "Remove Preinstalled Apps (non-aggressive)",
         scriptFile: "removePreinstalledApps.ps1",
-        undoScriptFile: null,
+        scriptFileUndo: null,
         description: "Removes promotional apps, games, and trials (Candy Crush, Clipchamp, etc.). Preserves essential apps and doesn't touch Teams/OneNote to avoid interfering with business versions",
         undoDescription: ""
     },
@@ -88,14 +88,14 @@ for (let i = 0; i < scriptMetadata.length; i++) {
     }
 
     let undoScriptContent = 'null';
-    if (item.undoScriptFile) {
-        const undoScriptPath = path.join(scriptsDir, item.undoScriptFile);
+    if (item.scriptFileUndo) {
+        const undoScriptPath = path.join(scriptsDir, item.scriptFileUndo);
         try {
             const undoContent = fs.readFileSync(undoScriptPath, 'utf8');
             const escapedUndoContent = undoContent.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
             undoScriptContent = '`' + escapedUndoContent + '`';
         } catch (error) {
-            console.error(`Error reading ${item.undoScriptFile}... error message: `, error.message);
+            console.error(`Error reading ${item.scriptFileUndo}... error message: `, error.message);
             process.exit(1);
         }
     }

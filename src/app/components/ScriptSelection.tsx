@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
-import { CopyIcon, InspectIcon, InspectUndoIcon, UndoIcon } from "./icons";
+import { CopyIcon, InspectIcon, InspectUndoCopyIcon, UndoCopyIcon } from "./icons";
 
 interface ScriptSelectionProps {
     setShowModal: (value: boolean) => void;
@@ -159,18 +159,6 @@ export default function ScriptSelection({
 
                                         </button>
                                         {selectedScriptObject.undoScript &&
-                                            <button className={`${buttonSizeStyles} ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
-                                                "rev-diagonal-stripes"
-                                                : "bg-slate-700 hover:bg-slate-700/10 hover:cursor-copy"}`}
-                                                type="button"
-                                                title="Copy 'undo' script"
-                                                onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}
-                                                disabled={!selectedScriptObject.undoScript}
-                                            >
-                                                <UndoIcon className={buttonIconStyles} />
-                                            </button>
-                                        }
-                                        {selectedScriptObject.undoScript &&
                                             <button className={buttonSizeStyles}
                                                 type="button"
                                                 title="Inspect 'undo' Script"
@@ -180,7 +168,19 @@ export default function ScriptSelection({
                                                     setActiveModal("reverse")
                                                 }}
                                             >
-                                                <InspectUndoIcon className={buttonIconStyles} />
+                                                <InspectUndoCopyIcon className={buttonIconStyles} />
+                                            </button>
+                                        }
+                                        {selectedScriptObject.undoScript &&
+                                            <button className={`${buttonSizeStyles} ${activeCopiedButton === `${selectedScriptObject.id}-undo` ?
+                                                "rev-diagonal-stripes"
+                                                : "bg-slate-700 hover:bg-slate-700/10 hover:cursor-copy"}`}
+                                                type="button"
+                                                title="Copy 'undo' script"
+                                                onClick={() => handleCopyClick(selectedScriptObject.id, 'undo')}
+                                                disabled={!selectedScriptObject.undoScript}
+                                            >
+                                                <UndoCopyIcon className={buttonIconStyles} />
                                             </button>
                                         }
                                     </div>
