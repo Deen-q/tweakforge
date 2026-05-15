@@ -9,14 +9,21 @@ Customise Windows 11 through browser-based registry scripts. Adjust features to 
 
 ## Overview
 
-TweakForge is a web-based utility (unlike the numerous CLI based apps) designed to simplify Windows PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations.
+TweakForge is a web-based utility designed to simplify Windows 11 PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations. TweakForge aims to be accessible to people of all abilties, and to act as an alternative to the numerous CLI based apps that run scripts under the hood
 
-## Architecture Descisions
-- Scripts are loaded at build time via build-scripts > generateCheckboxOptions.js. A database was considered and rejected: the data is static, write operations don't exist, and runtime latency would be added with no benefit
-- If the script count grew significantly or user-specific features (favourites, history etc) were introduced, a lightweight DB like Turso (SQLite over HTTP, serverless-friendly) would be the next step
-- I wanted to avoid forcing this as a fullstack app if it doesn't make sense
+## Table of Contents
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Architecture Decisions](#architecture-decisions)
+- [Backend & Script Versioning](#backend--script-versioning)
+- [Project Status](#project-status)
+- [Local Development](#local-development)
+- [Script Testing Methodlogy](#script-testing-methodology-via-differencing-disk)
+- [Safety & Transparency](#safety--transparency)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Key Features
+## Key Features
 
 - **Zero-friction onboarding** – No account creation required; immediate access to all functionality
 - **Accessibility-first design** – Full keyboard navigation support and beginner-friendly interface
@@ -24,13 +31,36 @@ TweakForge is a web-based utility (unlike the numerous CLI based apps) designed 
 - **Active development** – Regular updates with new scripts and features
 - **Transparency** – Scripts may be temporarily disabled if issues are identified
 
+## Architecture Decisions
+- Scripts are loaded at build time via `build-scripts` > `generateCheckboxOptions.js` (no waiting to access scripts)
+
+## Backend & Script Versioning
+
+### Why metadata-only
+- Serving scripts from a database, that may have a cold-start, would mean users might have to wait before they can select scripts
+- Instead, the scripts are always served via a build script, bundled into the app itself
+- By only serving versioning, changelog and created_at, users can wait a short while to see this data if needed (in case they're having issues), but never at the expense of actually using TweakForge
+
+### Trust model
+- Scripts are never stored in or served from the database. A compromised database affects the changelog display only, not script integrity
+
+### Backend Architecture: built with...
+- Neon Serverless (PostgreSQL) + Next.js App Router + Node.js + TypeScript + JavaScript
+
+### Endpoints
+- `/api/scripts` -> Public: Where the metadata is being served
+- `/api/scripts/publish` -> Private: where the CI script publishes new metadata if a script is edited (a new version is introduced)
+
+### CI Integration
+- `publish-scripts.js` is run immediately after the application has been built (`npm run build`) - see `ci.yml`
+- If a script's content hash differs from the latest stored hash, a new versioned row is inserted. If unchanged, the publish step is skipped
+
 ## Project Status
 
 **Current Development Priorities:**
 - Increasing unit test coverage
 - Implementing integration test suite (likely Cypress)
-- Introduce script versioning
-- Expanding script library
+- Expanding script library (or just suggest ones you'd like)
 
 ## Local Development
 
@@ -38,7 +68,7 @@ TweakForge is a web-based utility (unlike the numerous CLI based apps) designed 
 - **Option 1:** Node.js v22.11.0 or higher
 - **Option 2:** Docker Desktop
 
-### Setup Instructions (Node.js)
+### Option 1: Setup Instructions (Node.js)
 
 ```bash
 # Clone the repository
@@ -52,7 +82,7 @@ npm run dev
 # Application runs at http://localhost:3000 with hot module replacement enabled
 ```
 
-### Setup Instructions (Docker)
+### Option 2: Setup Instructions (Docker)
 
 ```bash
 # Clone the repository
@@ -128,7 +158,7 @@ docker run -d -p 3000:3000 --name tweakforgecontainer tweakforge
 - Use Docker to test the production build
 - Run tests via `npm run test` before pushing any changes
 
-## Testing Methodology
+## Script Testing Methodology (via differencing disk)
 
 Scripts undergo validation in isolated Windows environments before merging to the main branch. The testing process uses Hyper-V virtual machines with a differencing disk strategy:
 
@@ -138,7 +168,7 @@ Scripts undergo validation in isolated Windows environments before merging to th
 - **Test Workflow** – Boot VM → Execute script → Validate results → Discard differencing disk → Generate fresh disk for next iteration
 - **Benefits** – Ensures consistent test environment while maintaining rapid iteration speed (differencing disks typically <5GB vs. multi-GB snapshots)
 
-*Note: A detailed markdown file documenting the full automated testing process may be published in the future. The current implementation uses a batch file for automation.*
+See [differencing disk methodology](docs/differencing-disk-methodology.md) for full details.
 
 ## Safety & Transparency
 
