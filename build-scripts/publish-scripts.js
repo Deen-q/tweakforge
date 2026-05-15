@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { scriptMetadata } from '../build-scripts/generateCheckboxOptions';
+import { scriptMetadata } from '../build-scripts/generateCheckboxOptions.js';
 
 const filename = fileURLToPath(import.meta.url);
 const dirName = path.dirname(filename);
