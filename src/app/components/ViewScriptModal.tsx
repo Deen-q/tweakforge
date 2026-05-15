@@ -29,7 +29,7 @@ export default function ViewScriptModal({
         }
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
-    }, []);
+    }, [setShowModal, setActiveModal]);
 
     const modalDimensions = "w-80 h-48 md:w-112 md:h-64 lg:w-144 lg:h-80 xl:w-168 xl:h-88";
     const modalPositioning = "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
