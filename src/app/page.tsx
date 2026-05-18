@@ -1,21 +1,58 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import ScriptSelection from "./components/ScriptSelection";
-import { GitHubCatIcon, InspectIcon, InspectUndoIcon } from "./components/icons";
+import { GitHubCatIcon, InspectIcon, InspectUndoCopyIcon } from "./components/icons";
 import { CheckboxOption } from "./data/checkboxOptions";
-import { CopyIcon, UndoIcon } from "./components/icons";
+import { CopyIcon, UndoCopyIcon } from "./components/icons";
 import Footer from "./components/Footer";
 import dynamic from "next/dynamic";
 const ToggleDropdown = dynamic(() => import('./components/ToggleDropdown'));
 const ViewScriptModal = dynamic(() => import('./components/ViewScriptModal'));
 
+interface VersionDataShape {
+  slug: string,
+  name: string,
+  version: number,
+  changelog: string,
+  created_at: Date,
+}
+
+export type BySlug = { // better to derive than duplicate
+  [slug: string]: Pick<VersionDataShape, "version" | "changelog" | "created_at">
+};
+
 export default function Home() {
+  const [versionData, setVersionData] = useState<BySlug | null>(null);
   const [activeDropdownId, setActiveDropdownId] = useState("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalObject, setModalObject] = useState<CheckboxOption | null>(null);
   const [activeModal, setActiveModal] = useState<"forward" | "reverse" | "none">("none");
+
+  const url = "/api/scripts";
+  // after: preventing double run on the useEffect
+  useEffect(() => {
+    const fetchVersionData = async () => {
+      try {
+        const res = await fetch(url);
+        const data: VersionDataShape[] = await res.json();
+        const bySlug: BySlug = {};
+
+        for (const item of data) { // obj[key] = value
+          bySlug[item.slug] = {
+            version: item.version,
+            changelog: item.changelog,
+            created_at: item.created_at,
+          };
+        }
+        setVersionData(bySlug);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchVersionData();
+  }, [])
 
   const changeActiveDropdownId = (dropdownId: string) => {
     setActiveDropdownId(prev => prev === dropdownId ? "" : dropdownId)
@@ -37,6 +74,7 @@ export default function Home() {
             modalObject={modalObject}
             activeModal={activeModal}
             setActiveModal={setActiveModal}
+            versionData={versionData}
           />
         }
 
@@ -74,7 +112,7 @@ export default function Home() {
                 >
                   <div>
                     <p>scroll through or search for a script that appeals to you. perhaps you miss a feature from a previous version of Windows? there could be a script to bring it back.</p>
-                    <p>{`you're`} encouraged to look at the scripts with the <InspectIcon stroke={"white"} /> <span className="text-white">(inspect)</span> and <InspectUndoIcon stroke={"white"} /> <span className="text-white">(undo inspect)</span> icons, before you run a script.</p>
+                    <p>{`you're`} encouraged to look at the scripts with the <InspectIcon stroke={"white"} /> <span className="text-white">(inspect)</span> and <InspectUndoCopyIcon stroke={"white"} /> <span className="text-white">(undo inspect)</span> icons, before you run a script.</p>
                   </div>
                 </ToggleDropdown>
 
@@ -135,7 +173,7 @@ export default function Home() {
                   changeActiveDropdownId={changeActiveDropdownId}
                 >
                   <div>
-                    <p>*most* scripts have a reverse/undo script. with the exception of {`"Remove Preinstalled Apps"`}, use the <UndoIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
+                    <p>*most* scripts have a reverse/undo script. with the exception of {`"Remove Preinstalled Apps"`}, use the <UndoCopyIcon stroke={"white"} /> <span className="text-white">(undo)</span> button, directly next to the <CopyIcon stroke={"white"} /> <span className="text-white">(copy)</span> button. it works in exactly the same way - paste it into your terminal and hit <kbd className="px-1 py-0.5 bg-slate-600 text-white rounded text-xs">Enter</kbd>!</p>
                   </div>
                 </ToggleDropdown>
               </div>
