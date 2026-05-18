@@ -21,12 +21,13 @@ const sendPayload = async (payload) => {
         },
         body: JSON.stringify(payload)
     });
-    const result = await response.json();
 
     if (!response.ok) { // for silent failures
-        console.error("Error. Result: ", result);
+        const text = await response.text(); // always succeeds, bypasses parsing. never trust the format
+        console.error(`Publish failed [${response.status}]: `, text);
         process.exit(1); // non-zero exit code for CI to detect failure (500 equivalent)
     };
+    // send, fail loudly if broken, otherwise clean return
 };
 
 async function main() {
@@ -43,6 +44,7 @@ async function main() {
             };
             console.log(`Currently publishing: ${script.id}...`);
             await sendPayload(payload);
+            console.log(`Successfully published: ${script.id}`);
 
             if (script.scriptFileUndo) {
                 const undoContent = fs.readFileSync(`${ps1Dir}/${script.scriptFileUndo}`, 'utf-8');
@@ -54,6 +56,7 @@ async function main() {
                 };
                 console.log(`Currently publishing: ${script.id}Undo...`);
                 await sendPayload(undoPayload);
+                console.log(`Successfully published: ${script.id}Undo`);
             }
         }
     } catch (error) {
