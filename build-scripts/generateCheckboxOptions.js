@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // script metadata to replace current checkboxOptions array
-const scriptMetadata = [
+export const scriptMetadata = [
     {
         id: "restoreRightClickMenu",
         name: "Restore Classic Right-click Menu",

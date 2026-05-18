@@ -31,7 +31,7 @@ const sendPayload = async (payload) => {
 
 async function main() {
     try {
-        const changelog = JSON.parse(fs.readFileSync(`${ps1Dir}/changelog.json`, 'utf8'));
+        const changelog = JSON.parse(fs.readFileSync(`${ps1Dir}/changelog/changelog.json`, 'utf8'));
 
         for (const script of scriptMetadata) {
             const content = fs.readFileSync(`${ps1Dir}/${script.scriptFile}`, 'utf-8');
