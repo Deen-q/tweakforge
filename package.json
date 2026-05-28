@@ -9,7 +9,6 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "buildstart": "next build && next start",
     "fulltest": "npm run lint && npm run test && npm run build",
     "generate-scripts": "node build-scripts/generateCheckboxOptions.js"
   },

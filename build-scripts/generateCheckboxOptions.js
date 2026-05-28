@@ -26,14 +26,6 @@ export const scriptMetadata = [
         undoDescription: "Return OneDrive as it was. Will offer to take you to official reinstall web page"
     },
     {
-        id: "disableWidgetPreload",
-        name: "Disable Widget Preload",
-        scriptFile: "disableWidgetPreload.ps1",
-        scriptFileUndo: "disableWidgetPreload.undo.ps1",
-        description: "Stops widgets from running in background (potentially saves 100-200MB RAM) without breaking other apps via WebView2",
-        undoDescription: "Restore widgets to default behavior"
-    },
-    {
         id: "disableCopilot",
         name: "Disable Copilot",
         scriptFile: "disableCopilot.ps1",
