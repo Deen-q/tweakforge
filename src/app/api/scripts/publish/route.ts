@@ -26,8 +26,12 @@ export async function POST(req: NextRequest) { // do not rename, Next looks for 
 
         const hash = crypto.createHash('sha256').update(content).digest('hex');
 
-        // before progressing: surely the rows indicate new entries, so, surely slug = slug returns columns???
-        const result = await sql`SELECT * FROM scripts WHERE slug = ${slug}`; // arr of rows
+        const result = await sql`
+        SELECT * FROM scripts 
+        WHERE slug = ${slug} 
+        ORDER BY version DESC 
+        LIMIT 1
+        `; // arr of rows
 
         const dbHash = result[0]?.content_hash;
 

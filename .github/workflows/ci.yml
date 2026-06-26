@@ -32,6 +32,8 @@ jobs:
       run: npm run test
     
     - name: Build application
+      env:
+        NEON_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
       run: npm run build
 
     - name: Publish script versions
