@@ -24,6 +24,11 @@ jobs:
     
     - name: Install dependencies
       run: npm ci
+
+    - name: Generate static files
+      env:
+        NEON_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
+      run: npm run generate
     
     - name: Run ESLint
       run: npm run lint
@@ -32,8 +37,6 @@ jobs:
       run: npm run test
     
     - name: Build application
-      env:
-        NEON_CONNECTION_STRING: ${{ secrets.NEON_CONNECTION_STRING }}
       run: npm run build
 
     - name: Publish script versions
