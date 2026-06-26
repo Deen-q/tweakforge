@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { CheckboxOption } from "../data/checkboxOptions";
-import { BySlug } from "../page";
+import { BySlug } from "../data/versionData";
 
 interface ViewScriptModalProps {
     setShowModal: (value: boolean) => void;

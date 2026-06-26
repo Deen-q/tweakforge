@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated at build time - do not commit
+src/app/data/checkboxOptions.ts
+src/app/data/versionData.ts
