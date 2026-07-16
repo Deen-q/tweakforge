@@ -45,6 +45,11 @@ jobs:
         PUBLISH_SECRET: ${{ secrets.PUBLISH_SECRET }}
       run: node build-scripts/publish-scripts.js
 
+# prevent a previous race condition between Neon autodeploys (.toml) and CI publishing
+    - name: Trigger Netlify deploy
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: curl -X POST -fsS "${{ secrets.NETLIFY_BUILD_HOOK }}"
+
 # test if Dockerfile *can* build successfully/prevent someone from breaking it
     - name: Create Docker Image
       run: docker build -t tweakforge .
