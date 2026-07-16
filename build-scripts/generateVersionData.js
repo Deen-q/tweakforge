@@ -24,11 +24,15 @@ try {
         }
         console.log(`[${index + 1}/${rows.length}] Success: fetched ${item.slug}`);
     }
-    await sql.end(); // otherwise hangs from idle postgres connection
+    // await sql.end(); // otherwise hangs from idle postgres connection
 } catch (error) {
     console.error(error);
-    process.exit(1);
+    // process.exit(1);
+} finally {
+    // prevent potential cold start issues, whereas process.exit would kill the build -> site wont deploy
+    await sql.end()
 };
+// handled differently to generateCheckboxOptions and publish-scripts due to postgres connection
 
 // created_at = string due to .stringify from before
 let output = `

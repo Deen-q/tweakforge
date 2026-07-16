@@ -9,7 +9,7 @@ interface ViewScriptModalProps {
     modalObject: CheckboxOption | null;
     activeModal: "forward" | "reverse" | "none";
     setActiveModal: (value: "forward" | "reverse" | "none") => void;
-    versionData: BySlug | null;
+    versionData: BySlug;
 }
 
 export default function ViewScriptModal({
@@ -34,12 +34,14 @@ export default function ViewScriptModal({
     const modalDimensions = "w-80 h-48 md:w-112 md:h-64 lg:w-144 lg:h-80 xl:w-168 xl:h-88";
     const modalPositioning = "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
 
-    const modalTitle = activeModal === "forward" ? modalObject?.name : `Undo ${modalObject?.name}`;
-    const modalContent = activeModal === "forward" ? modalObject?.script : modalObject?.undoScript;
+    if (!modalObject) return null;
 
-    const scriptVersion = modalObject ? versionData?.[modalObject.id]?.version : null;
-    const changelog = modalObject ? versionData?.[modalObject.id]?.changelog : null;
-    const createdAt = modalObject ? versionData?.[modalObject.id]?.created_at : null;
+    const modalTitle = activeModal === "forward" ? modalObject.name : `Undo ${modalObject.name}`;
+    const modalContent = activeModal === "forward" ? modalObject.script : modalObject.undoScript;
+
+    const scriptVersion = versionData?.[modalObject.id]?.version;
+    const changelog = versionData?.[modalObject.id]?.changelog;
+    const createdAt = versionData?.[modalObject.id]?.created_at;
 
     return (
         <div className={`flex flex-col items-center rounded border z-10 bg-slate-800 border-blue-300 ${modalPositioning} ${modalDimensions}`}>
@@ -47,15 +49,16 @@ export default function ViewScriptModal({
                 <div className="flex flex-col w-full">
                     <span className=""><b>{modalTitle}</b></span>
                     <span className="text-slate-400 text-xs">Version:
-                        <span className={versionData == null ? "cursor-wait" : ""}>
+                        <span>
                             <b>
-                                {scriptVersion == null ? " loading..." : scriptVersion}
+                                {scriptVersion}
                             </b>
                         </span>
                     </span>
                     <div className="flex justify-between text-xs">
-                        <span className="cursor-help" title={changelog == null ? "loading..." : changelog}>Changelog<span className="font-bold"><sup>i</sup></span></span>
-                        <span className="cursor-help" title={createdAt === null ? "loading..." : String(createdAt)}>Created At<span className="font-bold"><sup>i</sup></span></span>
+                        {/* add new script + entry to scriptMetadata -> versionData.ts is still clueless since no new row exists in Neon yet */}
+                        <span className="cursor-help" title={changelog == null ? "not yet published..." : changelog}>Changelog<span className="font-bold"><sup>i</sup></span></span>
+                        <span className="cursor-help" title={createdAt === null ? "not yet published..." : String(createdAt)}>Created At<span className="font-bold"><sup>i</sup></span></span>
                     </div>
                 </div>
 
