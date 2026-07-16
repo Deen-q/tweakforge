@@ -1,0 +1,3 @@
+[build]
+    command = "npm run generate && npm run build"
+    ignore = "exit 0"
