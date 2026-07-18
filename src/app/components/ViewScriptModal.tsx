@@ -51,7 +51,7 @@ export default function ViewScriptModal({
                     <span className="text-slate-400 text-xs">Version:
                         <span>
                             <b>
-                                {scriptVersion}
+                                {scriptVersion ?? "not yet published"}
                             </b>
                         </span>
                     </span>

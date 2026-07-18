@@ -4,12 +4,16 @@ Customise Windows 11 through browser-based registry scripts. Adjust features to 
 
 **Try it now:** https://tweakforge.tools/
 
+<p align="center">
+  <img src="assets/tweakforge-demo.gif" alt="TweakForge demo" width="800">
+</p>
+
 ### Built With
-- Next.js + TypeScript + Tailwind + Jest
+- Next.js + TypeScript + Tailwind + Jest + Neon (SQL) + GitHub Actions
 
 ## Overview
 
-TweakForge is a web-based utility designed to simplify Windows 11 PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations. TweakForge aims to be accessible to people of all abilties, and to act as an alternative to the numerous CLI based apps that run scripts under the hood
+TweakForge is a web-based utility designed to simplify Windows 11 PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations. TweakForge aims to be accessible to people of all abilities, and to act as an alternative to the numerous CLI based apps that run scripts under the hood
 
 ## Table of Contents
 - [Overview](#overview)
@@ -32,14 +36,17 @@ TweakForge is a web-based utility designed to simplify Windows 11 PC setup and c
 - **Transparency** – Scripts may be temporarily disabled if issues are identified
 
 ## Architecture Decisions
-- Scripts are loaded at build time via `build-scripts` > `generateCheckboxOptions.js` (no waiting to access scripts)
+
+<p align="center">
+<img src="assets/tweakforge-architecture-diagram.svg" alt="TweakForge architecture diagram" width="800">
+</p>
 
 ## Backend & Script Versioning
 
-### Why metadata-only
-- Serving scripts from a database, that may have a cold-start, would mean users might have to wait before they can select scripts
-- Instead, the scripts are always served via a build script, bundled into the app itself
-- By only serving versioning, changelog and created_at, users can wait a short while to see this data if needed (in case they're having issues), but never at the expense of actually using TweakForge
+### Why everything is static
+- A live database dependency (for non-corporate software) means: cold starts, connection limits, an outage taking features down with it. None of that should stand between a user and a registry script
+- So, neither scripts nor metadata are ever fetched at runtime. Both are baked in at build time - scripts from local files, metadata from a Neon query. And the deployed app never talks to a database when someone's using it
+- If a metadata fetch is missed at build time (say, a Neon hiccup), a script's metadata just says "not yet published" - TweakForge itself never goes down over it
 
 ### Trust model
 - Scripts are never stored in or served from the database. A compromised database affects the changelog display only, not script integrity
@@ -47,22 +54,29 @@ TweakForge is a web-based utility designed to simplify Windows 11 PC setup and c
 ### Backend Architecture: built with...
 - Neon Serverless (PostgreSQL) + Next.js App Router + Node.js + TypeScript + JavaScript
 
-### Endpoints
-- `/api/scripts` -> Public: Where the metadata is being served
-- `/api/scripts/publish` -> Private: where the CI script publishes new metadata if a script is edited (a new version is introduced)
+### Endpoint(s)
+- `/api/scripts/publish` -> Private. CI POSTs here with a bearer token after a successful publish step; the endpoint hashes and compares content before writing a new version row to Neon
+- i.e., checks if a script has been edited on push (and so introducing a new script version)
 
 ### CI Integration
-- `publish-scripts.js` is run immediately after the application has been built (`npm run build`) - see `ci.yml`
-- If a script's content hash differs from the latest stored hash, a new versioned row is inserted. If unchanged, the publish step is skipped
+- CI (see `ci.yml`) runs `npm run generate`, lint, test and build first (as a correctness check only, this output is never deployed. This may be streamlined later)
+- `publish-scripts.js` runs only on a push to `main`, after that build succeeds. A script's content hash is compared against the latest stored version; only a real change inserts a new row
+- If unchanged, the publish step is skipped
+- Once publish succeeds, CI triggers a Netlify build hook, which regenerates everything against Neon's now-current state - that build is what ships!
 
 ## Project Status
+- TweakForge will be receiving significantly fewer updates as I work on other projects
 
 **Current Development Priorities:**
 - Increasing unit test coverage
 - Implementing integration test suite (likely Cypress)
 - Expanding script library (or just suggest ones you'd like)
+- Improving the "Contribution" documentation
+- Potentially make some "good first issue" under issues for TweakForge
 
 ## Local Development
+- Metadata generation needs a Neon connection string in `.env.local` to show real version/changelog data locally (might be streamlined in a future fix)
+- Without it, the app runs fine: scripts just show as "not yet published"
 
 ### Prerequisites
 - **Option 1:** Node.js v22.11.0 or higher
