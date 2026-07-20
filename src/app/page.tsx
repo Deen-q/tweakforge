@@ -5,7 +5,7 @@ import { useState } from "react";
 import NavBar from "./components/NavBar";
 import ScriptSelection from "./components/ScriptSelection";
 import { GitHubCatIcon, InspectIcon, InspectUndoCopyIcon } from "./components/icons";
-import { CheckboxOption } from "./data/checkboxOptions";
+import { CheckboxOption } from "./data/types";
 import { CopyIcon, UndoCopyIcon } from "./components/icons";
 import Footer from "./components/Footer";
 import dynamic from "next/dynamic";

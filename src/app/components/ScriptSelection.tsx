@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import checkboxOptions, { CheckboxOption } from "../data/checkboxOptions";
+import { CheckboxOption } from "../data/types";
+import checkboxOptions from "../data/checkboxOptions";
 import { CopyIcon, InspectIcon, InspectUndoCopyIcon, UndoCopyIcon } from "./icons";
 
 interface ScriptSelectionProps {

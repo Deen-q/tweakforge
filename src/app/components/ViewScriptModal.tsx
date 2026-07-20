@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect } from "react";
-import { CheckboxOption } from "../data/checkboxOptions";
-import { BySlug } from "../data/versionData";
+import { CheckboxOption, BySlug } from "../data/types";
 
 interface ViewScriptModalProps {
     setShowModal: (value: boolean) => void;
