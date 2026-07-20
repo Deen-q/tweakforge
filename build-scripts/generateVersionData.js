@@ -37,20 +37,11 @@ try {
 // created_at = string due to .stringify from before
 let output = `
 // AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
-// GENERATED FROM generateVersionData.js, which calls the db, transforms the data, then creates this file with said data
-// run 'npm run generate-versiondata' to regenerate
+// GENERATED FROM build-scripts/generateVersionData.js
+// Method: generateVersionData.js calls the db, transforms the data, then creates this file with said data
+// Run 'npm run generate-versiondata' to regenerate (this will fail without a Neon connection string)
 
-interface VersionDataShape {
-  slug: string,
-  name: string,
-  version: number,
-  changelog: string,
-  created_at: string,
-}
-
-export type BySlug = {
-  [slug: string]: Pick<VersionDataShape, "version" | "changelog" | "created_at">
-};
+import { BySlug } from './types';
 
 const versionData: BySlug = ${JSON.stringify(modalData)};
 

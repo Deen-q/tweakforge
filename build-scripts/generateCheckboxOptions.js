@@ -49,19 +49,13 @@ const outputPath = path.join(__dirname, '../src/app/data/checkboxOptions.ts');
 
 let output = `
 // AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
-// Generated from .ps1 files in /src/scripts/
+// GENERATED FROM build-scripts/generateCheckboxOptions.js
+// Method: generated from .ps1 files in /src/scripts/
 // Run 'npm run generate-scripts' to regenerate
 
-export interface CheckboxOption {
-    id: string;
-    name: string;
-    script: string;
-    undoScript: string | null;
-    description: string;
-    undoDescription: string;
-}
+import { CheckboxOption } from './types';
 
-// to ensure TweakForge is accessible to people of all skill levels (including non-technical folk), scripts may seem to hold your hand a lot. This is on purpose.
+// Please note: to ensure TweakForge is accessible to people of all skill levels (including non-technical folk), scripts may seem to hold your hand a lot. This is on purpose.
 
 const checkboxOptions: CheckboxOption[] = [
 `;
