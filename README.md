@@ -1,6 +1,16 @@
 # TweakForge
 
-Customise Windows 11 through browser-based registry scripts. Adjust features to match your preferences - no installation required.
+Customise Windows 11 e.g., disable OneDrive, through browser-based registry scripts - no account or installation required.
+
+## Motivations
+- **Safety:** no longer need to rely on CLI tweak apps that use unsafe pipe operations. You only (manually) run, what you want, done in seconds
+- **Transparency:** scripts are laid bare within the app itself (check the modals), and at `src/scripts`
+- **Ease of use:** no need to memorise every feature/registry edit you need for existing setups and fresh Windows 11 installations
+- **User friendly and educational:** full instructions on script execution, plus safety features and explanations within each script - scripts will not immediately run without explicit confirmation
+- **Reversibility:** all scripts where possible, have reverse scripts in case you change your mind
+- **Script validation:** scripts are tested in virtual machines and in a standardised environment, via a differencing disk strategy. See [Script Testing Methodology](#script-testing-methodology-via-differencing-disk) for more
+
+Note: TweakForge started as a vehicle to practice production patterns, so some features may seem overkill.
 
 **Try it now:** https://tweakforge.tools/
 
@@ -9,37 +19,37 @@ Customise Windows 11 through browser-based registry scripts. Adjust features to 
 </p>
 
 ### Built With
-- Next.js + TypeScript + Tailwind + Jest + Neon (SQL) + GitHub Actions
-
-## Overview
-
-TweakForge is a web-based utility designed to simplify Windows 11 PC setup and configuration, particularly after clean installations. The application provides an accessible, no-registration interface for executing common system tweaks and optimisations. TweakForge aims to be accessible to people of all abilities, and to act as an alternative to the numerous CLI based apps that run scripts under the hood
+- **Frontend:** Next.js + TypeScript + Tailwind + Jest
+- **Backend:** Neon Serverless (PostgreSQL) + Next.js App Router + Node.js + TypeScript + JavaScript
+- **CI:** GitHub Actions
+- **Infrastructure:** Netlify (hosting + deploys) + Cloudflare (WAF + rate limiting) + Docker
 
 ## Table of Contents
-- [Overview](#overview)
 - [Key Features](#key-features)
 - [Architecture Decisions](#architecture-decisions)
 - [Backend & Script Versioning](#backend--script-versioning)
-- [Project Status](#project-status)
 - [Local Development](#local-development)
-- [Script Testing Methodlogy](#script-testing-methodology-via-differencing-disk)
+- [Script Testing Methodology](#script-testing-methodology-via-differencing-disk)
 - [Safety & Transparency](#safety--transparency)
 - [Contributing](#contributing)
+- [Project Status](#project-status)
 - [License](#license)
 
 ## Key Features
 
-- **Zero-friction onboarding** – No account creation required; immediate access to all functionality
-- **Accessibility-first design** – Full keyboard navigation support and beginner-friendly interface
-- **Privacy-focused** – No advertisements, tracking, or data collection
-- **Active development** – Regular updates with new scripts and features
-- **Transparency** – Scripts may be temporarily disabled if issues are identified
+- **Zero-friction onboarding:** No account creation required; immediate access to all functionality
+- **Accessibility-first design:** Full keyboard navigation support and beginner-friendly interface
+- **Privacy-focused:** No advertisements, tracking, or data collection
+- **Safety net:** Scripts are temporarily disabled if issues are identified
+- **Resilience:** Elimination of endpoint vulnerabilities via build-time static generation - see `docs/incidents/scraper-spike-2026.md` for more on the bot-driven traffic spike event (195k requests/month vs a 300/day baseline)
 
 ## Architecture Decisions
-
 <p align="center">
 <img src="assets/tweakforge-architecture-diagram.svg" alt="TweakForge architecture diagram" width="800">
 </p>
+
+- Every push runs 2 builds: Steps 1-3 are throwaway correctness checks that are always discarded. This may be improved at a future date
+- The real deploy only happens after Step 5 writes to Neon, which triggers the second build in Step 8, which is what's shipped
 
 ## Backend & Script Versioning
 
@@ -47,32 +57,17 @@ TweakForge is a web-based utility designed to simplify Windows 11 PC setup and c
 - A live database dependency (for non-corporate software) means: cold starts, connection limits, an outage taking features down with it. None of that should stand between a user and a registry script
 - So, neither scripts nor metadata are ever fetched at runtime. Both are baked in at build time - scripts from local files, metadata from a Neon query. And the deployed app never talks to a database when someone's using it
 - If a metadata fetch is missed at build time (say, a Neon hiccup), a script's metadata just says "not yet published" - TweakForge itself never goes down over it
-
-### Trust model
 - Scripts are never stored in or served from the database. A compromised database affects the changelog display only, not script integrity
 
-### Backend Architecture: built with...
-- Neon Serverless (PostgreSQL) + Next.js App Router + Node.js + TypeScript + JavaScript
-
-### Endpoint(s)
+### Endpoint
 - `/api/scripts/publish` -> Private. CI POSTs here with a bearer token after a successful publish step; the endpoint hashes and compares content before writing a new version row to Neon
-- i.e., checks if a script has been edited on push (and so introducing a new script version)
+- Checks whether a script changed since the last push, and if so, writes a new version
+- Cloudflare WAF and rate limiting are active to prevent further endpoint incidents. See `docs/incidents/scraper-spike-2026.md` for more
 
 ### CI Integration
-- CI (see `ci.yml`) runs `npm run generate`, lint, test and build first (as a correctness check only, this output is never deployed. This may be streamlined later)
-- `publish-scripts.js` runs only on a push to `main`, after that build succeeds. A script's content hash is compared against the latest stored version; only a real change inserts a new row
-- If unchanged, the publish step is skipped
-- Once publish succeeds, CI triggers a Netlify build hook, which regenerates everything against Neon's now-current state - that build is what ships!
-
-## Project Status
-- TweakForge will be receiving significantly fewer updates as I work on other projects
-
-**Current Development Priorities:**
-- Increasing unit test coverage
-- Implementing integration test suite (likely Cypress)
-- Expanding script library (or just suggest ones you'd like)
-- Improving the "Contribution" documentation
-- Potentially make some "good first issue" under issues for TweakForge
+- `ci.yml` runs on every PR and every push to `main`: install, generate static files (needs a Neon connection string secret), lint, test, build, then confirm the Dockerfile still builds. Nothing here is deployed, it's a correctness gate only
+- On a push to main, once the gate above passes, `publish-scripts.js` POSTs script content to the private publish endpoint with a bearer token
+- If publish succeeds, CI fires the Netlify build hook. That's the only way a real deploy happens. A Netlify `ignore = exit 0` setting blocks Netlify's own git-push-triggered builds, so nothing ships except through this hook
 
 ## Local Development
 - Metadata generation needs a Neon connection string in `.env.local` to show real version/changelog data locally (might be streamlined in a future fix)
@@ -82,7 +77,10 @@ TweakForge is a web-based utility designed to simplify Windows 11 PC setup and c
 - **Option 1:** Node.js v22.11.0 or higher
 - **Option 2:** Docker Desktop
 
-### Option 1: Setup Instructions (Node.js)
+<br>
+
+<details>
+<summary><b>Option 1: Setup Instructions (Node.js)</b></summary>
 
 ```bash
 # Clone the repository
@@ -96,7 +94,10 @@ npm run dev
 # Application runs at http://localhost:3000 with hot module replacement enabled
 ```
 
-### Option 2: Setup Instructions (Docker)
+</details>
+
+<details>
+<summary><b>Option 2: Setup Instructions (Docker)</b></summary>
 
 ```bash
 # Clone the repository
@@ -119,7 +120,11 @@ docker rm tweakforgecontainer
 
 # Note: Docker doesn't auto-reload like Node.js HMR - rebuild the image after making changes
 ```
+
+</details>
+
 <br>
+
 <details>
 <summary><b>Help, I'm new to Docker</b></summary>
 
@@ -170,7 +175,7 @@ docker run -d -p 3000:3000 --name tweakforgecontainer tweakforge
 - Create a new branch for your changes before beginning work
 - Use the Node.js setup for active development (instant feedback)
 - Use Docker to test the production build
-- Run tests via `npm run test` before pushing any changes
+- Run `npm run fulltest` before pushing any changes
 
 ## Script Testing Methodology (via differencing disk)
 
@@ -186,8 +191,8 @@ See [differencing disk methodology](docs/differencing-disk-methodology.md) for f
 
 ## Safety & Transparency
 
-- All scripts are open source and reviewable in `/src/app/data/checkboxOptions.ts`
-- Scripts require administrator privileges to modify system settings
+- All scripts are open-source and reviewable in `/src/scripts`
+- Scripts require administrator privileges to modify system settings. Please don't overlook the `Ctrl + Shift + Enter` step under "How do I run my scripts?" in the app itself
 - Despite all the care put into the scripts, it is still recommended you either backup your entire registry or create a system restore point before applying changes
 
 ## Contributing
@@ -195,8 +200,19 @@ See [differencing disk methodology](docs/differencing-disk-methodology.md) for f
 Contributions welcome! Please:
 1. Open an issue to discuss proposed changes
 2. Fork the repository and create a feature branch
-3. Ensure tests pass (`npm run test`)
+3. Ensure everything passes (`npm run fulltest`)
 4. Submit a pull request with clear description
+
+### Potential areas for improvement
+- Increasing unit test coverage
+- Implementing integration test suite (likely Cypress)
+- Expanding script library (or just suggest ones you'd like)
+- Improving the "Contribution" documentation
+
+Reminder: concerning the need for a connection string, see [Local Development](#local-development)
+
+## Project Status
+- TweakForge will be receiving significantly fewer updates as I work on other projects
 
 ## License
 
