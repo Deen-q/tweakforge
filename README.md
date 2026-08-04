@@ -72,6 +72,7 @@ Note: TweakForge started as a vehicle to practice production patterns, so some f
 ## Local Development
 - Metadata generation needs a Neon connection string in `.env.local` to show real version/changelog data locally (might be streamlined in a future fix)
 - Without it, the app runs fine: scripts just show as "not yet published"
+- To work with real version data locally: point `NEON_CONNECTION_STRING` in `.env.local` at your own Postgres instance and run `migrations/001_create_scripts.sql` against it
 
 ### Prerequisites
 - **Option 1:** Node.js v22.11.0 or higher
