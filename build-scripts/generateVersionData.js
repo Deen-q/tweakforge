@@ -26,8 +26,12 @@ try {
     }
     // await sql.end(); // otherwise hangs from idle postgres connection
 } catch (error) {
-    console.error(error);
-    // process.exit(1);
+    if (process.env.NEON_CONNECTION_STRING) {
+        console.error("Neon query failed despite connection string string being set: ", error.message);
+        console.log("Full error object: ", error);
+    } else {
+        console.warn("No connection string set, writing empty version data (expected without Neon access)...");
+    }
 } finally {
     // prevent potential cold start issues, whereas process.exit would kill the build -> site wont deploy
     await sql.end()
