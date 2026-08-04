@@ -57,7 +57,7 @@ export default function ViewScriptModal({
                     <div className="flex justify-between text-xs">
                         {/* add new script + entry to scriptMetadata -> versionData.ts is still clueless since no new row exists in Neon yet */}
                         <span className="cursor-help" title={changelog == null ? "not yet published..." : changelog}>Changelog<span className="font-bold"><sup>i</sup></span></span>
-                        <span className="cursor-help" title={createdAt === null ? "not yet published..." : String(createdAt)}>Created At<span className="font-bold"><sup>i</sup></span></span>
+                        <span className="cursor-help" title={createdAt == null ? "not yet published..." : String(createdAt)}>Created At<span className="font-bold"><sup>i</sup></span></span>
                     </div>
                 </div>
 
